@@ -6,7 +6,7 @@ import "./app.css";
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const App = ({ children }: PropsWithChildren<any>) => {
   useLaunch(() => {
-    console.log("App launched.");
+    console.log("App launched.", document.defaultView);
   });
 
   // children 是将要会渲染的页面
