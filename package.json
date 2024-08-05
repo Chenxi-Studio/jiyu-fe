@@ -28,7 +28,8 @@
     "dev:qq": "npm run build:qq -- --watch",
     "dev:jd": "npm run build:jd -- --watch",
     "dev:harmony-hybrid": "npm run build:harmony-hybrid -- --watch",
-    "dev": "npm run build:weapp -- --watch"
+    "dev": "npm run build:weapp -- --watch",
+    "postinstall": "weapp-tw patch"
   },
   "browserslist": [
     "defaults and fully supports es6-module",
@@ -53,9 +54,10 @@
     "@tarojs/runtime": "4.0.3",
     "@tarojs/shared": "4.0.3",
     "@tarojs/taro": "4.0.3",
+    "immer": "^10.1.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-router-dom": "^6.26.0"
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@babel/core": "^7.24.4",
@@ -68,6 +70,7 @@
     "@types/node": "^18",
     "@types/react": "^18.0.0",
     "@types/webpack-env": "^1.13.6",
+    "autoprefixer": "^10.4.20",
     "babel-preset-taro": "4.0.3",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -81,11 +84,14 @@
     "eslint-plugin-react-hooks": "^4.4.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "eslint-webpack-plugin": "^4.2.0",
-    "postcss": "^8.4.38",
+    "postcss": "^8.4.40",
+    "postcss-rem-to-responsive-pixel": "^6.0.1",
     "react-refresh": "^0.14.0",
     "stylelint": "^16.4.0",
+    "tailwindcss": "^3.4.7",
     "tsconfig-paths-webpack-plugin": "^4.1.0",
     "typescript": "^5.4.5",
+    "weapp-tailwindcss": "^3.4.0",
     "webpack": "5.91.0"
   }
 }

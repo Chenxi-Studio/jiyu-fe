@@ -1,5 +1,6 @@
 import { defineConfig, type UserConfigExport } from "@tarojs/cli";
 import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
+import { UnifiedWebpackPluginV5 } from "weapp-tailwindcss/webpack";
 import devConfig from "./dev";
 import prodConfig from "./prod";
 
@@ -30,6 +31,14 @@ export default defineConfig<"webpack5">(async (merge, { command, mode }) => {
     },
     mini: {
       postcss: {
+        htmltransform: {
+          enable: true,
+          // 设置成 false 表示 不去除 * 相关的选择器区块
+          // 假如开启这个配置，它会把 tailwindcss 整个 css var 的区域块直接去除掉
+          config: {
+            removeCursorStyle: false,
+          },
+        },
         pxtransform: {
           enable: true,
           config: {},
@@ -43,7 +52,21 @@ export default defineConfig<"webpack5">(async (merge, { command, mode }) => {
         },
       },
       webpackChain(chain) {
-        chain.resolve.plugin("tsconfig-paths").use(TsconfigPathsPlugin);
+        chain
+          .merge({
+            plugin: {
+              install: {
+                plugin: UnifiedWebpackPluginV5,
+                args: [
+                  {
+                    appType: "taro",
+                  },
+                ],
+              },
+            },
+          })
+          .resolve.plugin("tsconfig-paths")
+          .use(TsconfigPathsPlugin);
       },
     },
     h5: {

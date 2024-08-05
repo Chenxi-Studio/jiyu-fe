@@ -1,0 +1,13 @@
+/* custom-tab-bar 不支持 tailwind css */
+
+.wrapper {
+    display: flex;
+    height: 150rpx;
+    align-items: center;
+    justify-content: center;
+    gap: 20%
+}
+
+.selected {
+    color: red;
+}
