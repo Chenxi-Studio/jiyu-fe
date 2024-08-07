@@ -1,7 +1,11 @@
 export const TabList = [
   {
     pagePath: "pages/home/index",
-    text: "Home",
+    text: "home",
+  },
+  {
+    pagePath: "pages/publish/index",
+    text: "publish",
   },
   {
     pagePath: "pages/activity/index",
