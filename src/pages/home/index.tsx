@@ -1,4 +1,3 @@
-import { navigatorTo } from "@/utils/navigator";
 import React, { useEffect } from "react";
 
 const Home = (): JSX.Element => {
@@ -7,20 +6,14 @@ const Home = (): JSX.Element => {
   }, []);
 
   return (
-    <>
+    <div className="mx-10">
       <div className="text-lg">This is home.</div>
       <div className="drawer-box">
         <div className="box-item">
-          <a
-            onClick={() => {
-              navigatorTo("/pages/profile/index");
-            }}
-          >
-            profile
-          </a>
+          <a onClick={() => {}}>profile</a>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
