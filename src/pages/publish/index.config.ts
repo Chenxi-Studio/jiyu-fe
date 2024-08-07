@@ -1,4 +1,4 @@
 export default definePageConfig({
-  navigationBarTitleText: "Activity",
+  navigationBarTitleText: "Publish",
   usingComponents: {},
 });

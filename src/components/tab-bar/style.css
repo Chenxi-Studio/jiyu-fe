@@ -4,8 +4,8 @@
     display: flex;
     height: 150rpx;
     align-items: center;
-    justify-content: center;
-    gap: 20%
+    justify-content: space-between;
+    padding: 0 50rpx;
 }
 
 .selected {

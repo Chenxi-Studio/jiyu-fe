@@ -1,7 +1,7 @@
 import { TabList } from "./types/tab";
 
 export default defineAppConfig({
-  pages: ["pages/home/index", "pages/activity/index", "pages/profile/index"],
+  pages: TabList.map((item) => item.pagePath),
   window: {
     backgroundTextStyle: "light",
     navigationBarBackgroundColor: "#fff",
