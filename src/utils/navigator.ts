@@ -1,7 +1,7 @@
 import Taro from "@tarojs/taro";
 
 export const navigatorTo = (url: string): void => {
-  void Taro.navigateTo({ url });
+  void Taro.navigateTo({ url: `/${url}` });
 };
 
 export const switchTab = (url: string): void => {

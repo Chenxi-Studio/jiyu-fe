@@ -1,11 +1,11 @@
 export const TabList = [
   {
-    pagePath: "pages/home/index",
-    text: "home",
-  },
-  {
     pagePath: "pages/publish/index",
     text: "publish",
+  },
+  {
+    pagePath: "pages/home/index",
+    text: "home",
   },
   {
     pagePath: "pages/activity/index",
@@ -14,5 +14,12 @@ export const TabList = [
   {
     pagePath: "pages/profile/index",
     text: "profile",
+  },
+];
+
+export const ExcludedTabList = [
+  {
+    pagePath: "pages/detail/index",
+    text: "detail",
   },
 ];
