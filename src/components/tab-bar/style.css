@@ -6,6 +6,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 50rpx;
+    background-color: white;
+    filter: drop-shadow(0 -3px 24px rgba(0,0,0,0.05));
 }
 
 .selected {
