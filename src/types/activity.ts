@@ -21,7 +21,6 @@ export interface CreateActivityWithoutImageRequest extends BaseActivityRequest {
 
 export interface CreateSubActivityRequest {
   // 至少需要一个标题
-
   title: string;
   registrationStartTime: Date;
   registrationEndTime: Date;

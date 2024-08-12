@@ -1,0 +1,13 @@
+.panel__title::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: .512rem;
+    top: 50%;
+    margin-top: -22rpx;
+    width: 4rpx;
+    height: 44rpx;
+    background-color: #6190e8;
+    box-shadow: 0 .14933rem .256rem 0 rgba(97,144,232,.2);
+    border-radius: 1px;
+}
