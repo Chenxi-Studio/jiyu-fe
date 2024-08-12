@@ -22,4 +22,8 @@ export const ExcludedTabList = [
     pagePath: "pages/detail/index",
     text: "detail",
   },
+  {
+    pagePath: "pages/new-activity/index",
+    text: "new-activity",
+  },
 ];

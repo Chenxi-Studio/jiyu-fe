@@ -1,5 +1,4 @@
 import { px2rpx, windowHeight } from "@/utils/unit";
-import { Picker } from "@tarojs/components";
 import { getCurrentInstance } from "@tarojs/runtime";
 import Taro, { useReady } from "@tarojs/taro";
 import React, { useEffect, useState } from "react";
