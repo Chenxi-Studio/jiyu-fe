@@ -1,6 +1,9 @@
 import { SmallCard, type SmallCardProps } from "@/components/small-card";
 import { navigatorTo } from "@/utils/navigator";
 import React, { useEffect, useState } from "react";
+import { AtIcon } from "taro-ui";
+
+import "taro-ui/dist/style/components/icon.scss";
 
 interface PublishListInfo extends SmallCardProps {
   id: number;
@@ -101,6 +104,19 @@ const Publish = (): JSX.Element => {
             ></SmallCard>
           </div>
         ))}
+      </div>
+      <div
+        onClick={() => {
+          navigatorTo("pages/new-activity/index");
+        }}
+        className="fixed h-12 w-12 rounded-full bg-blue-200 right-5 bottom-[190rpx] flex justify-center items-center"
+      >
+        <AtIcon
+          prefixClass="fa"
+          value="pencil"
+          size="24"
+          color="#ffffff"
+        ></AtIcon>
       </div>
     </div>
   );

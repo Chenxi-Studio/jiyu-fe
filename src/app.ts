@@ -1,6 +1,7 @@
 import { type PropsWithChildren } from "react";
 import { useLaunch } from "@tarojs/taro";
 
+import "./icon.scss";
 import "./app.css";
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
