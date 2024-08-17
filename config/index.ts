@@ -9,7 +9,14 @@ export default defineConfig<"webpack5">(async (merge, { command, mode }) => {
   const baseConfig: UserConfigExport<"webpack5"> = {
     projectName: "jiyu-fe",
     date: "2024-7-26",
-    designWidth: 750,
+    designWidth: (input) => {
+      // 配置 NutUI 375 尺寸
+      if (input?.file?.replace(/\\+/g, "/").indexOf("@nutui") > -1) {
+        return 375;
+      }
+      // 全局使用 Taro 默认的 750 尺寸
+      return 750;
+    },
     deviceRatio: {
       640: 2.34 / 2,
       750: 1,
@@ -28,7 +35,7 @@ export default defineConfig<"webpack5">(async (merge, { command, mode }) => {
     compiler: {
       type: "webpack5",
       prebundle: {
-        exclude: ["taro-ui"],
+        exclude: ["@nutui/nutui-react-taro", "@nutui/icons-react-taro"],
       },
     },
     cache: {
@@ -77,7 +84,7 @@ export default defineConfig<"webpack5">(async (merge, { command, mode }) => {
     h5: {
       publicPath: "/",
       staticDirectory: "static",
-      esnextModules: ["taro-ui"],
+
       output: {
         filename: "js/[name].[hash:8].js",
         chunkFilename: "js/[name].[chunkhash:8].js",

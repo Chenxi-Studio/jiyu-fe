@@ -7,5 +7,18 @@ module.exports = {
       ts: true,
       compiler: 'webpack5',
     }]
+  ],
+  // 按需引入 css
+  plugins: [
+    [
+      "import",
+      {
+        "libraryName": "@nutui/nutui-react-taro",
+        "libraryDirectory": "dist/esm",
+        "style": 'css',
+        "camel2DashComponentName": false
+      },
+      'nutui-react-taro'
+    ]
   ]
 }
