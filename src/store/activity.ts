@@ -11,7 +11,7 @@ export interface ActivityModel extends BaseActivityRequest {
 export const $Activity = model<ActivityModel>("ACTIVITY", {
   title: "",
   startTime: new Date(),
-  endTime: new Date(),
+  endTime: new Date(new Date().getTime() + 86400000),
   location: "",
   organizer: "",
   category: "",
