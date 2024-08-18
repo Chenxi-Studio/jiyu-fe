@@ -20,5 +20,18 @@ export const $Activity = model<ActivityModel>("ACTIVITY", {
   contactWay: "",
   minSubParticipants: 1,
   maxSubParticipants: 100,
-  subs: [],
+  subs: [
+    {
+      title: "测试标题",
+      registrationStartTime: new Date(),
+      registrationEndTime: new Date(),
+      studentScope: { degree: [], grade: [], major: [], class: [], tags: [] },
+      capacity: 100,
+      checkInStartTime: new Date(),
+      checkInEndTime: new Date(),
+      startTime: new Date(),
+      endTime: new Date(),
+      location: "测试地点",
+    },
+  ],
 });

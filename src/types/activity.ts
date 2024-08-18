@@ -44,3 +44,15 @@ export interface UpdateSubActivityRequest extends CreateSubActivityRequest {
 export class DisapproveActRequest {
   reason: string; // 驳回活动的理由
 }
+
+export const validateCreateSubActivityRequest = (
+  f: CreateSubActivityRequest,
+): boolean => {
+  if (f.title.trim() === "") return false;
+  if (f.capacity <= 0) return false;
+  if (f.location.trim() === "") return false;
+  if (f.registrationEndTime < f.registrationStartTime) return false;
+  if (f.checkInEndTime < f.checkInStartTime) return false;
+  if (f.endTime < f.startTime) return false;
+  return true;
+};
