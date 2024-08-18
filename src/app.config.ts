@@ -2,8 +2,8 @@ import { ExcludedTabList, TabList } from "./types/tab";
 
 export default defineAppConfig({
   pages: [
-    ...ExcludedTabList.map((item) => item.pagePath),
     ...TabList.map((item) => item.pagePath),
+    ...ExcludedTabList.map((item) => item.pagePath),
   ],
   window: {
     backgroundTextStyle: "light",

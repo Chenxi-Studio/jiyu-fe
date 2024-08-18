@@ -1,7 +1,9 @@
 import { SmallCard, type SmallCardProps } from "@/components/small-card";
-import { navigatorTo } from "@/utils/navigator";
+import { navigateTo } from "@/utils/navigator";
 import React, { useEffect, useState } from "react";
-import { Edit } from "@nutui/icons-react-taro";
+import { ArrowDown, Edit } from "@nutui/icons-react-taro";
+import { Collapse } from "@nutui/nutui-react-taro";
+import { api } from "@/api";
 
 interface PublishListInfo extends SmallCardProps {
   id: number;
@@ -9,6 +11,12 @@ interface PublishListInfo extends SmallCardProps {
 
 const Publish = (): JSX.Element => {
   const [list, setList] = useState<PublishListInfo[]>([]);
+
+  useEffect(() => {
+    void api.activity.listSelfAll().then((res) => {
+      console.log("res", res);
+    });
+  }, []);
 
   useEffect(() => {
     setList([
@@ -79,33 +87,38 @@ const Publish = (): JSX.Element => {
   }, []);
 
   const handleOnclick = (index: number): void => {
-    navigatorTo(`pages/detail/index?id=${index}&editable=true`);
+    navigateTo(`pages/detail/index?id=${index}&editable=true`);
   };
 
   return (
-    <div className="bg-[#FCFCFC] p-5 pb-[150rpx]">
-      <div>This is publish.</div>
-      <div>
-        {list.map((item, index) => (
-          <div
-            key={`Publish-${index}`}
-            className="mt-2"
-            onClick={() => {
-              handleOnclick(index);
-            }}
-          >
-            <SmallCard
-              title={item.title}
-              photoUrl={item.photoUrl}
-              author={item.author}
-              date={item.date}
-            ></SmallCard>
+    <div className=" pb-[150rpx]">
+      <Collapse defaultActiveName={["1"]} expandIcon={<ArrowDown />}>
+        <Collapse.Item title="未发布" name="1">
+          <div>
+            {list.map((item, index) => (
+              <div
+                key={`Publish-${index}`}
+                className="mt-2"
+                onClick={() => {
+                  handleOnclick(index);
+                }}
+              >
+                <SmallCard
+                  title={item.title}
+                  photoUrl={item.photoUrl}
+                  author={item.author}
+                  date={item.date}
+                ></SmallCard>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </Collapse.Item>
+        <Collapse.Item title="已发布" name="2"></Collapse.Item>
+      </Collapse>
+
       <div
         onClick={() => {
-          navigatorTo("pages/new-activity/index");
+          navigateTo("pages/new-activity/index");
         }}
         className="fixed h-12 w-12 rounded-full bg-blue-200 right-5 bottom-[190rpx] flex justify-center items-center"
       >

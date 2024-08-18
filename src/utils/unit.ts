@@ -8,7 +8,7 @@ export const rpx2px = (rpx: number): number => rpx * (windowWidth / 750);
 
 export const px2rpx = (px: number): number => px * (750 / windowWidth);
 
-export const formatDate = (startTime, withMinute = true) => {
+export const formatDate = (startTime, withMinute = true): string => {
   const year = startTime.getFullYear();
   const month = ("0" + (startTime.getMonth() + 1)).slice(-2); // 月份从0开始，所以需要+1
   const day = ("0" + startTime.getDate()).slice(-2);

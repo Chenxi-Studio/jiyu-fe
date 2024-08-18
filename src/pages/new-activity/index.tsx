@@ -1,9 +1,11 @@
 import React from "react";
+import { Button } from "@nutui/nutui-react-taro";
 import { Title } from "@/components/title";
+import { navigateBack } from "@/utils/navigator";
 import { MainActivity } from "./components/main-activity";
+import { SubActivity } from "./components/sub-activity";
 
 import "./style.scss";
-import { SubActivity } from "./components/sub-activity";
 
 export interface SelectDate {
   start: string | undefined;
@@ -22,6 +24,20 @@ const NewActivity = (): JSX.Element => {
         <Title content="子活动" />
       </div>
       <SubActivity />
+      <div className="flex justify-between items-center fixed bottom-0 h-[150rpx] bg-white w-[calc(100%-64rpx)] px-4">
+        <Button
+          type="default"
+          size="large"
+          onClick={() => {
+            navigateBack();
+          }}
+        >
+          返回并保存
+        </Button>
+        <Button type="primary" size="large">
+          提交
+        </Button>
+      </div>
     </div>
   );
 };

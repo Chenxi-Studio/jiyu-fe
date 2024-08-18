@@ -1,8 +1,10 @@
 import axios from "axios";
+import { taroAdapter } from "./adapter";
 
 const instance = axios.create({
-  baseURL: "/api",
+  baseURL: "http://124.220.2.31:3000/api",
   timeout: 100000,
+  adapter: taroAdapter,
 });
 
 instance.defaults.headers.get["Content-Type"] = "application/json";
