@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { createRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { AddCircle } from "@nutui/icons-react-taro";
-import { Button, Swipe } from "@nutui/nutui-react-taro";
+import {
+  Button,
+  Dialog,
+  Swipe,
+  type SwipeInstance,
+} from "@nutui/nutui-react-taro";
 import { type CreateSubActivityRequest } from "@/types/activity";
 import { $Activity } from "@/store/activity";
 import { formatDate } from "@/utils/unit";
@@ -14,22 +19,36 @@ export const SubActivity = (): JSX.Element => {
   );
   const [index, setIndex] = useState<number | undefined>(undefined);
   const subs = $Activity.use((state) => state.subs);
-
+  const refs = new Array(subs.length)
+    .fill(null)
+    .map(() => createRef<SwipeInstance>());
   return (
     <>
       <div className="px-4 pb-[150rpx]">
+        <Dialog id="DeleteActivity" />
         {subs.map((item, i) => (
           <Swipe
+            ref={refs[i]}
             className={twMerge("", i === 0 && "rounded-t-lg")}
             rightAction={
               <Button
                 type="primary"
                 shape="square"
                 onClick={() => {
-                  $Activity.update("delete sub activity", (draft) => {
-                    draft.subs = subs.filter(
-                      (draftItem, draftIndex) => i !== draftIndex,
-                    );
+                  Dialog.open(`DeleteActivity`, {
+                    title: `删除提示`,
+                    content: `确认删除子活动 ${item.title} 吗？`,
+                    onConfirm: () => {
+                      $Activity.update("delete sub activity", (draft) => {
+                        draft.subs = subs.filter(
+                          (draftItem, draftIndex) => i !== draftIndex,
+                        );
+                      });
+                      Dialog.close(`DeleteActivity`);
+                    },
+                    onCancel: () => {
+                      Dialog.close(`DeleteActivity`);
+                    },
                   });
                 }}
               >
@@ -37,6 +56,15 @@ export const SubActivity = (): JSX.Element => {
               </Button>
             }
             key={`sub-${index}`}
+            onActionClick={() => {
+              if (
+                refs[i].current !== null &&
+                refs[i].current !== undefined &&
+                typeof refs[i].current.close === "function"
+              ) {
+                refs[i].current.close();
+              }
+            }}
           >
             <div
               className="flex justify-between bg-white border-solid border-0 border-b border-gray-100 p-4"
@@ -84,14 +112,6 @@ export const SubActivity = (): JSX.Element => {
           preFill={preFill}
           index={index}
         />
-      </div>
-      <div className="flex justify-between items-center fixed bottom-0 h-[150rpx] bg-white w-[calc(100%-64rpx)] px-4">
-        <Button type="default" size="large">
-          返回并保存
-        </Button>
-        <Button type="primary" size="large">
-          提交
-        </Button>
       </div>
     </>
   );
