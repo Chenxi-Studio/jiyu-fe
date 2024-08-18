@@ -62,6 +62,9 @@ dependencies:
   '@tarojs/taro':
     specifier: 4.0.3
     version: 4.0.3(@tarojs/components@4.0.3)(@tarojs/helper@4.0.3)(@tarojs/shared@4.0.3)(@types/react@18.3.3)(postcss@8.4.40)(webpack@5.91.0)
+  axios:
+    specifier: ^1.7.4
+    version: 1.7.4
   babel-plugin-import:
     specifier: ^1.13.8
     version: 1.13.8
@@ -2447,7 +2450,7 @@ packages:
       '@tarojs/service': 4.0.3
       '@tarojs/shared': 4.0.3
       adm-zip: 0.5.14
-      axios: 1.7.2
+      axios: 1.7.4
       cli-highlight: 2.1.11
       download-git-repo: 3.0.2
       envinfo: 7.13.0
@@ -2811,7 +2814,7 @@ packages:
       '@tarojs/service': 4.0.3
       '@tarojs/shared': 4.0.3
       '@tarojs/taro-h5': 4.0.3(@tarojs/components@4.0.3)(@tarojs/taro@4.0.3)
-      axios: 1.7.2
+      axios: 1.7.4
       babel-plugin-transform-taroapi: 4.0.3(@babel/core@7.24.9)
       base64-js: 1.5.1
       change-case: 4.1.2
@@ -3980,8 +3983,8 @@ packages:
       possible-typed-array-names: 1.0.0
     dev: true
 
-  /axios@1.7.2:
-    resolution: {integrity: sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==}
+  /axios@1.7.4:
+    resolution: {integrity: sha512-DukmaFRnY6AzAALSH4J2M3k6PkaC+MfaAGdEERRWcC9q3/TWQwLpHR8ZRLKTdQ3aBDL64EdluRDjJqKw+BPZEw==}
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
