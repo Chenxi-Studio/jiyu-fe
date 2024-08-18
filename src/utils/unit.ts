@@ -8,25 +8,17 @@ export const rpx2px = (rpx: number): number => rpx * (windowWidth / 750);
 
 export const px2rpx = (px: number): number => px * (750 / windowWidth);
 
-export const formatDate = (
-  startTime: Date,
-  withMinute: boolean = true,
-): string => {
-  const options = withMinute
-    ? {
-        year: "numeric" as const,
-        month: "2-digit" as const,
-        day: "2-digit" as const,
-        hour: "2-digit" as const,
-        minute: "2-digit" as const,
-      }
-    : {
-        year: "numeric" as const,
-        month: "2-digit" as const,
-        day: "2-digit" as const,
-      };
-  const formatter = new Intl.DateTimeFormat("ch", options);
-  const formattedDate = formatter.format(startTime);
+export const formatDate = (startTime, withMinute = true) => {
+  const year = startTime.getFullYear();
+  const month = ("0" + (startTime.getMonth() + 1)).slice(-2); // 月份从0开始，所以需要+1
+  const day = ("0" + startTime.getDate()).slice(-2);
+  let formattedDate = `${year}-${month}-${day}`;
+
+  if (withMinute) {
+    const hour = ("0" + startTime.getHours()).slice(-2);
+    const minute = ("0" + startTime.getMinutes()).slice(-2);
+    formattedDate += ` ${hour}:${minute}`;
+  }
 
   return formattedDate;
 };
