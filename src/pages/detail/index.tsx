@@ -1,11 +1,12 @@
-import { px2rpx, windowHeight } from "@/utils/unit";
-import { getCurrentInstance } from "@tarojs/runtime";
-import Taro, { useReady } from "@tarojs/taro";
 import React, { useEffect, useState } from "react";
+import Taro, { useReady } from "@tarojs/taro";
+import { Image } from "@nutui/nutui-react-taro";
+import { $UI } from "@/store/UI";
+import { navigateBack } from "@/utils/navigator";
+import { formatDate, px2rpx, windowHeight } from "@/utils/unit";
 
 const Detail = (): JSX.Element => {
-  const [id, setId] = useState<number>(0);
-  const [editable, setEditable] = useState<boolean>(false);
+  const currentActivity = $UI.use((state) => state.currentActivity);
   const [offset, setOffset] = useState<number>(0);
   const [minHeight, setMinHeight] = useState<number>(0);
 
@@ -29,21 +30,15 @@ const Detail = (): JSX.Element => {
   });
 
   useEffect(() => {
-    const instance = getCurrentInstance();
-    const params = instance.router?.params;
-    if (!Number.isNaN(Number(params?.id))) {
-      setId(Number(params?.id));
-    }
-    // eslint-disable-next-line no-extra-boolean-cast
-    if (Boolean(params?.editable)) {
-      setEditable(Boolean(params?.editable));
+    if (currentActivity === undefined) {
+      navigateBack();
     }
   }, []);
 
   return (
     <div className="h-[100vh]">
       <div className="h-40 bg-blue-200 w-full fixed top-0 z-0" id="detail-pic">
-        图片
+        <Image src={`https://${currentActivity?.coverImage}`} />
       </div>
       <div
         className="bg-[#FCFCFC] rounded-[64rpx] pt-10 px-8 relative z-10 pb-[150rpx]"
@@ -53,16 +48,15 @@ const Detail = (): JSX.Element => {
           transition: "top 1s ease-in-out",
         }}
       >
-        <div className="text-4xl font-extrabold mb-4">This is Title</div>
+        <div className="text-4xl font-extrabold mb-4">
+          {currentActivity?.title}
+        </div>
         <div className="rounded-2xl p-3 border-gray-200 border-2 text-base text-center border-solid text-gray-400 mb-4">
-          Author Name 8.9 · 13.12
+          {currentActivity?.organizer} ·{" "}
+          {formatDate(currentActivity?.startTime, false)} -{" "}
+          {formatDate(currentActivity?.endTime, false)}
         </div>
-        <div className="text-base">
-          This is content. This is content. This is content. This is content.
-          This is content. This is content. This is content. This is content.
-          This is content. This is content. This is content. This is content.
-          This is Detail. ID: {id}. Editable: {editable ? "true" : "false"}.
-        </div>
+        <div className="text-base">{currentActivity?.introduction}</div>
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 flex bg-white px-8 justify-between h-[150rpx] items-center z-20">

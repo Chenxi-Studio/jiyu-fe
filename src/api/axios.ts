@@ -1,8 +1,11 @@
 import axios from "axios";
+import { convertDates } from "@/utils/unit";
 import { taroAdapter } from "./adapter";
 
+export const baseURL = "http://124.220.2.31:3000/api";
+
 const instance = axios.create({
-  baseURL: "http://124.220.2.31:3000/api",
+  baseURL,
   timeout: 100000,
   adapter: taroAdapter,
 });
@@ -25,15 +28,16 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(
   (res) => {
+    console.log("res", res, convertDates(res.data));
+
     if (res.config.responseType === "blob") {
       return res; // 返回整个响应以便下载
     }
-    return res.data;
+    return convertDates(res.data);
   },
   async (err) => {
-    if (err.response.status === 401 || err.response.status === 422) {
-      // TODO: 鉴权
-    }
+    // TODO: 鉴权
+
     return await Promise.reject(err);
   },
 );

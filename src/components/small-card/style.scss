@@ -1,0 +1,13 @@
+// 覆写 nutui 样式
+
+.nut-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nut-image .nut-img {
+    border-radius: 1rem;
+    width: 90%;
+    height: 90%;
+}
