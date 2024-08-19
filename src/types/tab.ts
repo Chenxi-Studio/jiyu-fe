@@ -4,6 +4,10 @@ export const TabList = [
     text: "publish",
   },
   {
+    pagePath: "pages/approve/index",
+    text: "approve",
+  },
+  {
     pagePath: "pages/home/index",
     text: "home",
   },

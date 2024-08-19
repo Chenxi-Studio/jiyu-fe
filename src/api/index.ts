@@ -1,17 +1,28 @@
 /* eslint-disable @typescript-eslint/promise-function-async */
-import { type BaseActivityRequest } from "@/types/activity";
+import {
+  type CreateActivityWithoutImageRequest,
+  type BaseActivityRequest,
+} from "@/types/activity";
 import { type BaseResponse } from "@/types/api";
 import { $User } from "@/store/user";
-import instance from "./axios";
+import Taro from "@tarojs/taro";
+import SimpleFormData from "@/utils/FormData";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
+import instance, { baseURL } from "./axios";
+
+// TODO: 需要环境判断 不然H5无法上线
 
 const activity = {
   createActivityWithoutImage: (
     r: BaseActivityRequest,
   ): Promise<BaseResponse> => {
-    const formData = new FormData();
-    Object.keys(r).forEach((key) => {
-      const value = r[key];
+    const formData = new SimpleFormData();
+    const rWithSid: CreateActivityWithoutImageRequest = {
+      ...r,
+      publisherSid: $User.get().sid,
+    };
+    Object.keys(rWithSid).forEach((key) => {
+      const value = rWithSid[key];
       if (value instanceof Date) {
         formData.append(key, value.toISOString());
       }
@@ -22,13 +33,26 @@ const activity = {
         formData.append(key, value);
       }
     });
-    return instance.post("/activity", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+    const sandData = formData.getData();
+    return new Promise((resolve, reject) => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      Taro.request({
+        url: baseURL + "/activity",
+        method: "POST",
+        data: sandData.buffer,
+        header: { "Content-Type": sandData.contentType },
+        success: (res) => {
+          const data = res.data;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          resolve(data); // 使用resolve来传递成功的结果
+        },
+        fail: (err) => {
+          reject(err); // 使用reject来传递失败的错误
+        },
+      });
     });
   },
-  listSelfAll: (): Promise<ActivityEntity> => {
+  listSelfAll: (): Promise<{ data: ActivityEntity[]; total: number }> => {
     const params = new URLSearchParams();
     const queryObject = {
       page: 1,
@@ -40,8 +64,24 @@ const activity = {
 
     return instance.get(`/activity/self-all/${$User.get().id}`, { params });
   },
+  beforeApproved: (): Promise<ActivityEntity[]> => {
+    return instance.get(`/activity/before-approved/${$User.get().id}`);
+  },
+  afterApproved: (): Promise<ActivityEntity[]> => {
+    return instance.get(`/activity/after-approved/${$User.get().id}`);
+  },
+  delete: (id: number) => {
+    return instance.delete(`/api/activity/${id}`);
+  },
+};
+
+const approve = {
+  toApprove: (): Promise<ActivityEntity[]> => {
+    return instance.get(`/activity/${$User.get().id}/to-approve`);
+  },
 };
 
 export const api = {
   activity,
+  approve,
 };

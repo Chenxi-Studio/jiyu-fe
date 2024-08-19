@@ -9,15 +9,15 @@ export interface ActivityModel extends BaseActivityRequest {
 }
 
 export const $Activity = model<ActivityModel>("ACTIVITY", {
-  title: "",
+  title: "测试新增活动",
   startTime: new Date(),
   endTime: new Date(new Date().getTime() + 86400000),
-  location: "",
-  organizer: "",
-  category: "",
-  introduction: "",
-  contactMan: "",
-  contactWay: "",
+  location: "测试地址",
+  organizer: "测试组织",
+  category: "测试分类",
+  introduction: "测试简介",
+  contactMan: "测试联系人",
+  contactWay: "测试",
   minSubParticipants: 1,
   maxSubParticipants: 100,
   subs: [

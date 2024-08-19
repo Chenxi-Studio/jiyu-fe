@@ -23,9 +23,14 @@ const settle = (resolve, reject, res, failed: boolean = false) => {
 
 export const taroAdapter: AxiosAdapter = async (config: TaroConfig) => {
   return await new Promise<TaroResponse>((resolve, reject) => {
+    console.log(config.headers);
+
     Taro.request({
       ...config,
-      url: config.baseURL + config.url + "?" + config.params,
+      url:
+        config.baseURL +
+        config.url +
+        (config.params !== undefined ? "?" + config.params : ""),
       data: config.data,
       method: config.method,
       header: config.headers,

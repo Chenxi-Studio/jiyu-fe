@@ -2,6 +2,9 @@ import React from "react";
 import { Button } from "@nutui/nutui-react-taro";
 import { Title } from "@/components/title";
 import { navigateBack } from "@/utils/navigator";
+import { $Activity } from "@/store/activity";
+import { type BaseActivityRequest } from "@/types/activity";
+import { api } from "@/api";
 import { MainActivity } from "./components/main-activity";
 import { SubActivity } from "./components/sub-activity";
 
@@ -34,7 +37,19 @@ const NewActivity = (): JSX.Element => {
         >
           返回并保存
         </Button>
-        <Button type="primary" size="large">
+        <Button
+          type="primary"
+          size="large"
+          onClick={() => {
+            const newValue: BaseActivityRequest = $Activity.get();
+            void api.activity
+              .createActivityWithoutImage(newValue)
+              .then((res) => {
+                console.log(res);
+                navigateBack();
+              });
+          }}
+        >
           提交
         </Button>
       </div>
