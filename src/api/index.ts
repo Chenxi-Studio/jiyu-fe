@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/promise-function-async */
+import Taro from "@tarojs/taro";
 import {
   type CreateActivityWithoutImageRequest,
   type BaseActivityRequest,
 } from "@/types/activity";
 import { type BaseResponse } from "@/types/api";
 import { $User } from "@/store/user";
-import Taro from "@tarojs/taro";
+import { $UI } from "@/store/UI";
 import SimpleFormData from "@/utils/FormData";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import instance, { baseURL } from "./axios";
@@ -13,8 +14,9 @@ import instance, { baseURL } from "./axios";
 // TODO: 需要环境判断 不然H5无法上线
 
 const activity = {
-  createActivityWithoutImage: (
+  createActivity: (
     r: BaseActivityRequest,
+    picSrc: string | undefined = undefined,
   ): Promise<BaseResponse> => {
     const formData = new SimpleFormData();
     const rWithSid: CreateActivityWithoutImageRequest = {
@@ -33,7 +35,16 @@ const activity = {
         formData.append(key, value);
       }
     });
+    if (picSrc !== undefined) {
+      formData.appendFile(
+        "coverImage",
+        picSrc,
+        picSrc.replace(/^http:\/\/tmp\//, ""),
+      );
+    }
     const sandData = formData.getData();
+    console.log("sandData", sandData, picSrc);
+
     return new Promise((resolve, reject) => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       Taro.request({
@@ -43,6 +54,13 @@ const activity = {
         header: { "Content-Type": sandData.contentType },
         success: (res) => {
           const data = res.data;
+          if (data.statusCode < 200 || data.statusCode >= 400) {
+            $UI.update("upload fail", (draft) => {
+              draft.notifyMsg = data.message;
+              draft.showNotify = true;
+            });
+            reject(data);
+          }
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           resolve(data); // 使用resolve来传递成功的结果
         },
@@ -71,7 +89,10 @@ const activity = {
     return instance.get(`/activity/after-approved/${$User.get().id}`);
   },
   delete: (id: number) => {
-    return instance.delete(`/api/activity/${id}`);
+    return instance.delete(`/activity/${id}`);
+  },
+  toApprove: (id: number) => {
+    return instance.post(`/activity/to-approve/${id}`);
   },
 };
 

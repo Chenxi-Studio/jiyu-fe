@@ -22,6 +22,15 @@ export const SubActivity = (): JSX.Element => {
   const refs = new Array(subs.length)
     .fill(null)
     .map(() => createRef<SwipeInstance>());
+
+  const handleSwipeClickAway = (): void => {
+    for (const ref of refs) {
+      if (ref.current !== null && typeof ref.current.close === "function") {
+        ref.current.close();
+      }
+    }
+  };
+
   return (
     <>
       <div className="px-4 pb-[150rpx]">
@@ -65,6 +74,9 @@ export const SubActivity = (): JSX.Element => {
                 refs[i].current.close();
               }
             }}
+            onTouchStart={() => {
+              handleSwipeClickAway();
+            }}
           >
             <div
               className="flex justify-between bg-white border-solid border-0 border-b border-gray-100 p-4"
@@ -72,6 +84,7 @@ export const SubActivity = (): JSX.Element => {
                 setIndex(i);
                 setPreFill(item);
                 setShow(true);
+                handleSwipeClickAway();
               }}
             >
               <div className="w-full">

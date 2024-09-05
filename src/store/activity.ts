@@ -6,10 +6,12 @@ import {
 
 export interface ActivityModel extends BaseActivityRequest {
   subs: CreateSubActivityRequest[];
+  picSrc: string;
 }
 
 export const $Activity = model<ActivityModel>("ACTIVITY", {
   title: "测试新增活动",
+  picSrc: "",
   startTime: new Date(),
   endTime: new Date(new Date().getTime() + 86400000),
   location: "测试地址",

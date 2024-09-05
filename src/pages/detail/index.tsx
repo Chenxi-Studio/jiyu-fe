@@ -37,8 +37,11 @@ const Detail = (): JSX.Element => {
 
   return (
     <div className="h-[100vh]">
-      <div className="h-40 bg-blue-200 w-full fixed top-0 z-0" id="detail-pic">
-        <Image src={`https://${currentActivity?.coverImage}`} />
+      <div className="h-48 w-full fixed top-0 z-0" id="detail-pic">
+        <Image
+          src={`https://${currentActivity?.coverImage}`}
+          mode="aspectFill"
+        />
       </div>
       <div
         className="bg-[#FCFCFC] rounded-[64rpx] pt-10 px-8 relative z-10 pb-[150rpx]"

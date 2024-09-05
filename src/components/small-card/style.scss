@@ -1,12 +1,12 @@
 // 覆写 nutui 样式
 
-.nut-image {
+.small-card-image {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.nut-image .nut-img {
+.small-card-image .nut-img {
     border-radius: 1rem;
     width: 90%;
     height: 90%;

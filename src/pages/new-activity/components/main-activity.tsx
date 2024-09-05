@@ -1,11 +1,14 @@
 import React from "react";
+import Taro from "@tarojs/taro";
 import { $Activity } from "@/store/activity";
-import { Input, TextArea } from "@nutui/nutui-react-taro";
+import { $UI } from "@/store/UI";
+import { Image, Input, TextArea } from "@nutui/nutui-react-taro";
 import { TimeInput } from "./time-input";
 
 export const MainActivity = (): JSX.Element => {
   const {
     title,
+    picSrc,
     startTime,
     endTime,
     location,
@@ -33,6 +36,41 @@ export const MainActivity = (): JSX.Element => {
               });
             }}
           />
+        </div>
+        <div className="flex items-center bg-white px-3 border-solid border-0 border-b border-gray-100">
+          <div className="min-w-16">活动头图</div>
+          <div
+            className="px-[50rpx] py-[20rpx] w-full h-32"
+            onClick={() => {
+              void Taro.chooseImage({
+                count: 1, // 默认9
+                sizeType: ["original", "compressed"], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ["album"], // 可以指定来源是相册 album 还是相机 camera，默认二者都有，在H5浏览器端支持使用 `user` 和 `environment`分别指定为前后摄像头
+              }).then((res) => {
+                // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+                const tempFilePaths = res.tempFilePaths;
+                Taro.getFileSystemManager().readFile({
+                  filePath: tempFilePaths[0],
+                  encoding: "base64",
+                  success: (rst) => {
+                    // 极为离谱的设计 成功返回的 errMsg 为 chooseImage:ok
+                    if (rst.errMsg.endsWith("ok")) {
+                      $Activity.update("change picture", (draft) => {
+                        draft.picSrc = tempFilePaths[0];
+                      });
+                    } else {
+                      $UI.update("select image err", (draft) => {
+                        draft.notifyMsg = rst.errMsg;
+                        draft.showNotify = true;
+                      });
+                    }
+                  },
+                });
+              });
+            }}
+          >
+            <Image src={picSrc} mode="aspectFit" />
+          </div>
         </div>
         <TimeInput
           title="开始时间"
