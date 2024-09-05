@@ -60,6 +60,12 @@ const Detail = (): JSX.Element => {
           {formatDate(currentActivity?.endTime, false)}
         </div>
         <div className="text-base">{currentActivity?.introduction}</div>
+        <div>子活动</div>
+        <div>
+          {currentActivity?.subActivities.map((item, index) => {
+            return <div key={`sub-${index}`}>{item.title}</div>;
+          })}
+        </div>
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 flex bg-white px-8 justify-between h-[150rpx] items-center z-20">

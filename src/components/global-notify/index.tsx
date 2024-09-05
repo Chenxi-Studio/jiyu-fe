@@ -18,6 +18,7 @@ export const GlobalNotify = (): JSX.Element => {
       onClick={() => {
         console.log("click");
       }}
+      duration={10000}
     >
       {notifyMsg}
     </Notify>

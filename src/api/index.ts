@@ -3,8 +3,8 @@ import Taro from "@tarojs/taro";
 import {
   type CreateActivityWithoutImageRequest,
   type BaseActivityRequest,
+  type CreateSubActivityRequest,
 } from "@/types/activity";
-import { type BaseResponse } from "@/types/api";
 import { $User } from "@/store/user";
 import { $UI } from "@/store/UI";
 import SimpleFormData from "@/utils/FormData";
@@ -17,7 +17,7 @@ const activity = {
   createActivity: (
     r: BaseActivityRequest,
     picSrc: string | undefined = undefined,
-  ): Promise<BaseResponse> => {
+  ): Promise<ActivityEntity> => {
     const formData = new SimpleFormData();
     const rWithSid: CreateActivityWithoutImageRequest = {
       ...r,
@@ -96,6 +96,14 @@ const activity = {
   },
 };
 
+const subActivity = {
+  add: (subs: CreateSubActivityRequest[], actId: number) => {
+    return instance.post(`/subactivity/${actId}/many`, {
+      subs,
+    });
+  },
+};
+
 const approve = {
   toApprove: (): Promise<ActivityEntity[]> => {
     return instance.get(`/activity/${$User.get().id}/to-approve`);
@@ -104,5 +112,6 @@ const approve = {
 
 export const api = {
   activity,
+  subActivity,
   approve,
 };
