@@ -141,6 +141,7 @@ const Publish = (): JSX.Element => {
                   onTouchStart={() => {
                     for (const ref of beforeApprovedListRefs) {
                       if (
+                        ref !== beforeApprovedListRefs[index] &&
                         ref.current !== null &&
                         typeof ref.current.close === "function"
                       ) {

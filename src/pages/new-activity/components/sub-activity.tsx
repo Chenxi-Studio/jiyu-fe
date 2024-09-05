@@ -23,9 +23,13 @@ export const SubActivity = (): JSX.Element => {
     .fill(null)
     .map(() => createRef<SwipeInstance>());
 
-  const handleSwipeClickAway = (): void => {
+  const handleSwipeClickAway = (crt: React.RefObject<SwipeInstance>): void => {
     for (const ref of refs) {
-      if (ref.current !== null && typeof ref.current.close === "function") {
+      if (
+        ref !== crt &&
+        ref.current !== null &&
+        typeof ref.current.close === "function"
+      ) {
         ref.current.close();
       }
     }
@@ -75,7 +79,7 @@ export const SubActivity = (): JSX.Element => {
               }
             }}
             onTouchStart={() => {
-              handleSwipeClickAway();
+              handleSwipeClickAway(refs[i]);
             }}
           >
             <div
@@ -84,7 +88,7 @@ export const SubActivity = (): JSX.Element => {
                 setIndex(i);
                 setPreFill(item);
                 setShow(true);
-                handleSwipeClickAway();
+                handleSwipeClickAway(refs[i]);
               }}
             >
               <div className="w-full">
