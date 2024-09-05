@@ -52,6 +52,11 @@ const NewActivity = (): JSX.Element => {
             setSubmitText("上传活动图片");
             void api.activity
               .createActivity(newValue, $Activity.get().picSrc)
+              // eslint-disable-next-line @typescript-eslint/promise-function-async
+              .then((res) => {
+                setSubmitText("上传子活动");
+                return api.subActivity.add($Activity.get().subs, res.id);
+              })
               .then((res) => {
                 setLoading(false);
                 setSubmitText("上传完毕");
