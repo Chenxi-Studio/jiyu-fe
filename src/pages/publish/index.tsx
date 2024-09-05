@@ -1,19 +1,32 @@
-import { SmallCard } from "@/components/small-card";
-import { navigateTo } from "@/utils/navigator";
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import { ArrowDown, Edit } from "@nutui/icons-react-taro";
-import { Collapse, PullToRefresh } from "@nutui/nutui-react-taro";
+import {
+  Button,
+  Collapse,
+  PullToRefresh,
+  Swipe,
+  type SwipeInstance,
+} from "@nutui/nutui-react-taro";
 import { api } from "@/api";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
+import { GlobalNotify } from "@/components/global-notify";
+import { SmallCard } from "@/components/small-card";
+import { navigateTo } from "@/utils/navigator";
 import { $UI } from "@/store/UI";
+import { ActivityStatus } from "@/types/common";
+import "./style.scss";
 
 const Publish = (): JSX.Element => {
+  const refresh = $UI.use((state) => state.publishRefresh);
   const [beforeApprovedList, setBeforeApprovedList] = useState<
     ActivityEntity[]
   >([]);
   const [afterApprovedList, setAfterApprovedList] = useState<ActivityEntity[]>(
     [],
   );
+  const beforeApprovedListRefs = new Array(beforeApprovedList.length)
+    .fill(null)
+    .map(() => createRef<SwipeInstance>());
 
   useEffect(() => {
     void api.activity.beforeApproved().then((res) => {
@@ -23,6 +36,20 @@ const Publish = (): JSX.Element => {
       setAfterApprovedList(res);
     });
   }, []);
+
+  useEffect(() => {
+    if (refresh) {
+      void api.activity.beforeApproved().then((res) => {
+        setBeforeApprovedList(res);
+      });
+      void api.activity.afterApproved().then((res) => {
+        setAfterApprovedList(res);
+      });
+      $UI.update("publish page refresh", (draft) => {
+        draft.publishRefresh = false;
+      });
+    }
+  }, [refresh]);
 
   const handleOnclick = (item: ActivityEntity): void => {
     $UI.update("update current activity", (draft) => {
@@ -61,20 +88,82 @@ const Publish = (): JSX.Element => {
           <Collapse.Item title="未发布" name="1">
             <div>
               {beforeApprovedList.map((item, index) => (
-                <div
+                <Swipe
+                  ref={beforeApprovedListRefs[index]}
+                  rightAction={
+                    <>
+                      {item.status === ActivityStatus.Draft && (
+                        <Button
+                          type="primary"
+                          shape="square"
+                          onClick={() => {
+                            void api.activity.delete(item.id).then(() => {
+                              // TODO: 错误问题
+                              void api.activity.beforeApproved().then((res) => {
+                                setBeforeApprovedList(res);
+                              });
+                            });
+                          }}
+                        >
+                          删除
+                        </Button>
+                      )}
+                      {item.status === ActivityStatus.Draft && (
+                        <Button
+                          type="info"
+                          shape="square"
+                          onClick={() => {
+                            void api.activity.toApprove(item.id).then(() => {
+                              // TODO: 提示
+                              void api.activity.beforeApproved().then((res) => {
+                                setBeforeApprovedList(res);
+                              });
+                            });
+                          }}
+                        >
+                          提交审核
+                        </Button>
+                      )}
+                      {item.status === ActivityStatus.Approval && (
+                        <Button
+                          type="warning"
+                          shape="square"
+                          onClick={() => {
+                            // api.activity.delete()
+                          }}
+                        >
+                          撤回审核
+                        </Button>
+                      )}
+                    </>
+                  }
                   key={`Publish-${index}`}
-                  className="mt-2"
-                  onClick={() => {
-                    handleOnclick(item);
+                  onTouchStart={() => {
+                    for (const ref of beforeApprovedListRefs) {
+                      if (
+                        ref.current !== null &&
+                        typeof ref.current.close === "function"
+                      ) {
+                        ref.current.close();
+                      }
+                    }
                   }}
                 >
-                  <SmallCard
-                    title={item.title}
-                    coverImage={item.coverImage}
-                    organizer={item.organizer}
-                    endTime={item.endTime}
-                  ></SmallCard>
-                </div>
+                  <div
+                    className="mt-2 px-[52rpx]"
+                    onClick={() => {
+                      handleOnclick(item);
+                    }}
+                  >
+                    <SmallCard
+                      title={item.title}
+                      coverImage={item.coverImage}
+                      organizer={item.organizer}
+                      endTime={item.endTime}
+                      status={item.status}
+                    ></SmallCard>
+                  </div>
+                </Swipe>
               ))}
             </div>
           </Collapse.Item>
@@ -82,8 +171,8 @@ const Publish = (): JSX.Element => {
             <div>
               {afterApprovedList.map((item, index) => (
                 <div
-                  key={`Publish-${index}`}
-                  className="mt-2"
+                  key={`Published-${index}`}
+                  className="mt-2 px-[52rpx]"
                   onClick={() => {
                     handleOnclick(item);
                   }}
@@ -93,6 +182,7 @@ const Publish = (): JSX.Element => {
                     coverImage={item.coverImage}
                     organizer={item.organizer}
                     endTime={item.endTime}
+                    status={item.status}
                   ></SmallCard>
                 </div>
               ))}
@@ -109,6 +199,7 @@ const Publish = (): JSX.Element => {
           <Edit color="white" width={24} height={24} />
         </div>
       </div>
+      <GlobalNotify />
     </PullToRefresh>
   );
 };
