@@ -68,7 +68,7 @@ export const SubActivity = (): JSX.Element => {
                 删除
               </Button>
             }
-            key={`sub-${index}`}
+            key={`sub-${i}`}
             onActionClick={() => {
               if (
                 refs[i].current !== null &&
@@ -84,6 +84,7 @@ export const SubActivity = (): JSX.Element => {
           >
             <div
               className="flex justify-between bg-white border-solid border-0 border-b border-gray-100 p-4"
+              key={`sub-div-${i}`}
               onClick={() => {
                 setIndex(i);
                 setPreFill(item);
