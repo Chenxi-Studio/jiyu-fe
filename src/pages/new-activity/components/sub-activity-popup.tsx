@@ -239,7 +239,7 @@ export const SubActivityPopUp: FC<SubActivityPopUpProps> = (
             className="w-[40%]"
             onClick={handleConfirm}
           >
-            新增
+            {preFill === undefined ? "新增" : "保存修改"}
           </Button>
         </div>
       </Popup>
