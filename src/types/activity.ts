@@ -19,6 +19,10 @@ export interface CreateActivityWithoutImageRequest extends BaseActivityRequest {
   publisherSid: string; // 发布人学工号
 }
 
+export interface Activity extends BaseActivityRequest {
+  id?: number;
+}
+
 export interface CreateSubActivityRequest {
   // 至少需要一个标题
   title: string;
@@ -33,6 +37,9 @@ export interface CreateSubActivityRequest {
   location: string;
 }
 
+export interface SubActivity extends CreateSubActivityRequest {
+  id?: number;
+}
 export interface UpdateActivityRequest extends BaseActivityRequest {
   coverImage: string;
 }
@@ -55,4 +62,19 @@ export const validateCreateSubActivityRequest = (
   if (f.checkInEndTime < f.checkInStartTime) return false;
   if (f.endTime < f.startTime) return false;
   return true;
+};
+
+export const baseActivityRequestIsEmpty = (v: BaseActivityRequest): boolean => {
+  return (
+    v.title === "" &&
+    v.location === "" &&
+    v.organizer === "" &&
+    v.category === "" &&
+    v.introduction === "" &&
+    v.contactMan === "" &&
+    v.contactWay === "" &&
+    v.contactWay === "" &&
+    v.minSubParticipants === 0 &&
+    v.maxSubParticipants === 0
+  );
 };
