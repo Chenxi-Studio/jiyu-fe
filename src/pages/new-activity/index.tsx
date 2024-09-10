@@ -51,12 +51,15 @@ const NewActivity = (): JSX.Element => {
             setLoading(true);
             setSubmitText("上传活动图片");
             void api.activity
-              .createActivity(newValue, $Activity.get().picSrc)
+              .createActivity(newValue, $Activity.get().coverImage)
               // eslint-disable-next-line @typescript-eslint/promise-function-async
               .then((res) => {
                 setSubmitText("上传子活动");
                 if (res.id !== undefined) {
-                  return api.subActivity.add($Activity.get().subs, res.id);
+                  return api.subActivity.add(
+                    $Activity.get().subActivities,
+                    res.id,
+                  );
                 } else {
                   return Promise.reject(new Error("创建活动异常"));
                 }
