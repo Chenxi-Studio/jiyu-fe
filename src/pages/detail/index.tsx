@@ -94,6 +94,7 @@ const Detail = (): JSX.Element => {
                   onConfirm: () => {
                     $Activity.update("edit activity", (draft) => {
                       draft = {
+                        ...draft,
                         ...currentActivity,
                       };
                       return draft;
