@@ -108,7 +108,7 @@ const activity = {
     return instance.post(`/activity/to-approve/${id}`);
   },
   withdrawApprove: (id: number) => {
-    return instance.patch(`/activity/${id}/withdrawl/${$User.get().id}`);
+    return instance.patch(`/activity/${id}/withdrawal/${$User.get().id}`);
   },
   update: (a: Activity, picSrc: string | undefined | null) => {
     if (a.id !== undefined) {

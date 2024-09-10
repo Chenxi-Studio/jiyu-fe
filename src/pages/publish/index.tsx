@@ -30,23 +30,20 @@ const Publish = (): JSX.Element => {
     .fill(null)
     .map(() => createRef<SwipeInstance>());
 
+  const loadData = async (): Promise<void> => {
+    const beforeApprovedResponse = await api.activity.beforeApproved();
+    setBeforeApprovedList(beforeApprovedResponse);
+    const afterApprovedResponse = await api.activity.afterApproved();
+    setAfterApprovedList(afterApprovedResponse);
+  };
+
   useEffect(() => {
-    void api.activity.beforeApproved().then((res) => {
-      setBeforeApprovedList(res);
-    });
-    void api.activity.afterApproved().then((res) => {
-      setAfterApprovedList(res);
-    });
+    void loadData();
   }, []);
 
   useEffect(() => {
     if (refresh) {
-      void api.activity.beforeApproved().then((res) => {
-        setBeforeApprovedList(res);
-      });
-      void api.activity.afterApproved().then((res) => {
-        setAfterApprovedList(res);
-      });
+      void loadData();
       $UI.update("publish page refresh", (draft) => {
         draft.publishRefresh = false;
       });
@@ -63,20 +60,9 @@ const Publish = (): JSX.Element => {
 
   return (
     <PullToRefresh
-      onRefresh={async () =>
-        await api.activity
-          .beforeApproved()
-          .then(async (res) => {
-            setBeforeApprovedList(res);
-            return await api.activity.afterApproved(); // 返回第二个Promise
-          })
-          .then(async (res) => {
-            setAfterApprovedList(res);
-            return await new Promise((resolve) => {
-              resolve("done");
-            });
-          })
-      }
+      onRefresh={async () => {
+        await loadData();
+      }}
       renderIcon={(status) => {
         return (
           <>
@@ -104,15 +90,15 @@ const Publish = (): JSX.Element => {
                             Dialog.open(`Publish`, {
                               title: `删除提示`,
                               content: `确认删除活动 ${item.title} 吗？`,
-                              onConfirm: () => {
-                                void api.activity.delete(item.id).then(() => {
+                              onConfirm: async () => {
+                                try {
+                                  await api.activity.delete(item.id);
+                                  const response =
+                                    await api.activity.beforeApproved();
+                                  setBeforeApprovedList(response);
+                                } catch (error) {
                                   // TODO: 错误问题
-                                  void api.activity
-                                    .beforeApproved()
-                                    .then((res) => {
-                                      setBeforeApprovedList(res);
-                                    });
-                                });
+                                }
                                 Dialog.close(`Publish`);
                               },
                               onCancel: () => {
@@ -132,17 +118,15 @@ const Publish = (): JSX.Element => {
                             Dialog.open(`Publish`, {
                               title: `审核提示`,
                               content: `确认提交审核活动 ${item.title} 吗？`,
-                              onConfirm: () => {
-                                void api.activity
-                                  .toApprove(item.id)
-                                  .then(() => {
-                                    // TODO: 提示
-                                    void api.activity
-                                      .beforeApproved()
-                                      .then((res) => {
-                                        setBeforeApprovedList(res);
-                                      });
-                                  });
+                              onConfirm: async () => {
+                                try {
+                                  await api.activity.toApprove(item.id);
+                                  const response =
+                                    await api.activity.beforeApproved();
+                                  setBeforeApprovedList(response);
+                                } catch (error) {
+                                  // TODO: 错误问题
+                                }
                                 Dialog.close(`Publish`);
                               },
                               onCancel: () => {
@@ -162,17 +146,16 @@ const Publish = (): JSX.Element => {
                             Dialog.open(`Publish`, {
                               title: `审核提示`,
                               content: `确认撤回审核活动 ${item.title} 吗？`,
-                              onConfirm: () => {
-                                void api.activity
-                                  .withdrawApprove(item.id)
-                                  .then(() => {
-                                    // TODO: 提示
-                                    void api.activity
-                                      .beforeApproved()
-                                      .then((res) => {
-                                        setBeforeApprovedList(res);
-                                      });
-                                  });
+                              onConfirm: async () => {
+                                try {
+                                  await api.activity.withdrawApprove(item.id);
+                                  const response =
+                                    await api.activity.beforeApproved();
+                                  setBeforeApprovedList(response);
+                                } catch (error) {
+                                  // TODO: 错误问题
+                                }
+
                                 Dialog.close(`Publish`);
                               },
                               onCancel: () => {

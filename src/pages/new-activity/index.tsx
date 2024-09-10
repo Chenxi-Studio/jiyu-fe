@@ -23,6 +23,97 @@ const NewActivity = (): JSX.Element => {
   const id = $Activity.use((state) => state.id);
   const editable = id !== undefined;
 
+  const handleSubmit = async (): Promise<void> => {
+    const aid = $Activity.get().id;
+
+    if (aid === undefined) {
+      try {
+        // 新增活动
+        const newValue: BaseActivityRequest = $Activity.get();
+        setLoading(true);
+        setSubmitText("上传活动图片");
+        const response = await api.activity.createActivity(
+          newValue,
+          $Activity.get().coverImage,
+        );
+
+        setSubmitText("上传子活动");
+        if (response.id !== undefined) {
+          await api.subActivity.add($Activity.get().subActivities, response.id);
+        } else {
+          throw new Error("创建活动异常");
+        }
+
+        setLoading(false);
+        setSubmitText("上传完毕");
+        $UI.update("load new publish activity", (draft) => {
+          draft.publishRefresh = true;
+        });
+        navigateBack();
+      } catch (error) {
+        setLoading(false);
+        setSubmitText("出错了");
+        $UI.update("new activity err", (draft) => {
+          draft.notifyMsg = error.message;
+          draft.showNotify = true;
+        });
+      }
+    } else {
+      // 更新活动
+      setLoading(true);
+      setSubmitText("修改上传中");
+      try {
+        await api.activity.update(
+          $Activity.get(),
+          $Activity.get().coverImage !== undefined &&
+            $Activity.get().coverImage?.match(/^http:\/\/tmp/) !== null
+            ? $Activity.get().coverImage
+            : undefined,
+        );
+
+        if (
+          $Activity.get().subActivities.filter((item) => item.id !== undefined)
+            .length > 0
+        ) {
+          await api.subActivity.update(
+            $Activity
+              .get()
+              .subActivities.filter((item) => item.id !== undefined),
+          );
+        }
+        if (
+          $Activity.get().subActivities.filter((item) => item.id === undefined)
+            .length > 0
+        ) {
+          await api.subActivity.add(
+            $Activity
+              .get()
+              .subActivities.filter((item) => item.id === undefined),
+            aid,
+          );
+        }
+        if ($Activity.get().deleteList.length > 0) {
+          await api.subActivity.delete($Activity.get().deleteList);
+        }
+
+        setLoading(false);
+        setSubmitText("上传完毕");
+        $Activity.init();
+        $UI.update("load new edited publish activity", (draft) => {
+          draft.publishRefresh = true;
+        });
+        navigateBack(2);
+      } catch (error) {
+        setLoading(false);
+        setSubmitText("出错啦");
+        $UI.update("new activity err", (draft) => {
+          draft.notifyMsg = error.message;
+          draft.showNotify = true;
+        });
+      }
+    }
+  };
+
   return (
     <div className="bg-[#F7F8FA] pb-[150rpx]">
       <GlobalNotify />
@@ -53,94 +144,7 @@ const NewActivity = (): JSX.Element => {
           type="primary"
           size="large"
           onClick={() => {
-            const aid = $Activity.get().id;
-            if (aid === undefined) {
-              // 新增活动
-              const newValue: BaseActivityRequest = $Activity.get();
-              setLoading(true);
-              setSubmitText("上传活动图片");
-              void api.activity
-                .createActivity(newValue, $Activity.get().coverImage)
-                // eslint-disable-next-line @typescript-eslint/promise-function-async
-                .then((res) => {
-                  setSubmitText("上传子活动");
-                  if (res.id !== undefined) {
-                    return api.subActivity.add(
-                      $Activity.get().subActivities,
-                      res.id,
-                    );
-                  } else {
-                    return Promise.reject(new Error("创建活动异常"));
-                  }
-                })
-                .then((res) => {
-                  setLoading(false);
-                  setSubmitText("上传完毕");
-                  $UI.update("load new publish activity", (draft) => {
-                    draft.publishRefresh = true;
-                  });
-                  console.log(res);
-                  navigateBack();
-                })
-                .catch((err) => {
-                  setLoading(false);
-                  setSubmitText("出错了");
-                  $UI.update("new activity err", (draft) => {
-                    draft.notifyMsg = err;
-                    draft.showNotify = true;
-                  });
-                });
-            } else {
-              // 更新活动
-              setLoading(true);
-              setSubmitText("修改上传中");
-              void api.activity
-                .update(
-                  $Activity.get(),
-                  $Activity.get().coverImage !== undefined &&
-                    $Activity.get().coverImage?.match(/^http:\/\/tmp/) !== null
-                    ? $Activity.get().coverImage
-                    : undefined,
-                )
-                // eslint-disable-next-line @typescript-eslint/promise-function-async
-                .then((res) => {
-                  return api.subActivity.update(
-                    $Activity
-                      .get()
-                      .subActivities.filter((item) => item.id !== undefined),
-                  );
-                })
-                // eslint-disable-next-line @typescript-eslint/promise-function-async
-                .then(() => {
-                  return api.subActivity.add(
-                    $Activity
-                      .get()
-                      .subActivities.filter((item) => item.id === undefined),
-                    aid,
-                  );
-                })
-                // eslint-disable-next-line @typescript-eslint/promise-function-async
-                .then(() => {
-                  return api.subActivity.delete($Activity.get().deleteList);
-                })
-                .then(() => {
-                  setLoading(false);
-                  setSubmitText("上传完毕");
-                  $Activity.init();
-                  $UI.update("load new edited publish activity", (draft) => {
-                    draft.publishRefresh = true;
-                  });
-                  navigateBack(2);
-                })
-                .catch((err) => {
-                  setLoading(false);
-                  setSubmitText("出错啦");
-                  $UI.update("new activity err", (draft) => {
-                    draft.notifyMsg = err;
-                    draft.showNotify = true;
-                  });
-                });
-            }
+            void handleSubmit();
           }}
           loading={loading}
         >

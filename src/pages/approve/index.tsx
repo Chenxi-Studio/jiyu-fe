@@ -10,10 +10,17 @@ import { $UI } from "@/store/UI";
 const Approve = (): JSX.Element => {
   const [toApproveList, setToApproveList] = useState<ActivityEntity[]>([]);
 
-  useEffect(() => {
-    void api.approve.toApprove().then((res) => {
+  const fetchToApproveList = async (): Promise<void> => {
+    try {
+      const res = await api.approve.toApprove();
       setToApproveList(res);
-    });
+    } catch (error) {
+      console.error("Error fetching to approve list:", error);
+    }
+  };
+
+  useEffect(() => {
+    void fetchToApproveList();
   }, []);
 
   const handleOnclick = (item: ActivityEntity): void => {
