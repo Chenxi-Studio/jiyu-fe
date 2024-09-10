@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Taro, { useReady } from "@tarojs/taro";
-import { Image } from "@nutui/nutui-react-taro";
+import { Dialog, Image } from "@nutui/nutui-react-taro";
 import { $UI } from "@/store/UI";
-import { navigateBack } from "@/utils/navigator";
+import { navigateBack, navigateTo } from "@/utils/navigator";
 import { formatDate, px2rpx, windowHeight } from "@/utils/unit";
+import { $Activity } from "@/store/activity";
+import { baseActivityRequestIsEmpty } from "@/types/activity";
+import { ActivityStatus } from "@/types/common";
 
 const Detail = (): JSX.Element => {
   const currentActivity = $UI.use((state) => state.currentActivity);
+  const editable = $UI.use((state) => state.detailEdit);
   const [offset, setOffset] = useState<number>(0);
   const [minHeight, setMinHeight] = useState<number>(0);
 
@@ -37,6 +41,7 @@ const Detail = (): JSX.Element => {
 
   return (
     <div className="h-[100vh]">
+      <Dialog id="Detail" />
       <div className="h-48 w-full fixed top-0 z-0" id="detail-pic">
         <Image
           src={`https://${currentActivity?.coverImage}`}
@@ -69,8 +74,57 @@ const Detail = (): JSX.Element => {
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 flex bg-white px-8 justify-between h-[150rpx] items-center z-20">
-        <div>Confirm</div>
-        <div>Cancel</div>
+        {editable && (
+          <div
+            onClick={() => {
+              if (currentActivity === undefined) {
+                return;
+              }
+              if (currentActivity.status !== ActivityStatus.Draft) {
+                return;
+              }
+              const crt = $Activity.get();
+              if (
+                crt.subActivities.length > 0 ||
+                !baseActivityRequestIsEmpty(crt)
+              ) {
+                Dialog.open(`Detail`, {
+                  title: `编辑提示`,
+                  content: `编辑活动会使之前保存的草稿消失哦`,
+                  onConfirm: () => {
+                    $Activity.update("edit activity", (draft) => {
+                      draft = {
+                        ...currentActivity,
+                      };
+                      return draft;
+                    });
+                    navigateTo("pages/new-activity/index");
+                    Dialog.close(`Detail`);
+                  },
+                  onCancel: () => {
+                    Dialog.close(`Detail`);
+                  },
+                });
+              }
+            }}
+          >
+            {currentActivity?.status === ActivityStatus.Draft
+              ? "Edit"
+              : "此阶段活动不能修改"}
+          </div>
+        )}
+        {!editable && <div>Confirm</div>}
+        <div
+          onClick={() => {
+            if (editable)
+              $UI.update("detail navigate back", (draft) => {
+                draft.detailEdit = false;
+              });
+            navigateBack();
+          }}
+        >
+          Back
+        </div>
       </div>
     </div>
   );

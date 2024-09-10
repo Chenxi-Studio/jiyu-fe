@@ -8,7 +8,7 @@ import { TimeInput } from "./time-input";
 export const MainActivity = (): JSX.Element => {
   const {
     title,
-    picSrc,
+    coverImage: picSrc,
     startTime,
     endTime,
     location,
@@ -56,7 +56,7 @@ export const MainActivity = (): JSX.Element => {
                     // 极为离谱的设计 成功返回的 errMsg 为 chooseImage:ok
                     if (rst.errMsg.endsWith("ok")) {
                       $Activity.update("change picture", (draft) => {
-                        draft.picSrc = tempFilePaths[0];
+                        draft.coverImage = tempFilePaths[0];
                       });
                     } else {
                       $UI.update("select image err", (draft) => {
@@ -69,7 +69,14 @@ export const MainActivity = (): JSX.Element => {
               });
             }}
           >
-            <Image src={picSrc} mode="aspectFit" />
+            <Image
+              src={
+                picSrc !== undefined && picSrc?.startsWith("http")
+                  ? picSrc
+                  : `https://${picSrc}`
+              }
+              mode="aspectFit"
+            />
           </div>
         </div>
         <TimeInput

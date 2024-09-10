@@ -3,6 +3,7 @@ import { ArrowDown, Edit } from "@nutui/icons-react-taro";
 import {
   Button,
   Collapse,
+  Dialog,
   PullToRefresh,
   Swipe,
   type SwipeInstance,
@@ -13,6 +14,7 @@ import { GlobalNotify } from "@/components/global-notify";
 import { SmallCard } from "@/components/small-card";
 import { navigateTo } from "@/utils/navigator";
 import { $UI } from "@/store/UI";
+import { $Activity } from "@/store/activity";
 import { ActivityStatus } from "@/types/common";
 import "./style.scss";
 
@@ -54,6 +56,7 @@ const Publish = (): JSX.Element => {
   const handleOnclick = (item: ActivityEntity): void => {
     $UI.update("update current activity", (draft) => {
       draft.currentActivity = item;
+      draft.detailEdit = true;
     });
     navigateTo(`pages/detail/index`);
   };
@@ -83,6 +86,7 @@ const Publish = (): JSX.Element => {
         );
       }}
     >
+      <Dialog id="Publish" />
       <div className="pb-[150rpx]">
         <Collapse defaultActiveName={["1", "2"]} expandIcon={<ArrowDown />}>
           <Collapse.Item title="未发布" name="1">
@@ -97,11 +101,23 @@ const Publish = (): JSX.Element => {
                           type="primary"
                           shape="square"
                           onClick={() => {
-                            void api.activity.delete(item.id).then(() => {
-                              // TODO: 错误问题
-                              void api.activity.beforeApproved().then((res) => {
-                                setBeforeApprovedList(res);
-                              });
+                            Dialog.open(`Publish`, {
+                              title: `删除提示`,
+                              content: `确认删除活动 ${item.title} 吗？`,
+                              onConfirm: () => {
+                                void api.activity.delete(item.id).then(() => {
+                                  // TODO: 错误问题
+                                  void api.activity
+                                    .beforeApproved()
+                                    .then((res) => {
+                                      setBeforeApprovedList(res);
+                                    });
+                                });
+                                Dialog.close(`Publish`);
+                              },
+                              onCancel: () => {
+                                Dialog.close(`Publish`);
+                              },
                             });
                           }}
                         >
@@ -113,11 +129,25 @@ const Publish = (): JSX.Element => {
                           type="info"
                           shape="square"
                           onClick={() => {
-                            void api.activity.toApprove(item.id).then(() => {
-                              // TODO: 提示
-                              void api.activity.beforeApproved().then((res) => {
-                                setBeforeApprovedList(res);
-                              });
+                            Dialog.open(`Publish`, {
+                              title: `审核提示`,
+                              content: `确认提交审核活动 ${item.title} 吗？`,
+                              onConfirm: () => {
+                                void api.activity
+                                  .toApprove(item.id)
+                                  .then(() => {
+                                    // TODO: 提示
+                                    void api.activity
+                                      .beforeApproved()
+                                      .then((res) => {
+                                        setBeforeApprovedList(res);
+                                      });
+                                  });
+                                Dialog.close(`Publish`);
+                              },
+                              onCancel: () => {
+                                Dialog.close(`Publish`);
+                              },
                             });
                           }}
                         >
@@ -129,7 +159,26 @@ const Publish = (): JSX.Element => {
                           type="warning"
                           shape="square"
                           onClick={() => {
-                            // api.activity.delete()
+                            Dialog.open(`Publish`, {
+                              title: `审核提示`,
+                              content: `确认撤回审核活动 ${item.title} 吗？`,
+                              onConfirm: () => {
+                                void api.activity
+                                  .withdrawApprove(item.id)
+                                  .then(() => {
+                                    // TODO: 提示
+                                    void api.activity
+                                      .beforeApproved()
+                                      .then((res) => {
+                                        setBeforeApprovedList(res);
+                                      });
+                                  });
+                                Dialog.close(`Publish`);
+                              },
+                              onCancel: () => {
+                                Dialog.close(`Publish`);
+                              },
+                            });
                           }}
                         >
                           撤回审核
@@ -147,6 +196,16 @@ const Publish = (): JSX.Element => {
                       ) {
                         ref.current.close();
                       }
+                    }
+                  }}
+                  onActionClick={() => {
+                    if (
+                      beforeApprovedListRefs[index].current !== null &&
+                      beforeApprovedListRefs[index].current !== undefined &&
+                      typeof beforeApprovedListRefs[index].current.close ===
+                        "function"
+                    ) {
+                      beforeApprovedListRefs[index].current.close();
                     }
                   }}
                 >
@@ -193,6 +252,9 @@ const Publish = (): JSX.Element => {
 
         <div
           onClick={() => {
+            if ($Activity.get().id !== undefined) {
+              $Activity.init();
+            }
             navigateTo("pages/new-activity/index");
           }}
           className="fixed h-12 w-12 rounded-full bg-blue-200 right-5 bottom-[190rpx] flex justify-center items-center"
