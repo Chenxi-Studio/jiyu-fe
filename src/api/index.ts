@@ -34,6 +34,9 @@ const activity = {
       if (typeof value === "string") {
         formData.append(key, value);
       }
+      if (typeof value === "number") {
+        formData.append(key, value.toString());
+      }
     });
     if (picSrc !== undefined) {
       formData.appendFile(
@@ -43,7 +46,6 @@ const activity = {
       );
     }
     const sandData = formData.getData();
-    console.log("sandData", sandData, picSrc);
 
     return new Promise((resolve, reject) => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -93,6 +95,9 @@ const activity = {
   },
   toApprove: (id: number) => {
     return instance.post(`/activity/to-approve/${id}`);
+  },
+  withdrawApprove: (id: number) => {
+    return instance.patch(`/activity/${id}/withdrawl/${$User.get().id}`);
   },
 };
 
