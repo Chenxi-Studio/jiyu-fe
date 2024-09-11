@@ -12,6 +12,8 @@ export interface UIModel {
   notifyMsg: string;
   // publish
   publishRefresh: boolean; // publish 刷新 navigatorTo 可以传递 event navigatorBack 不可以所以使用 store 管理
+  // approve
+  approveRefresh: boolean;
 }
 
 export const $UI = model<UIModel>("UI", {
@@ -21,4 +23,5 @@ export const $UI = model<UIModel>("UI", {
   showNotify: false,
   notifyMsg: "",
   publishRefresh: false,
+  approveRefresh: false,
 });

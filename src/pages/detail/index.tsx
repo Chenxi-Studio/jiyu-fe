@@ -7,6 +7,7 @@ import { formatDate, px2rpx, windowHeight } from "@/utils/unit";
 import { $Activity } from "@/store/activity";
 import { baseActivityRequestIsEmpty } from "@/types/activity";
 import { ActivityStatus } from "@/types/common";
+import { SubActivityCard } from "./components/sub-activity-card";
 
 const Detail = (): JSX.Element => {
   const currentActivity = $UI.use((state) => state.currentActivity);
@@ -40,7 +41,7 @@ const Detail = (): JSX.Element => {
   }, []);
 
   return (
-    <div className="h-[100vh]">
+    <div className="h-[100vh] bg-[#FCFCFC]">
       <Dialog id="Detail" />
       <div className="h-48 w-full fixed top-0 z-0" id="detail-pic">
         <Image
@@ -68,7 +69,7 @@ const Detail = (): JSX.Element => {
         <div>子活动</div>
         <div>
           {currentActivity?.subActivities.map((item, index) => {
-            return <div key={`sub-${index}`}>{item.title}</div>;
+            return <SubActivityCard sub={item} key={`sub-activity-${index}`} />;
           })}
         </div>
       </div>

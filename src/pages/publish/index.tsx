@@ -121,6 +121,12 @@ const Publish = (): JSX.Element => {
                               onConfirm: async () => {
                                 try {
                                   await api.activity.toApprove(item.id);
+                                  $UI.update(
+                                    "trigger approve refresh",
+                                    (draft) => {
+                                      draft.approveRefresh = true;
+                                    },
+                                  );
                                   const response =
                                     await api.activity.beforeApproved();
                                   setBeforeApprovedList(response);
@@ -149,6 +155,12 @@ const Publish = (): JSX.Element => {
                               onConfirm: async () => {
                                 try {
                                   await api.activity.withdrawApprove(item.id);
+                                  $UI.update(
+                                    "trigger approve refresh",
+                                    (draft) => {
+                                      draft.approveRefresh = true;
+                                    },
+                                  );
                                   const response =
                                     await api.activity.beforeApproved();
                                   setBeforeApprovedList(response);
