@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@nutui/nutui-react-taro";
 import { GlobalNotify } from "@/components/global-notify";
-import { Title } from "@/components/title";
+import { Title } from "@/pages/module/new-activity/components/title";
 import { navigateBack } from "@/utils/navigator";
 import { $Activity } from "@/store/activity";
 import { type BaseActivityRequest } from "@/types/activity";
