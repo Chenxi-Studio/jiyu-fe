@@ -100,7 +100,7 @@ const Detail = (): JSX.Element => {
                       };
                       return draft;
                     });
-                    navigateTo("pages/new-activity/index");
+                    navigateTo("pages/module/new-activity/index");
                     Dialog.close(`Detail`);
                   },
                   onCancel: () => {

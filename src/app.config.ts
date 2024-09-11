@@ -3,7 +3,7 @@ import { ExcludedTabList, TabList } from "./types/tab";
 export default defineAppConfig({
   pages: [
     ...TabList.map((item) => item.pagePath),
-    ...ExcludedTabList.map((item) => item.pagePath),
+    // ...ExcludedTabList.map((item) => item.pagePath),
   ],
   window: {
     backgroundTextStyle: "light",
@@ -15,4 +15,15 @@ export default defineAppConfig({
     custom: true,
     list: TabList,
   },
+  subpackages: [
+    // 仅支持字面量
+    {
+      root: "pages/module/detail",
+      pages: ["index"],
+    },
+    {
+      root: "pages/module/new-activity",
+      pages: ["index"],
+    },
+  ],
 });
