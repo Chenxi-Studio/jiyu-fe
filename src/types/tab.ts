@@ -1,33 +1,33 @@
 export const TabList = [
   {
     pagePath: "pages/publish/index",
-    text: "publish",
+    text: "publish" as const,
   },
   {
     pagePath: "pages/approve/index",
-    text: "approve",
+    text: "approve" as const,
   },
   {
     pagePath: "pages/home/index",
-    text: "home",
+    text: "home" as const,
   },
   {
     pagePath: "pages/activity/index",
-    text: "activity",
+    text: "activity" as const,
   },
   {
     pagePath: "pages/profile/index",
-    text: "profile",
+    text: "profile" as const,
   },
 ];
 
 export const ExcludedTabList = [
   {
     pagePath: "pages/module/new-activity/index",
-    text: "new-activity",
+    text: "new-activity" as const,
   },
   {
     pagePath: "pages/module/detail/index",
-    text: "detail",
+    text: "detail" as const,
   },
 ];

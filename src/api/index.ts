@@ -11,6 +11,7 @@ import { $User } from "@/store/user";
 import { $UI } from "@/store/UI";
 import SimpleFormData from "@/utils/FormData";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
+import { type ApprovedPaginationResponse } from "@/types/api";
 import instance, { baseURL } from "./axios";
 
 // TODO: 需要环境判断 不然H5无法上线
@@ -169,6 +170,26 @@ const subActivity = {
 const approve = {
   toApprove: (): Promise<ActivityEntity[]> => {
     return instance.get(`/activity/${$User.get().id}/to-approve`);
+  },
+  approve: (actID: number) => {
+    return instance.post(`/activity/approve/${actID}`);
+  },
+  disapprove: (actID: number, reason: string) => {
+    return instance.post(`/activity/disapprove/${actID}`, { reason });
+  },
+  approved: (): Promise<ApprovedPaginationResponse> => {
+    const params = new URLSearchParams();
+    const queryObject = {
+      page: 1,
+      limit: 100,
+      type: "yet",
+    };
+    for (const [key, value] of Object.entries(queryObject)) {
+      params.append(key, value.toString());
+    }
+    return instance.get(`/activity/my-resp-approval/${$User.get().id}`, {
+      params,
+    });
   },
 };
 
