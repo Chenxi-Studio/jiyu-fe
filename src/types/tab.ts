@@ -23,11 +23,11 @@ export const TabList = [
 
 export const ExcludedTabList = [
   {
-    pagePath: "pages/new-activity/index",
+    pagePath: "pages/module/new-activity/index",
     text: "new-activity",
   },
   {
-    pagePath: "pages/detail/index",
+    pagePath: "pages/module/detail/index",
     text: "detail",
   },
 ];
