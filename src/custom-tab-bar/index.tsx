@@ -5,4 +5,8 @@ const CustomTabBar = (): JSX.Element => {
   return <TabBar></TabBar>;
 };
 
+CustomTabBar.options = {
+  addGlobalClass: true,
+};
+
 export default CustomTabBar;
