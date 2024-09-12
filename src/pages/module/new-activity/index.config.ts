@@ -1,4 +1,4 @@
 export default definePageConfig({
-  navigationBarTitleText: "New Activity",
+  navigationBarTitleText: "活动上传",
   usingComponents: {},
 });

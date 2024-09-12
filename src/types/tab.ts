@@ -1,23 +1,23 @@
 export const TabList = [
   {
     pagePath: "pages/publish/index",
-    text: "publish" as const,
+    text: "发布" as const,
   },
   {
     pagePath: "pages/approve/index",
-    text: "approve" as const,
+    text: "审批" as const,
   },
   {
     pagePath: "pages/home/index",
-    text: "home" as const,
+    text: "主页" as const,
   },
   {
     pagePath: "pages/activity/index",
-    text: "activity" as const,
+    text: "活动" as const,
   },
   {
     pagePath: "pages/profile/index",
-    text: "profile" as const,
+    text: "个人" as const,
   },
 ];
 
