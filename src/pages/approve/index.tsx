@@ -37,7 +37,7 @@ const Approve = (): JSX.Element => {
     $UI.update("update current activity", (draft) => {
       draft.currentActivity = item;
     });
-    navigateTo(`pages/detail/index`);
+    navigateTo(`pages/module/detail/index`);
   };
 
   return (

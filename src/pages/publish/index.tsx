@@ -55,7 +55,7 @@ const Publish = (): JSX.Element => {
       draft.currentActivity = item;
       draft.detailEdit = true;
     });
-    navigateTo(`pages/detail/index`);
+    navigateTo(`pages/module/detail/index`);
   };
 
   return (
@@ -250,7 +250,7 @@ const Publish = (): JSX.Element => {
             if ($Activity.get().id !== undefined) {
               $Activity.init();
             }
-            navigateTo("pages/new-activity/index");
+            navigateTo("pages/module/new-activity/index");
           }}
           className="fixed h-12 w-12 rounded-full bg-blue-200 right-5 bottom-[190rpx] flex justify-center items-center"
         >
