@@ -1,8 +1,9 @@
 import React, { useMemo, useState, type FC } from "react";
-import { Progress } from "@nutui/nutui-react-taro";
+import { Progress, Radio } from "@nutui/nutui-react-taro";
 import { useSpring, animated } from "@react-spring/web";
 import { type SubActivity } from "@/types/activity";
 import { dateBoundary } from "@/utils/unit";
+import { Checklist } from "@nutui/icons-react-taro";
 
 export interface SubActivityCardProps {
   sub: SubActivity;
@@ -50,7 +51,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({ sub, key }) => {
       <div className="flex text-sm mb-2">
         <div>签到时间: {checkInTime}</div>
       </div>
-      <div className="flex text-sm justify-between">
+      <div className="flex text-sm justify-between items-center">
         <div>余量: {sub.capacity - currentSelected}</div>
         <Progress
           className="max-w-[60%]"
@@ -58,7 +59,11 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({ sub, key }) => {
           color="linear-gradient(270deg, rgba(18,126,255,1) 0%,rgba(32,147,255,1) 32.815625%,rgba(13,242,204,1) 100%)"
           animated
         />
-        {selected && <div>呜呼</div>}
+        <Radio
+          icon={<Checklist size={28} />}
+          activeIcon={<Checklist style={{ color: "#73c088" }} size={28} />}
+          checked={selected}
+        />
       </div>
     </animated.div>
   );

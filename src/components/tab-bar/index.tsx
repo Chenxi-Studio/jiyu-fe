@@ -27,11 +27,11 @@ export const TabBar = (): JSX.Element => {
             }}
             className={"tab-bar-item " + (selected === index ? "selected" : "")}
           >
-            {item.text === "publish" && <AddRectangle size={18} />}
-            {item.text === "approve" && <Received size={18} />}
-            {item.text === "home" && <Home size={18} />}
-            {item.text === "activity" && <Category size={18} />}
-            {item.text === "profile" && <User size={18} />}
+            {item.text === "发布" && <AddRectangle size={18} />}
+            {item.text === "审批" && <Received size={18} />}
+            {item.text === "主页" && <Home size={18} />}
+            {item.text === "活动" && <Category size={18} />}
+            {item.text === "个人" && <User size={18} />}
             <div>{item.text}</div>
           </div>
         ))}
