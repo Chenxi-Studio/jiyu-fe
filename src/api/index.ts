@@ -106,7 +106,10 @@ const activity = {
     return instance.delete(`/activity/${id}`);
   },
   toApprove: (id: number) => {
-    return instance.post(`/activity/to-approve/${id}`);
+    return instance.post(`/activity/send-for-approval`, {
+      id,
+      sid: $User.get().sid,
+    });
   },
   withdrawApprove: (id: number) => {
     return instance.patch(`/activity/${id}/withdrawal/${$User.get().id}`);
