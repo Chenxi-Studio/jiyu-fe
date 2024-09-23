@@ -127,10 +127,10 @@ const activity = {
   delete: (id: number) => {
     return instance.delete(`/activity/${id}`);
   },
-  toApprove: (id: number) => {
+  toApprove: (id: number, sid: string) => {
     return instance.post(`/activity/send-for-approval`, {
       id,
-      sid: $User.get().sid,
+      sid,
     });
   },
   withdrawApprove: (id: number) => {
