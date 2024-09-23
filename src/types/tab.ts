@@ -23,6 +23,14 @@ export const TabList = [
 
 export const ExcludedTabList = [
   {
+    pagePath: "pages/auth/index",
+    text: "auth" as const,
+  },
+  {
+    pagePath: "pages/login/index",
+    text: "login" as const,
+  },
+  {
     pagePath: "pages/module/new-activity/index",
     text: "new-activity" as const,
   },
