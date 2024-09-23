@@ -1,7 +1,7 @@
 import React, { useEffect, useState, type FC } from "react";
 import {
+  type SubActivity,
   validateCreateSubActivityRequest,
-  type CreateSubActivityRequest,
 } from "@/types/activity";
 import { Button, Input, Popup } from "@nutui/nutui-react-taro";
 import { $Activity } from "@/store/activity";
@@ -23,7 +23,7 @@ const defaultCreateSubActivityRequest = {
 export interface SubActivityPopUpProps {
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
-  preFill?: CreateSubActivityRequest;
+  preFill?: SubActivity;
   index?: number;
 }
 
@@ -31,7 +31,7 @@ export const SubActivityPopUp: FC<SubActivityPopUpProps> = (
   props,
 ): JSX.Element => {
   const { show, setShow, preFill, index } = props;
-  const [form, setForm] = useState<CreateSubActivityRequest>(
+  const [form, setForm] = useState<SubActivity>(
     defaultCreateSubActivityRequest,
   );
   const disabled = !validateCreateSubActivityRequest(form);
@@ -47,7 +47,7 @@ export const SubActivityPopUp: FC<SubActivityPopUpProps> = (
   const handleConfirm = (): void => {
     if (index !== undefined) {
       $Activity.update("update sub-activity", (draft) => {
-        draft.subs = draft.subs.map((item, i) => {
+        draft.subActivities = draft.subActivities.map((item, i) => {
           if (i === index) {
             return form;
           }
@@ -56,7 +56,7 @@ export const SubActivityPopUp: FC<SubActivityPopUpProps> = (
       });
     } else {
       $Activity.update("add new sub-activity", (draft) => {
-        draft.subs = [...draft.subs, form];
+        draft.subActivities = [...draft.subActivities, form];
       });
     }
     setShow(false);
@@ -239,7 +239,7 @@ export const SubActivityPopUp: FC<SubActivityPopUpProps> = (
             className="w-[40%]"
             onClick={handleConfirm}
           >
-            新增
+            {preFill === undefined ? "新增" : "保存修改"}
           </Button>
         </div>
       </Popup>

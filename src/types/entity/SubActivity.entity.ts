@@ -2,7 +2,7 @@ import { type ManageScope } from "../admin";
 import { type ActivityEntity } from "./Activity.entity";
 
 export class SubActivityEntity {
-  id: number;
+  id?: number;
   activity: ActivityEntity;
   title: string; // 子活动标题
   registrationStartTime: Date; // 报名开始时间

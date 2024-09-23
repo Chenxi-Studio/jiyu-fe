@@ -1,3 +1,5 @@
+import { type ActivityEntity } from "./entity/Activity.entity";
+
 export interface BaseResponse {
   statusCode?: number;
   timestamp?: string;
@@ -14,4 +16,12 @@ export interface TacResponse {
   token_type?: string;
   expires_in?: number;
   refresh_token?: string;
+}
+
+export interface BasePaginationResponse {
+  total: number;
+}
+
+export interface ApprovedPaginationResponse extends BasePaginationResponse {
+  data: ActivityEntity[];
 }

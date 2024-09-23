@@ -8,8 +8,17 @@
     padding: 0 50rpx;
     background-color: white;
     filter: drop-shadow(0 -3px 24px rgba(0,0,0,0.05));
+    z-index: 100;
 }
 
 .selected {
     color: red;
+}
+
+.tab-bar-item {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-size: 22rpx;
+    gap: 4rpx
 }

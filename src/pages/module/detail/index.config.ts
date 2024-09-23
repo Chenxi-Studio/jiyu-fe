@@ -1,4 +1,4 @@
 export default definePageConfig({
-  navigationBarTitleText: "Detail",
+  navigationBarTitleText: "详情",
   usingComponents: {},
 });

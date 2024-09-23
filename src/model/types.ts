@@ -49,6 +49,11 @@ export type Unsubscribe = () => void;
 export type Subscribe<S> = (listener: Listener<S>) => Unsubscribe;
 
 /**
+ * 初始化数据
+ */
+export type Init = () => void;
+
+/**
  * 模型操作句柄
  */
 export interface Handler<S> {
@@ -74,4 +79,9 @@ export interface Handler<S> {
    * @return 取消监听函数
    */
   subscribe: Subscribe<S>;
+
+  /**
+   * 初始化数据
+   */
+  init: Init;
 }

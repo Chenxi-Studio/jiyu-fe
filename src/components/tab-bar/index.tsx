@@ -1,4 +1,11 @@
 import React from "react";
+import {
+  AddRectangle,
+  Category,
+  Home,
+  Received,
+  User,
+} from "@nutui/icons-react-taro";
 import { TabList } from "@/types/tab";
 import { switchTab } from "@/utils/navigator";
 import { $UI } from "@/store/UI";
@@ -18,9 +25,14 @@ export const TabBar = (): JSX.Element => {
               });
               switchTab(item.pagePath);
             }}
-            className={selected === index ? "selected" : ""}
+            className={"tab-bar-item " + (selected === index ? "selected" : "")}
           >
-            {item.text}
+            {item.text === "发布" && <AddRectangle size={18} />}
+            {item.text === "审批" && <Received size={18} />}
+            {item.text === "主页" && <Home size={18} />}
+            {item.text === "活动" && <Category size={18} />}
+            {item.text === "个人" && <User size={18} />}
+            <div>{item.text}</div>
           </div>
         ))}
       </div>
