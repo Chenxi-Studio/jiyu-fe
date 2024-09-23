@@ -20,9 +20,6 @@ export const TabBar = (): JSX.Element => {
           <div
             key={item.text}
             onClick={() => {
-              $UI.update("switch tab", (draft) => {
-                draft.selected = index;
-              });
               switchTab(item.pagePath);
             }}
             className={"tab-bar-item " + (selected === index ? "selected" : "")}
