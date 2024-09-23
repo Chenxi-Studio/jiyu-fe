@@ -4,6 +4,7 @@ import {
   Button,
   Collapse,
   Dialog,
+  Picker,
   PullToRefresh,
   Swipe,
   type SwipeInstance,
@@ -16,6 +17,7 @@ import { navigateTo } from "@/utils/navigator";
 import { $UI } from "@/store/UI";
 import { $Activity } from "@/store/activity";
 import { ActivityStatus } from "@/types/common";
+import { type UserEntity } from "@/types/entity/User.entity";
 import "./style.scss";
 
 const Publish = (): JSX.Element => {
@@ -29,12 +31,18 @@ const Publish = (): JSX.Element => {
   const beforeApprovedListRefs = new Array(beforeApprovedList.length)
     .fill(null)
     .map(() => createRef<SwipeInstance>());
+  const [adminPickerVisible, setAdminPickerVisible] = useState(false);
+  const [admins, setAdmins] = useState<UserEntity[]>([]);
+  const [chosenAdmin, setChosenAdmin] = useState<string>("");
 
   const loadData = async (): Promise<void> => {
     const beforeApprovedResponse = await api.activity.beforeApproved();
     setBeforeApprovedList(beforeApprovedResponse);
     const afterApprovedResponse = await api.activity.afterApproved();
     setAfterApprovedList(afterApprovedResponse);
+    const superAdmins = await api.admin.super();
+    setAdmins(superAdmins);
+    setChosenAdmin(superAdmins[0].sid ?? "");
   };
 
   useEffect(() => {
@@ -73,6 +81,29 @@ const Publish = (): JSX.Element => {
       }}
     >
       <Dialog id="Publish" />
+      <Picker
+        popupProps={{ zIndex: 9999 }}
+        title="请选择审核老师"
+        visible={adminPickerVisible}
+        options={admins.map((admin) => ({
+          text: admin.name,
+          value: admin.sid,
+        }))}
+        onConfirm={() => {}}
+        onClose={() => {
+          setAdminPickerVisible(false);
+        }}
+        onChange={(selectedOptions, selectedValue, columnIndex) => {
+          setChosenAdmin(selectedValue.toString());
+          console.log(
+            "selectedValue",
+            selectedValue,
+            selectedOptions,
+            columnIndex,
+          );
+        }}
+      />
+
       <div className="pb-[150rpx]">
         <Collapse defaultActiveName={["1", "2"]} expandIcon={<ArrowDown />}>
           <Collapse.Item title="未发布" name="1">
@@ -117,7 +148,28 @@ const Publish = (): JSX.Element => {
                           onClick={() => {
                             Dialog.open(`Publish`, {
                               title: `审核提示`,
-                              content: `确认提交审核活动 ${item.title} 吗？`,
+                              content: (
+                                <>
+                                  <div>确认提交审核活动 {item.title} 吗？</div>
+                                  <div
+                                    className="mt-2 p-2 bg-white border border-solid rounded-lg"
+                                    onClick={() => {
+                                      console.log(
+                                        "adminPickerVisible",
+                                        adminPickerVisible,
+                                      );
+
+                                      setAdminPickerVisible(true);
+                                    }}
+                                  >
+                                    {chosenAdmin === ""
+                                      ? "请选择审核老师"
+                                      : admins.filter(
+                                          (admin) => admin.sid === chosenAdmin,
+                                        )[0].name}
+                                  </div>
+                                </>
+                              ),
                               onConfirm: async () => {
                                 try {
                                   await api.activity.toApprove(item.id);

@@ -1,9 +1,7 @@
-import { ExcludedTabList, TabList } from "./types/tab";
+import { TabList } from "./types/tab";
 
 export default defineAppConfig({
-  pages: [
-    ...TabList.map((item) => item.pagePath),
-  ],
+  pages: [...TabList.map((item) => item.pagePath)],
   window: {
     backgroundTextStyle: "light",
     navigationBarBackgroundColor: "#fff",
