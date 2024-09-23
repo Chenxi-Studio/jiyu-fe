@@ -13,7 +13,7 @@ export const formatDate = (startTime, withMinute = true): string => {
   const year = startTime.getFullYear();
   const month = ("0" + (startTime.getMonth() + 1)).slice(-2); // 月份从0开始，所以需要+1
   const day = ("0" + startTime.getDate()).slice(-2);
-  let formattedDate = `${year}-${month}-${day}`;
+  let formattedDate = `${year}/${month}/${day}`;
 
   if (withMinute) {
     const hour = ("0" + startTime.getHours()).slice(-2);
@@ -87,4 +87,19 @@ export const convertDates = (obj: any): any => {
   }
 
   return result;
+};
+
+export const dateBoundary = (start: Date, end: Date): string => {
+  const startTime = formatDate(start);
+  const endTime = formatDate(end);
+  const startTimeMatch = startTime.match(/^[0-9]*\/[0-9]*\/[0-9]*/);
+  const endTimeMatch = endTime.match(/^[0-9]*\/[0-9]*\/[0-9]*/);
+  if (
+    startTimeMatch !== null &&
+    endTimeMatch !== null &&
+    startTime[0] === endTime[0]
+  ) {
+    return `${startTime}-${endTime.replace(/^[0-9]*\/[0-9]*\/[0-9]*[\s]/, "")}`;
+  }
+  return `${startTime}-${endTime}`;
 };

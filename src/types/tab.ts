@@ -1,41 +1,41 @@
 export const TabList = [
   {
     pagePath: "pages/publish/index",
-    text: "publish",
+    text: "发布" as const,
   },
   {
     pagePath: "pages/approve/index",
-    text: "approve",
+    text: "审批" as const,
   },
   {
     pagePath: "pages/home/index",
-    text: "home",
+    text: "主页" as const,
   },
   {
     pagePath: "pages/activity/index",
-    text: "activity",
+    text: "活动" as const,
   },
   {
     pagePath: "pages/profile/index",
-    text: "profile",
+    text: "个人" as const,
   },
 ];
 
 export const ExcludedTabList = [
   {
     pagePath: "pages/auth/index",
-    text: "auth",
+    text: "auth" as const,
   },
   {
     pagePath: "pages/login/index",
-    text: "login",
+    text: "login" as const,
   },
   {
-    pagePath: "pages/new-activity/index",
-    text: "new-activity",
+    pagePath: "pages/module/new-activity/index",
+    text: "new-activity" as const,
   },
   {
-    pagePath: "pages/detail/index",
-    text: "detail",
+    pagePath: "pages/module/detail/index",
+    text: "detail" as const,
   },
 ];

@@ -43,6 +43,10 @@ export const model = <S, N extends string = string>(
     },
 
     subscribe: $model.subscribe,
+
+    init: () => {
+      $model.setState($model.getInitialState());
+    },
   };
 
   return handler;

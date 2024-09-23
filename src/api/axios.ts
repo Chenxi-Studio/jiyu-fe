@@ -9,7 +9,7 @@ export const tacInstance = axios.create({
   adapter: taroAdapter,
 });
 
-export const baseURL = "http://124.220.2.31:3000/api";
+export const baseURL = "https://fdchenxi.com/jiyu/api";
 
 const instance = axios.create({
   baseURL,

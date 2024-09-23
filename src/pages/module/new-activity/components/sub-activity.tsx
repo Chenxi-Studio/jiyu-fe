@@ -7,18 +7,18 @@ import {
   Swipe,
   type SwipeInstance,
 } from "@nutui/nutui-react-taro";
-import { type CreateSubActivityRequest } from "@/types/activity";
+import { type SubActivity as SubActivityType } from "@/types/activity";
 import { $Activity } from "@/store/activity";
 import { formatDate } from "@/utils/unit";
 import { SubActivityPopUp } from "./sub-activity-popup";
 
 export const SubActivity = (): JSX.Element => {
   const [show, setShow] = useState<boolean>(false);
-  const [preFill, setPreFill] = useState<CreateSubActivityRequest | undefined>(
+  const [preFill, setPreFill] = useState<SubActivityType | undefined>(
     undefined,
   );
   const [index, setIndex] = useState<number | undefined>(undefined);
-  const subs = $Activity.use((state) => state.subs);
+  const subs = $Activity.use((state) => state.subActivities);
   const refs = new Array(subs.length)
     .fill(null)
     .map(() => createRef<SwipeInstance>());
@@ -53,7 +53,13 @@ export const SubActivity = (): JSX.Element => {
                     content: `确认删除子活动 ${item.title} 吗？`,
                     onConfirm: () => {
                       $Activity.update("delete sub activity", (draft) => {
-                        draft.subs = subs.filter(
+                        if (draft.subActivities[i].id !== undefined) {
+                          draft.deleteList = [
+                            ...draft.deleteList,
+                            draft.subActivities[i].id,
+                          ];
+                        }
+                        draft.subActivities = subs.filter(
                           (draftItem, draftIndex) => i !== draftIndex,
                         );
                       });
@@ -68,7 +74,7 @@ export const SubActivity = (): JSX.Element => {
                 删除
               </Button>
             }
-            key={`sub-${index}`}
+            key={`sub-${i}`}
             onActionClick={() => {
               if (
                 refs[i].current !== null &&
@@ -84,6 +90,7 @@ export const SubActivity = (): JSX.Element => {
           >
             <div
               className="flex justify-between bg-white border-solid border-0 border-b border-gray-100 p-4"
+              key={`sub-div-${i}`}
               onClick={() => {
                 setIndex(i);
                 setPreFill(item);

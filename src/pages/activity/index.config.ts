@@ -1,4 +1,4 @@
 export default definePageConfig({
-  navigationBarTitleText: "Approve",
+  navigationBarTitleText: "活动",
   usingComponents: {},
 });
