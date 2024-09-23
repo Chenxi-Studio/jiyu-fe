@@ -3,6 +3,12 @@ import { convertDates } from "@/utils/unit";
 import { $UI } from "@/store/UI";
 import { taroAdapter } from "./adapter";
 
+export const tacInstance = axios.create({
+  baseURL: "https://tac.fudan.edu.cn",
+  timeout: 100000,
+  adapter: taroAdapter,
+});
+
 export const baseURL = "http://124.220.2.31:3000/api";
 
 const instance = axios.create({
