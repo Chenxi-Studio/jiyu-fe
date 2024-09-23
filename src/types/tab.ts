@@ -30,12 +30,4 @@ export const ExcludedTabList = [
     pagePath: "pages/login/index",
     text: "login" as const,
   },
-  {
-    pagePath: "pages/module/new-activity/index",
-    text: "new-activity" as const,
-  },
-  {
-    pagePath: "pages/module/detail/index",
-    text: "detail" as const,
-  },
 ];

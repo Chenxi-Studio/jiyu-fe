@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { $User } from "@/store/user";
-import { navigateTo } from "@/utils/navigator";
+import { navigateTo, switchTab } from "@/utils/navigator";
 import { api } from "@/api";
+import Taro from "@tarojs/taro";
+import { Loading } from "@nutui/icons-react-taro";
 
 const Auth = (): JSX.Element => {
   const stateCallback = $User.use((state) => state.state);
@@ -10,22 +12,35 @@ const Auth = (): JSX.Element => {
   const code = $User.use((state) => state.code);
   const clientId = $User.use((state) => state.clientId);
   const [msg, setMsg] = useState<string>("登录中");
-
-  // 是否需要 只跳转一次呢
-
-  if (stateCallback === undefined) {
-    navigateTo("pages/login/index");
-  }
+  const [buttonContent, setButtonContent] = useState<string>("UIS 登录");
 
   const handleTacAuth = async (): Promise<void> => {
-    const res = await api.login.tac(clientId, code);
-    if (res.error !== undefined && res.error !== null) {
-      setMsg(res.error_description ?? "tac 出错");
-    } else if (res.access_token !== undefined) {
-      setMsg("tac 登陆成功");
-      console.log(res.access_token);
-      const info = await api.login.info(res.access_token);
-      console.log(info);
+    try {
+      const res = await api.login.tac(clientId, code);
+      if (
+        res.error !== undefined &&
+        res.error !== null &&
+        res.error_description !== undefined
+      ) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setMsg(res.error_description);
+      } else if (res.access_token !== undefined) {
+        setMsg("tac 登陆成功");
+        console.log(res.access_token);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        const info = await api.login.info(res.access_token);
+        console.log(info);
+        const loginRes = await Taro.login();
+        console.log(loginRes);
+        if (loginRes.errMsg.endsWith("ok")) {
+          console.log("success");
+          switchTab("pages/home/index");
+        } else {
+          throw Error(`登录失败 ${loginRes.errMsg}`);
+        }
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -41,13 +56,18 @@ const Auth = (): JSX.Element => {
 
   return (
     <>
-      小程序验证中
-      <div>stateCallback:{stateCallback}</div>
-      <div>stateLocal:{stateLocal}</div>
-      <div>scope:{scope}</div>
-      <div>code:{code}</div>
-      <div>clientId:{clientId}</div>
-      <div className="text-xl">{msg}</div>
+      <div
+        onClick={() => {
+          setButtonContent("登录中");
+          navigateTo("pages/login/index");
+        }}
+        className="fixed bottom-[12%] px-8 w-[calc(100%-128rpx)]"
+      >
+        <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3">
+          {buttonContent === "登录中" && <Loading size={20} />}
+          {buttonContent}
+        </div>
+      </div>
     </>
   );
 };
