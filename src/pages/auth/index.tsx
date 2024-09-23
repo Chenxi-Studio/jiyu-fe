@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { $User } from "@/store/user";
 import { navigateTo } from "@/utils/navigator";
-import axios from "axios";
-import { taroAdapter } from "@/api/adapter";
+import { api } from "@/api";
 
 const Auth = (): JSX.Element => {
   const stateCallback = $User.use((state) => state.state);
@@ -10,6 +9,7 @@ const Auth = (): JSX.Element => {
   const scope = $User.use((state) => state.scope);
   const code = $User.use((state) => state.code);
   const clientId = $User.use((state) => state.clientId);
+  const [msg, setMsg] = useState<string>("登录中");
 
   // 是否需要 只跳转一次呢
 
@@ -17,20 +17,27 @@ const Auth = (): JSX.Element => {
     navigateTo("pages/login/index");
   }
 
+  const handleTacAuth = async (): Promise<void> => {
+    const res = await api.login.tac(clientId, code);
+    if (res.error !== undefined && res.error !== null) {
+      setMsg(res.error_description ?? "tac 出错");
+    } else if (res.access_token !== undefined) {
+      setMsg("tac 登陆成功");
+      console.log(res.access_token);
+      const info = await api.login.info(res.access_token);
+      console.log(info);
+    }
+  };
+
   useEffect(() => {
-    void axios
-      .create({
-        baseURL: "",
-        timeout: 100000,
-        adapter: taroAdapter,
-      })
-      .get(
-        `https://tac.fudan.edu.cn/oauth2/token.act?client_id=${clientId}&client_secret=8FHFDEySu6zGRW9jG5hc&grant_type=authorization_code&code=${code}`,
-      )
-      .then((res) => {
-        console.log(res);
-      });
-  }, [scope, code, clientId]);
+    if (stateCallback !== undefined && stateCallback !== stateLocal) {
+      setMsg("非法请求: CSRF");
+      return;
+    }
+    if (stateCallback === stateLocal) {
+      void handleTacAuth();
+    }
+  }, [code, clientId, scope, stateCallback, stateLocal]);
 
   return (
     <>
@@ -40,11 +47,7 @@ const Auth = (): JSX.Element => {
       <div>scope:{scope}</div>
       <div>code:{code}</div>
       <div>clientId:{clientId}</div>
-      <div className="text-9xl">
-        {stateCallback === stateLocal
-          ? "前端成功UIS了 还需要后端二次确认"
-          : "登录中"}
-      </div>
+      <div className="text-xl">{msg}</div>
     </>
   );
 };

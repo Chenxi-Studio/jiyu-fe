@@ -8,10 +8,28 @@ import {
 import { $User } from "@/store/user";
 import { $UI } from "@/store/UI";
 import SimpleFormData from "@/utils/FormData";
+import { type TacResponse } from "@/types/api";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
-import instance, { baseURL } from "./axios";
+import instance, { baseURL, tacInstance } from "./axios";
 
 // TODO: 需要环境判断 不然H5无法上线
+
+const login = {
+  tac: (clientId: string, code: string): Promise<TacResponse> =>
+    instance.post(`/auth/tac`, { clientId, code }),
+  info: (accessToken: string) => {
+    const params = new URLSearchParams();
+    const queryObject = {
+      access_token: accessToken,
+    };
+    for (const [key, value] of Object.entries(queryObject)) {
+      params.append(key, value.toString());
+    }
+    return tacInstance.get(`/resource/userinfo.act`, {
+      params,
+    });
+  },
+};
 
 const activity = {
   createActivity: (
@@ -111,6 +129,7 @@ const approve = {
 };
 
 export const api = {
+  login,
   activity,
   subActivity,
   approve,
