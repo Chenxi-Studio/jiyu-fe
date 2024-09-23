@@ -6,6 +6,6 @@ export interface UserModel {
 }
 
 export const $User = model<UserModel>("USER", {
-  id: 4,
-  sid: "3292818",
+  id: 8,
+  sid: "admin122",
 });
