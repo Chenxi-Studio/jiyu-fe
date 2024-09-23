@@ -12,8 +12,8 @@ export interface UserModel {
 }
 
 export const $User = model<UserModel>("USER", {
-  id: 8,
-  sid: "admin122",
+  id: 8, // 10
+  sid: "admin122", // superadmin
   state_key: generateRandomString(16),
   code: "",
   scope: "",

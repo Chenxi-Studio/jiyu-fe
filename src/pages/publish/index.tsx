@@ -172,7 +172,10 @@ const Publish = (): JSX.Element => {
                               ),
                               onConfirm: async () => {
                                 try {
-                                  await api.activity.toApprove(item.id);
+                                  await api.activity.toApprove(
+                                    item.id,
+                                    chosenAdmin,
+                                  );
                                   $UI.update(
                                     "trigger approve refresh",
                                     (draft) => {
