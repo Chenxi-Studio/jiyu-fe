@@ -1,7 +1,7 @@
-import { type Degree } from "./common";
+import { type Gender, type Degree } from "./common";
 
 export interface ManageScope {
-  // gender: Gender; 应该没有牵涉到性别的管理范围吧
+  gender: Gender[];
   degree: Degree[];
   grade: string[];
   major: string[];

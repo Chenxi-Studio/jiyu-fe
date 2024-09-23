@@ -1,7 +1,6 @@
 export enum Gender {
-  Female = 0,
   Male = 1,
-  Any = 2,
+  Female = 2,
 }
 export enum Degree {
   Bachelor = 0,
