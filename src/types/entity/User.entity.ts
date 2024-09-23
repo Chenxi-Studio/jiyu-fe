@@ -18,5 +18,5 @@ export class UserEntity {
   // @Column('simple-array')
   // tags_str: string[]; // 用于承载其它tag如某社团、党支部等，只用一个字符串存，是一个故意冗余的属性
   tags: TagEntity[];
-  punishEndTime: Date;
+  punishEndTime: Date | null;
 }

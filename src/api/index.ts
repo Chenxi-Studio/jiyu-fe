@@ -10,12 +10,10 @@ import {
 import { $User } from "@/store/user";
 import { $UI } from "@/store/UI";
 import SimpleFormData from "@/utils/FormData";
-import { type TacResponse } from "@/types/api";
+import { type TacResponse, type ApprovedPaginationResponse } from "@/types/api";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
-import { type ApprovedPaginationResponse } from "@/types/api";
+import { type UserEntity } from "@/types/entity/User.entity";
 import instance, { baseURL, tacInstance } from "./axios";
-
-
 
 // TODO: 需要环境判断 不然H5无法上线
 const activity2formDate = (
@@ -70,6 +68,10 @@ const login = {
       params,
     });
   },
+};
+
+const admin = {
+  super: (): Promise<UserEntity[]> => instance.get(`/admin/super`),
 };
 
 const activity = {
@@ -133,6 +135,7 @@ const activity = {
   },
   update: (a: Activity, picSrc: string | undefined | null) => {
     if (a.id !== undefined) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       const formData = activity2formDate(a, picSrc);
       const sandData = formData.getData();
 
@@ -215,6 +218,7 @@ const approve = {
 
 export const api = {
   login,
+  admin,
   activity,
   subActivity,
   approve,
