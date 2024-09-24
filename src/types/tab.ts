@@ -1,5 +1,9 @@
 export const TabList = [
   {
+    pagePath: "pages/profile/index",
+    text: "个人" as const,
+  },
+  {
     pagePath: "pages/publish/index",
     text: "发布" as const,
   },
@@ -14,10 +18,6 @@ export const TabList = [
   {
     pagePath: "pages/activity/index",
     text: "活动" as const,
-  },
-  {
-    pagePath: "pages/profile/index",
-    text: "个人" as const,
   },
 ];
 
