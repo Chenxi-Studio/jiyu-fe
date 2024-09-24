@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { SearchBar } from "./components/search-bar";
 
 const Home = (): JSX.Element => {
   useEffect(() => {
@@ -6,13 +7,12 @@ const Home = (): JSX.Element => {
   }, []);
 
   return (
-    <div className="mx-10">
-      <div className="text-lg">This is home.</div>
-      <div className="drawer-box">
-        <div className="box-item">
-          <a onClick={() => {}}>profile</a>
-        </div>
-      </div>
+    <div className="px-10 bg-[#fcfcfc] min-h-[100vh]">
+      <SearchBar
+        onChange={(input) => {
+          console.log(input);
+        }}
+      />
     </div>
   );
 };
