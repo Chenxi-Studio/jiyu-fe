@@ -1,0 +1,21 @@
+$vendor-prefixes: -webkit-, -moz-, -ms-, -o-, ;
+
+@mixin backdrop-filter($filter-value) {
+    @each $prefix in $vendor-prefixes {
+        @if $prefix == '' {
+            background: none;
+            filter: blur(#{$filter-value});
+        } @else {
+            background: none;
+            #{$prefix}filter: blur(#{$filter-value});
+        }
+    }
+}
+
+// 微信小程序的 css 兼容性似乎与平台默认内核相关？
+.comp-blur {
+    @include backdrop-filter(40px);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
