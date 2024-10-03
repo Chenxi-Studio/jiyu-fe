@@ -50,10 +50,9 @@ const Profile = (): JSX.Element => {
           </div>
         </div>
         <div className="flex justify-between items-center h-14">
-          <div>昵称</div>
+          <div>名字</div>
           <div className="flex items-center justify-center gap-4 text-gray-500">
-            <div>我是一个昵称</div>
-            <ArrowSize6 size={12} color="#d1d5db" />
+            <div>我是一个名字</div>
           </div>
         </div>
         <div className="flex justify-between items-center h-14">
@@ -66,8 +65,7 @@ const Profile = (): JSX.Element => {
         <div className="flex justify-between items-center h-14">
           <div>邮箱</div>
           <div className="flex items-center justify-center gap-4 text-gray-500">
-            <div>17236780307@163.com</div>
-            <ArrowSize6 size={12} color="#d1d5db" />
+            <div>17236780307@fudan.edu.cn</div>
           </div>
         </div>
       </div>
