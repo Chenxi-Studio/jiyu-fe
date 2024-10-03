@@ -3,11 +3,12 @@ import { Input } from "@tarojs/components";
 import React, { useState, type FC } from "react";
 
 export interface SearchBarProps {
+  value: string;
   onChange: (input: string) => void;
 }
 
 export const SearchBar: FC<SearchBarProps> = (props) => {
-  const { onChange: handleChange } = props;
+  const { value, onChange: handleChange } = props;
   const [borderColor, setBorderColor] = useState<string>("transparent");
 
   return (
@@ -23,11 +24,12 @@ export const SearchBar: FC<SearchBarProps> = (props) => {
     >
       <Search size={14} color="#9ca3af" />
       <Input
-        className="flex-1"
+        className="flex-1 text-gray-700"
         type="text"
+        value={value}
         onInput={(event) => {
-          const { value } = event.detail;
-          handleChange(value);
+          const { value: v } = event.detail;
+          handleChange(v);
         }}
         onFocus={() => {
           setBorderColor("#f9a8d4");
