@@ -10,6 +10,6 @@ $vendor-prefixes: -webkit-, -moz-, -ms-, -o-;
 // https://github.com/NervJS/taro/issues/3155
 // 样式问题也有可能涉及到手机设备本身，参考微信文档的实现差异一节，微信小程序在 iOS 上是 JavaScript Core 执行，WKWebView 渲染的，Android 是由腾讯自研 X5 JSCore 执行，Chrome 内核渲染的，开发者工具则是由 nwjs 的 Chrome Webview 渲染的，三者本身差异较多，再由于手机系统版本不同（iOS 10 与 iOS 12 / Android 7 与 Android 9）之类的差异，附带的渲染引擎可能有所不同，有可能会导致渲染问题。如果发现是这类问题，建议到微信开发者官方论坛，向官方反馈问题。
 
-.big-card-wrapper {
+.drop-shadow-base {
     @include filter-drop-shadow(0rpx, 6rpx, 24rpx, rgba(25,32,45,0.05));
 }
