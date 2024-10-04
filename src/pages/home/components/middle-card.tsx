@@ -13,7 +13,7 @@ export const MiddleCard: FC<MiddleCardProps> = (props) => {
   const { key, activity } = props;
   return (
     <div
-      className="flex p-2 big-card-wrapper bg-white rounded-2xl max-h-[180rpx] min-w-[380rpx]"
+      className="flex p-2 drop-shadow-base bg-white rounded-2xl max-h-[180rpx] min-w-[380rpx]"
       key={key}
     >
       <div className="h-[148rpx] w-[148rpx] mr-2">
@@ -24,7 +24,7 @@ export const MiddleCard: FC<MiddleCardProps> = (props) => {
         />
       </div>
       <div className="flex flex-col justify-between">
-        <div className="flex items-center text-base flex-1">
+        <div className="flex text-sm flex-1 text-gray-800">
           {activity.title}
         </div>
         <div className="flex text-gray-400 text-sm gap-1 items-center">

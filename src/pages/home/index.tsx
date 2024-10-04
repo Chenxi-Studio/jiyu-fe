@@ -22,8 +22,8 @@ const Home = (): JSX.Element => {
   }, []);
 
   return (
-    <div className="bg-[#FCFCFC] min-h-[100vh] over">
-      <div className="px-10">
+    <div className="bg-[#FCFCFC] min-h-[100vh]">
+      <div className="px-10 mt-4">
         <SearchBar
           value={searchContent}
           onChange={(input) => {
@@ -48,7 +48,7 @@ const Home = (): JSX.Element => {
           ))}
         </div>
       </div>
-      <div className="hide-scrollbar py-3 flex gap-6 overflow-x-auto overscroll-y-hidden px-10">
+      <div className="hide-scrollbar py-3 flex gap-6 overflow-x-auto overscroll-y-hidden px-10 mt-3">
         {activities.map((activity, index) => (
           <BigCard key={`Big-Card-${index}`} activity={activity} />
         ))}

@@ -14,7 +14,7 @@ export const BigCard: FC<BigCardProps> = (props) => {
 
   return (
     <div
-      className="big-card-wrapper bg-white rounded-2xl p-3 h-[560rpx] min-w-[400rpx]"
+      className="drop-shadow-base bg-white rounded-2xl p-3 h-[560rpx] min-w-[400rpx]"
       key={key}
     >
       <Image
