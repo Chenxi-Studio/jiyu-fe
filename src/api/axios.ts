@@ -19,8 +19,7 @@ const instance = axios.create({
 
 instance.defaults.headers.get["Content-Type"] = "application/json";
 instance.defaults.headers.get.Accept = "*/*";
-// TODO: token
-// instance.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem("token")}`;
+// eslint-disable-next-line @typescript-eslint/dot-notation
 
 // 请求拦截器
 instance.interceptors.request.use(

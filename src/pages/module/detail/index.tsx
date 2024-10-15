@@ -7,6 +7,7 @@ import { formatDate, px2rpx, windowHeight } from "@/utils/unit";
 import { $Activity } from "@/store/activity";
 import { baseActivityRequestIsEmpty } from "@/types/activity";
 import { ActivityStatus } from "@/types/common";
+import { pic2url } from "@/utils/type";
 import { SubActivityCard } from "./components/sub-activity-card";
 
 const Detail = (): JSX.Element => {
@@ -44,10 +45,7 @@ const Detail = (): JSX.Element => {
     <div className="h-[100vh] bg-[#FCFCFC]">
       <Dialog id="Detail" />
       <div className="h-48 w-full fixed top-0 z-0" id="detail-pic">
-        <Image
-          src={`https://${currentActivity?.coverImage}`}
-          mode="aspectFill"
-        />
+        <Image src={pic2url(currentActivity?.coverImage)} mode="aspectFill" />
       </div>
       <div
         className="bg-[#FCFCFC] rounded-[64rpx] pt-10 px-8 relative z-10 pb-[150rpx]"

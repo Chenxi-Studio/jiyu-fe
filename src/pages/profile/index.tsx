@@ -1,28 +1,41 @@
 import React, { useState } from "react";
 import { ArrowSize6 } from "@nutui/icons-react-taro";
+import { api } from "@/api";
+import { $User } from "@/store/user";
+import { pic2url } from "@/utils/type";
 import { Avatar } from "./components/avatar";
 import "./style.scss";
+import { type BaseEventOrig } from "@tarojs/components";
 
 const Profile = (): JSX.Element => {
-  const [avatarUrl, setAvatarUrl] = useState<string>("");
+  const avatarUrl = $User.use((state) => state.profile);
+  const setAvatarUrl = (url: string): void => {
+    $User.update("set avatar", (draft) => {
+      draft.profile = url;
+    });
+  };
+  const handleChooseAvatar = (e: BaseEventOrig<any>): void => {
+    if (typeof e.detail.avatarUrl === "string") {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      setAvatarUrl(e.detail.avatarUrl);
+      void api.user.profile(e.detail.avatarUrl as string);
+    }
+  };
+
   return (
     <div className="text-gray-600">
       <div
         className="fixed w-[100vw] top-0 h-[70vh] z-[-1] comp-blur"
         style={{
-          backgroundImage: `url(${avatarUrl})`,
+          backgroundImage: `url(${pic2url(avatarUrl)})`,
         }}
       />
       <div className="fixed w-[100vw] top-0 h-[100vh] z-[-1] bg-[rgba(255,255,255,0.6)]"></div>
 
       <div className="flex justify-center w-full pt-8 z-10">
         <Avatar
-          onChooseAvatar={(e) => {
-            if (typeof e.detail.avatarUrl === "string")
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-              setAvatarUrl(e.detail.avatarUrl);
-          }}
-          avatarUrl={avatarUrl}
+          onChooseAvatar={handleChooseAvatar}
+          avatarUrl={pic2url(avatarUrl)}
         />
       </div>
       <div className="flex justify-center w-full pt-2 z-50">个人设置</div>
@@ -31,12 +44,8 @@ const Profile = (): JSX.Element => {
           <div>头像</div>
           <div className="flex items-center justify-center gap-4">
             <Avatar
-              onChooseAvatar={(e) => {
-                if (typeof e.detail.avatarUrl === "string")
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                  setAvatarUrl(e.detail.avatarUrl);
-              }}
-              avatarUrl={avatarUrl}
+              onChooseAvatar={handleChooseAvatar}
+              avatarUrl={pic2url(avatarUrl)}
               size={48}
             />
             <ArrowSize6 size={12} color="#d1d5db" />

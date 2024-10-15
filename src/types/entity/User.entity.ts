@@ -1,22 +1,23 @@
-import { type Degree, type Gender } from "../common";
+import { type ManageScope } from "../admin";
+import { type ActivityEntity } from "./Activity.entity";
+import { type RoleLevel } from "./const";
 import { type TagEntity } from "./Tag.entity";
 
 export class UserEntity {
   id: number;
   sid: string;
   name: string;
-  gender: Gender;
-  degree: Degree;
-  grade: string;
-  major: string;
-  class: string;
-  email: string;
-  phone: string;
-  counselor: string;
+  roleLevel: RoleLevel;
+  punishEndTime: Date;
+  punishNum: number;
   wxOpenID: string;
-
-  // @Column('simple-array')
-  // tags_str: string[]; // 用于承载其它tag如某社团、党支部等，只用一个字符串存，是一个故意冗余的属性
+  phone: string;
+  email: string;
+  counselor: string;
+  notes: string;
+  selfScope: ManageScope;
+  manageScope: ManageScope;
+  activities: ActivityEntity[];
   tags: TagEntity[];
-  punishEndTime: Date | null;
+  profile: string;
 }
