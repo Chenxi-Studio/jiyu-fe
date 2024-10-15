@@ -10,12 +10,15 @@ import {
 import { $User } from "@/store/user";
 import { $UI } from "@/store/UI";
 import SimpleFormData from "@/utils/FormData";
-import { type TacResponse, type ApprovedPaginationResponse } from "@/types/api";
+import {
+  type TacResponse,
+  type ApprovedPaginationResponse,
+  type JWTResponse,
+} from "@/types/api";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { type UserEntity } from "@/types/entity/User.entity";
 import instance, { baseURL, tacInstance } from "./axios";
 
-// TODO: 需要环境判断 不然H5无法上线
 const activity2formDate = (
   r: BaseActivityRequest,
   picSrc: string | undefined | null = undefined,
@@ -65,6 +68,18 @@ const login = {
       params.append(key, value.toString());
     }
     return tacInstance.get(`/resource/userinfo.act`, {
+      params,
+    });
+  },
+  devJWT: (type: "stu" | "admin" | "Ultradamin"): Promise<JWTResponse> => {
+    const params = new URLSearchParams();
+    const queryObject = {
+      type,
+    };
+    for (const [key, value] of Object.entries(queryObject)) {
+      params.append(key, value.toString());
+    }
+    return instance.get(`/auth/test-login`, {
       params,
     });
   },
@@ -219,10 +234,66 @@ const approve = {
   },
 };
 
+const sign = {
+  mySignList: (): Promise<ActivityEntity[]> =>
+    instance.get(`/sign-act/my-sign`),
+  waitList: (): Promise<ActivityEntity[]> => instance.get(`/sign-act/my-wait`),
+  revocation: (signID: number) => instance.delete(`/sign-act/sign-revokation`),
+  register: (actID: number, subIDs: number[]) =>
+    instance.post(`/sign-act/register`, {
+      actID,
+      subIDs,
+    }),
+};
+
+const user = {
+  profile: (picSrc: string) => {
+    const formData = new SimpleFormData();
+    if (picSrc !== undefined && picSrc !== null) {
+      formData.appendFile(
+        "profile",
+        picSrc,
+        picSrc.replace(/^http:\/\/tmp\//, ""),
+      );
+    }
+    const sandData = formData.getData();
+    return new Promise((resolve, reject) => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      Taro.request({
+        url: baseURL + "/users/profile",
+        method: "POST",
+        data: sandData.buffer,
+        header: {
+          "Content-Type": sandData.contentType,
+          Authorization: `Bearer ${$User.get().jwt}`,
+        },
+        success: (res) => {
+          const data = res.data;
+          if (data.statusCode < 200 || data.statusCode >= 400) {
+            $UI.update("upload fail", (draft) => {
+              draft.notifyMsg = data.message;
+              draft.showNotify = true;
+            });
+            reject(data);
+          }
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          resolve(data); // 使用resolve来传递成功的结果
+        },
+        fail: (err) => {
+          reject(err); // 使用reject来传递失败的错误
+        },
+      });
+    });
+  },
+  self: (): Promise<UserEntity> => instance.get(`/users/self`),
+};
+
 export const api = {
   login,
   admin,
   activity,
   subActivity,
   approve,
+  sign,
+  user,
 };

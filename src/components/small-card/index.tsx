@@ -1,6 +1,7 @@
 import React, { type FC } from "react";
 import { Image } from "@nutui/nutui-react-taro";
 import { ActivityStatus, ActStatusMapping } from "@/types/common";
+import { pic2url } from "@/utils/type";
 import "./style.scss";
 
 export interface SmallCardProps {
@@ -26,7 +27,7 @@ export const SmallCard: FC<SmallCardProps> = (props): JSX.Element => {
         {/* {coverImage} */}
         <Image
           className="small-card-image"
-          src={`https://${coverImage}`}
+          src={pic2url(coverImage)}
           mode="aspectFill"
         ></Image>
       </div>

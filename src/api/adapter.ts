@@ -33,7 +33,7 @@ export const taroAdapter: AxiosAdapter = async (config: TaroConfig) => {
         (config.params !== undefined ? "?" + config.params : ""),
       data: config.data,
       method: config.method,
-      header: config.headers,
+      header: { ...config.headers },
       timeout: config.timeout,
       success: function (res) {
         const response = {

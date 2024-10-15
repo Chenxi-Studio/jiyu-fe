@@ -1,6 +1,6 @@
 import { type Gender, type Degree } from "./common";
 
-export interface ManageScope {
+export class ManageScope {
   gender: Gender[];
   degree: Degree[];
   grade: string[];

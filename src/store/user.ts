@@ -1,4 +1,5 @@
 import { model } from "@/model";
+import { UserEntity } from "@/types/entity/User.entity";
 import { generateRandomString } from "@/utils/uis";
 
 export interface UserModel {
@@ -9,6 +10,8 @@ export interface UserModel {
   scope: string;
   state: string | undefined;
   clientId: string;
+  jwt: string;
+  profile: string;
 }
 
 export const $User = model<UserModel>("USER", {
@@ -19,4 +22,6 @@ export const $User = model<UserModel>("USER", {
   scope: "",
   state: undefined,
   clientId: "",
+  jwt: "",
+  profile: "",
 });

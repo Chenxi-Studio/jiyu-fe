@@ -25,3 +25,9 @@ export interface BasePaginationResponse {
 export interface ApprovedPaginationResponse extends BasePaginationResponse {
   data: ActivityEntity[];
 }
+
+export interface JWTResponse {
+  isSuccess: boolean;
+  jwt: string;
+  type: "admin" | "stu" | "Ultradamin";
+}

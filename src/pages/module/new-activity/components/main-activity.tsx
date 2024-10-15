@@ -3,6 +3,7 @@ import Taro from "@tarojs/taro";
 import { $Activity } from "@/store/activity";
 import { $UI } from "@/store/UI";
 import { Image, Input, TextArea } from "@nutui/nutui-react-taro";
+import { pic2url } from "@/utils/type";
 import { TimeInput } from "./time-input";
 
 export const MainActivity = (): JSX.Element => {
@@ -69,14 +70,7 @@ export const MainActivity = (): JSX.Element => {
               });
             }}
           >
-            <Image
-              src={
-                picSrc !== undefined && picSrc?.startsWith("http")
-                  ? picSrc
-                  : `https://${picSrc}`
-              }
-              mode="aspectFit"
-            />
+            <Image src={pic2url(picSrc)} mode="aspectFit" />
           </div>
         </div>
         <TimeInput
