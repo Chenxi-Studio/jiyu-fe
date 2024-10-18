@@ -1,0 +1,9 @@
+{
+    "local_svgs": "请参考README.md，本地svg文件夹，使用本地svg图标时配置",
+    "save_dir": "./src/components/iconfont",
+    "use_typescript": false,
+    "platforms": "*",
+    "use_rpx": true,
+    "trim_icon_prefix": "icon",
+    "default_icon_size": 18
+}
