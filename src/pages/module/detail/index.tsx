@@ -12,7 +12,8 @@ import { SubActivityCard } from "./components/sub-activity-card";
 
 const Detail = (): JSX.Element => {
   const currentActivity = $UI.use((state) => state.currentActivity);
-  const editable = $UI.use((state) => state.detailEdit);
+  const origin = $UI.use((state) => state.detailOrigin);
+  const editable = origin === "publish";
   const [offset, setOffset] = useState<number>(0);
   const [minHeight, setMinHeight] = useState<number>(0);
 
@@ -118,7 +119,7 @@ const Detail = (): JSX.Element => {
           onClick={() => {
             if (editable)
               $UI.update("detail navigate back", (draft) => {
-                draft.detailEdit = false;
+                draft.detailOrigin = "home";
               });
             navigateBack();
           }}

@@ -61,7 +61,7 @@ const Publish = (): JSX.Element => {
   const handleOnclick = (item: ActivityEntity): void => {
     $UI.update("update current activity", (draft) => {
       draft.currentActivity = item;
-      draft.detailEdit = true;
+      draft.detailOrigin = "publish";
     });
     navigateTo(`pages/module/detail/index`);
   };

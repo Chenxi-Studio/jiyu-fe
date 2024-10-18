@@ -6,7 +6,7 @@ export interface UIModel {
   selected: number;
   // detail
   currentActivity: ActivityEntity | undefined;
-  detailEdit: boolean;
+  detailOrigin: "activity" | "detail" | "publish" | "home";
   // global notify
   showNotify: boolean;
   notifyMsg: string;
@@ -21,7 +21,7 @@ export interface UIModel {
 export const $UI = model<UIModel>("UI", {
   selected: 0,
   currentActivity: undefined,
-  detailEdit: false,
+  detailOrigin: "home",
   showNotify: false,
   notifyMsg: "",
   publishRefresh: false,
