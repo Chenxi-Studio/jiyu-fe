@@ -13,6 +13,10 @@ export const setDevJWT = async (): Promise<void> => {
     const self = await api.user.self();
     $User.update("update avatar", (draft) => {
       draft.profile = self.profile;
+      draft.sid = self.sid;
+      draft.name = self.name;
+      draft.phone = self.phone;
+      draft.email = self.email;
     });
     console.log("self", self);
   }

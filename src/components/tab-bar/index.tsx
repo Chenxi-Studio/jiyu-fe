@@ -11,6 +11,8 @@ import { switchTab } from "@/utils/navigator";
 import { $UI } from "@/store/UI";
 import "./style.css";
 
+const iconSize = 22;
+
 export const TabBar = (): JSX.Element => {
   const selected = $UI.use((state) => state.selected);
   return (
@@ -24,12 +26,12 @@ export const TabBar = (): JSX.Element => {
             }}
             className={"tab-bar-item " + (selected === index ? "selected" : "")}
           >
-            {item.text === "发布" && <AddRectangle size={18} />}
-            {item.text === "审批" && <Received size={18} />}
-            {item.text === "主页" && <Home size={18} />}
-            {item.text === "活动" && <Category size={18} />}
-            {item.text === "个人" && <User size={18} />}
-            <div>{item.text}</div>
+            {item.text === "发布" && <AddRectangle size={iconSize} />}
+            {item.text === "审批" && <Received size={iconSize} />}
+            {item.text === "主页" && <Home size={iconSize} />}
+            {item.text === "活动" && <Category size={iconSize} />}
+            {item.text === "个人" && <User size={iconSize} />}
+            {/* <div>{item.text}</div> */}
           </div>
         ))}
       </div>
