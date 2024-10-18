@@ -28,6 +28,8 @@ const Activity = (): JSX.Element => {
 
   const loadData = async (): Promise<void> => {
     const mySignListResponse = await api.sign.mySignList();
+    console.log(mySignListResponse);
+
     setSignList(mySignListResponse);
     const waitListResponse = await api.sign.waitList();
     setWaitList(waitListResponse);
@@ -49,7 +51,7 @@ const Activity = (): JSX.Element => {
   const handleOnclick = (item: ActivityEntity): void => {
     $UI.update("update current activity", (draft) => {
       draft.currentActivity = item;
-      draft.detailEdit = true;
+      draft.detailOrigin = "activity";
     });
     navigateTo(`pages/module/detail/index`);
   };
@@ -147,11 +149,11 @@ const Activity = (): JSX.Element => {
               ))}
             </div>
           </Collapse.Item>
-          <Collapse.Item title="已发布" name="2">
+          <Collapse.Item title="候补中" name="2">
             <div>
               {waitList.map((item, index) => (
                 <div
-                  key={`Published-${index}`}
+                  key={`Wait-${index}`}
                   className="mt-2 px-[52rpx]"
                   onClick={() => {
                     handleOnclick(item);
