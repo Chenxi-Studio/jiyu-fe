@@ -1,11 +1,11 @@
 import React, { useState } from "react";
+import { type BaseEventOrig } from "@tarojs/components";
 import { ArrowSize6 } from "@nutui/icons-react-taro";
 import { api } from "@/api";
 import { $User } from "@/store/user";
 import { pic2url } from "@/utils/type";
 import { Avatar } from "./components/avatar";
 import "./style.scss";
-import { type BaseEventOrig } from "@tarojs/components";
 
 const Profile = (): JSX.Element => {
   const avatarUrl = $User.use((state) => state.profile);
@@ -14,6 +14,11 @@ const Profile = (): JSX.Element => {
       draft.profile = url;
     });
   };
+  const sid = $User.use((state) => state.sid);
+  const name = $User.use((state) => state.name);
+  const email = $User.use((state) => state.email);
+  const phone = $User.use((state) => state.phone);
+
   const handleChooseAvatar = (e: BaseEventOrig<any>): void => {
     if (typeof e.detail.avatarUrl === "string") {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -54,27 +59,27 @@ const Profile = (): JSX.Element => {
         <div className="flex justify-between items-center h-14">
           <div>学号</div>
           <div className="flex items-center justify-center gap-4 text-gray-500">
-            <div>19307110112</div>
-            <ArrowSize6 size={12} color="#d1d5db" />
+            <div>{sid}</div>
+            {/* <ArrowSize6 size={12} color="#d1d5db" /> */}
           </div>
         </div>
         <div className="flex justify-between items-center h-14">
           <div>名字</div>
           <div className="flex items-center justify-center gap-4 text-gray-500">
-            <div>我是一个名字</div>
+            <div>{name}</div>
           </div>
         </div>
         <div className="flex justify-between items-center h-14">
           <div>手机</div>
           <div className="flex items-center justify-center gap-4 text-gray-500">
-            <div>17236780307</div>
+            <div>{phone}</div>
             <ArrowSize6 size={12} color="#d1d5db" />
           </div>
         </div>
         <div className="flex justify-between items-center h-14">
           <div>邮箱</div>
           <div className="flex items-center justify-center gap-4 text-gray-500">
-            <div>17236780307@fudan.edu.cn</div>
+            <div>{email}</div>
           </div>
         </div>
       </div>

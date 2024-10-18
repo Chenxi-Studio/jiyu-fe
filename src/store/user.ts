@@ -1,5 +1,4 @@
 import { model } from "@/model";
-import { UserEntity } from "@/types/entity/User.entity";
 import { generateRandomString } from "@/utils/uis";
 
 export interface UserModel {
@@ -12,6 +11,9 @@ export interface UserModel {
   clientId: string;
   jwt: string;
   profile: string;
+  name: string;
+  email: string;
+  phone: string;
 }
 
 export const $User = model<UserModel>("USER", {
@@ -24,4 +26,7 @@ export const $User = model<UserModel>("USER", {
   clientId: "",
   jwt: "",
   profile: "",
+  name: "",
+  email: "",
+  phone: "",
 });
