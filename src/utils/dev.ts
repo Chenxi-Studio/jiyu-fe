@@ -2,8 +2,10 @@ import { api } from "@/api";
 import instance from "@/api/axios";
 import { $User } from "@/store/user";
 
-export const setDevJWT = async (): Promise<void> => {
-  const jwt = await api.login.devJWT("admin");
+export const setDevJWT = async (
+  type: "stu" | "admin" | "Ultradamin",
+): Promise<void> => {
+  const jwt = await api.login.devJWT(type);
   console.log("jwt", jwt);
   if (jwt.isSuccess) {
     instance.defaults.headers.common.Authorization = `Bearer ${jwt.jwt}`;
@@ -12,12 +14,12 @@ export const setDevJWT = async (): Promise<void> => {
     });
     const self = await api.user.self();
     $User.update("update avatar", (draft) => {
-      draft.profile = self.profile;
-      draft.sid = self.sid;
-      draft.name = self.name;
-      draft.phone = self.phone;
-      draft.email = self.email;
+      draft = {
+        ...draft,
+        ...self,
+      };
+      return draft;
     });
-    console.log("self", self);
+    console.log("self", self, $User.get());
   }
 };
