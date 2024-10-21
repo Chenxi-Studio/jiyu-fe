@@ -4,6 +4,7 @@ import { navigateTo, switchTab } from "@/utils/navigator";
 import { api } from "@/api";
 import Taro from "@tarojs/taro";
 import { Loading } from "@nutui/icons-react-taro";
+import { setDevJWT } from "@/utils/dev";
 
 const Auth = (): JSX.Element => {
   const stateCallback = $User.use((state) => state.state);
@@ -54,6 +55,13 @@ const Auth = (): JSX.Element => {
     }
   }, [code, clientId, scope, stateCallback, stateLocal]);
 
+  const devLogin = async (
+    type: "stu" | "admin" | "Ultradamin",
+  ): Promise<void> => {
+    await setDevJWT(type);
+    switchTab("pages/home/index");
+  };
+
   return (
     <>
       <div
@@ -66,6 +74,36 @@ const Auth = (): JSX.Element => {
         <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3">
           {buttonContent === "登录中" && <Loading size={20} />}
           {buttonContent}
+        </div>
+      </div>
+      <div
+        onClick={() => {
+          void devLogin("stu");
+        }}
+        className="fixed bottom-[36%] px-8 w-[calc(100%-128rpx)]"
+      >
+        <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3">
+          Stu 测试登录
+        </div>
+      </div>
+      <div
+        onClick={() => {
+          void devLogin("admin");
+        }}
+        className="fixed bottom-[28%] px-8 w-[calc(100%-128rpx)]"
+      >
+        <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3">
+          Admin 测试登录
+        </div>
+      </div>
+      <div
+        onClick={() => {
+          void devLogin("Ultradamin");
+        }}
+        className="fixed bottom-[20%] px-8 w-[calc(100%-128rpx)]"
+      >
+        <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3">
+          UltraAdmin 测试登录
         </div>
       </div>
     </>

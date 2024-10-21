@@ -19,6 +19,8 @@ const Profile = (): JSX.Element => {
   const email = $User.use((state) => state.email);
   const phone = $User.use((state) => state.phone);
 
+  console.log("user", $User.get());
+
   const handleChooseAvatar = (e: BaseEventOrig<any>): void => {
     if (typeof e.detail.avatarUrl === "string") {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument

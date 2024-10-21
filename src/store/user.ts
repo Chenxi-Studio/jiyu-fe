@@ -1,7 +1,9 @@
 import { model } from "@/model";
+import { type UserEntity } from "@/types/entity/User.entity";
 import { generateRandomString } from "@/utils/uis";
 
-export interface UserModel {
+export interface UserModel extends UserEntity {
+  // UIS
   id: number;
   sid: string;
   state_key: string;
@@ -10,10 +12,6 @@ export interface UserModel {
   state: string | undefined;
   clientId: string;
   jwt: string;
-  profile: string;
-  name: string;
-  email: string;
-  phone: string;
 }
 
 export const $User = model<UserModel>("USER", {
@@ -25,8 +23,4 @@ export const $User = model<UserModel>("USER", {
   state: undefined,
   clientId: "",
   jwt: "",
-  profile: "",
-  name: "",
-  email: "",
-  phone: "",
 });
