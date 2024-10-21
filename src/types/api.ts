@@ -22,7 +22,7 @@ export interface BasePaginationResponse {
   total: number;
 }
 
-export interface ApprovedPaginationResponse extends BasePaginationResponse {
+export interface PaginationResponse extends BasePaginationResponse {
   data: ActivityEntity[];
 }
 

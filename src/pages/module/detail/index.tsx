@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Taro, { useReady } from "@tarojs/taro";
 import { Dialog, Image } from "@nutui/nutui-react-taro";
 import { $UI } from "@/store/UI";
@@ -6,16 +6,21 @@ import { navigateBack, navigateTo } from "@/utils/navigator";
 import { formatDate, px2rpx, windowHeight } from "@/utils/unit";
 import { $Activity } from "@/store/activity";
 import { baseActivityRequestIsEmpty } from "@/types/activity";
-import { ActivityStatus } from "@/types/common";
+import { ActivityRegisterStatus, ActivityStatus } from "@/types/common";
 import { pic2url } from "@/utils/type";
+import { Logout, PackageAdd } from "@nutui/icons-react-taro";
+import { api } from "@/api";
+import { GlobalNotify } from "@/components/global-notify";
 import { SubActivityCard } from "./components/sub-activity-card";
 
 const Detail = (): JSX.Element => {
   const currentActivity = $UI.use((state) => state.currentActivity);
   const origin = $UI.use((state) => state.detailOrigin);
   const editable = origin === "publish";
+  const confirm = origin === "home";
   const [offset, setOffset] = useState<number>(0);
   const [minHeight, setMinHeight] = useState<number>(0);
+  const subIDs = useRef<number[]>([]);
 
   // TODO: 卡顿？
   useReady(() => {
@@ -44,6 +49,7 @@ const Detail = (): JSX.Element => {
 
   return (
     <div className="h-[100vh] bg-[#FCFCFC]">
+      <GlobalNotify />
       <Dialog id="Detail" />
       <div className="h-48 w-full fixed top-0 z-0" id="detail-pic">
         <Image src={pic2url(currentActivity?.coverImage)} mode="aspectFill" />
@@ -68,7 +74,28 @@ const Detail = (): JSX.Element => {
         <div>子活动</div>
         <div>
           {currentActivity?.subActivities.map((item, index) => {
-            return <SubActivityCard sub={item} key={`sub-activity-${index}`} />;
+            return (
+              <SubActivityCard
+                sub={item}
+                key={`sub-activity-${index}`}
+                onClick={() => {
+                  if (
+                    item.id !== undefined &&
+                    subIDs.current.includes(item.id)
+                  ) {
+                    subIDs.current = subIDs.current.filter(
+                      (id) => id !== item.id,
+                    );
+                  }
+                  if (
+                    item.id !== undefined &&
+                    !subIDs.current.includes(item.id)
+                  ) {
+                    subIDs.current.push(item.id);
+                  }
+                }}
+              />
+            );
           })}
         </div>
       </div>
@@ -114,7 +141,36 @@ const Detail = (): JSX.Element => {
               : "此阶段活动不能修改"}
           </div>
         )}
-        {!editable && <div>Confirm</div>}
+        {confirm && (
+          <div
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            onClick={async () => {
+              try {
+                if (currentActivity?.id !== undefined) {
+                  console.log(subIDs.current);
+
+                  const res = await api.sign.register(
+                    currentActivity?.id,
+                    subIDs.current,
+                  );
+                  if (res === ActivityRegisterStatus.Success) {
+                    navigateBack();
+                  }
+                  if (res === ActivityRegisterStatus.Fail) {
+                    $UI.update("register error notify", (draft) => {
+                      draft.showNotify = true;
+                      draft.notifyMsg = "报名失败: 不满足报名条件";
+                    });
+                  }
+                }
+              } catch (error) {
+                console.log(error);
+              }
+            }}
+          >
+            <PackageAdd />
+          </div>
+        )}
         <div
           onClick={() => {
             if (editable)
@@ -124,7 +180,7 @@ const Detail = (): JSX.Element => {
             navigateBack();
           }}
         >
-          Back
+          <Logout />
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { type FC } from "react";
+import React, { type MouseEventHandler, type FC } from "react";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { dateBoundary } from "@/utils/unit";
 import { Image } from "@tarojs/components";
@@ -7,13 +7,15 @@ import "./style.scss";
 export interface BigCardProps {
   key?: string | number;
   activity: ActivityEntity;
+  onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
 export const BigCard: FC<BigCardProps> = (props) => {
-  const { activity, key } = props;
+  const { activity, key, onClick } = props;
 
   return (
     <div
+      onClick={onClick}
       className="drop-shadow-base bg-white rounded-2xl p-3 h-[560rpx] min-w-[400rpx]"
       key={key}
     >
@@ -30,7 +32,7 @@ export const BigCard: FC<BigCardProps> = (props) => {
             {dateBoundary(activity.startTime, activity.endTime)}
           </div>
         </div>
-        <div>按钮</div>
+        {/* <div>按钮</div> */}
       </div>
     </div>
   );
