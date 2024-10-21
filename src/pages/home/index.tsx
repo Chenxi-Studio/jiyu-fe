@@ -1,18 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { twMerge } from "tailwind-merge";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { api } from "@/api";
+import { $UI } from "@/store/UI";
+import { navigateTo } from "@/utils/navigator";
 import { SearchBar } from "./components/search-bar";
 import { BigCard } from "./components/big-card";
 import "./style.scss";
 import { MiddleCard } from "./components/middle-card";
+import { Tag } from "./components/tag";
 
 const TagContent = ["邯郸", "江湾", "学研", "团学联"];
 const Home = (): JSX.Element => {
   const [searchContent, setSearchContent] = useState<string>("");
   const [activities, setActivities] = useState<ActivityEntity[]>([]);
+  const tags = useRef<string[]>([]);
 
   const load = async (): Promise<void> => {
-    const res = await api.activity.listSelfAll(); // 暂时 mock
+    const res = await api.sign.list();
     setActivities(res.data);
   };
 
@@ -35,22 +40,33 @@ const Home = (): JSX.Element => {
       <div className="px-10">
         <div className="flex justify-between text-gray-400 text-sm mt-3">
           {TagContent.map((item, index) => (
-            <div
+            <Tag
               key={`tag-${item}-${index}`}
-              className="flex"
+              content={item}
               onClick={() => {
-                setSearchContent(item);
+                if (tags.current.includes(item))
+                  tags.current = tags.current.filter((tag) => tag !== item);
+                else {
+                  tags.current.push(item);
+                }
               }}
-            >
-              <div>#</div>
-              <div>{item}</div>
-            </div>
+            />
           ))}
         </div>
       </div>
       <div className="hide-scrollbar py-3 flex gap-6 overflow-x-auto overscroll-y-hidden px-10 mt-3">
         {activities.map((activity, index) => (
-          <BigCard key={`Big-Card-${index}`} activity={activity} />
+          <BigCard
+            key={`Big-Card-${index}`}
+            activity={activity}
+            onClick={() => {
+              $UI.update("from home", (draft) => {
+                draft.currentActivity = activity;
+                draft.detailOrigin = "home";
+              });
+              navigateTo(`pages/module/detail/index`);
+            }}
+          />
         ))}
       </div>
       <div className="mt-3 px-10 text-xl text-gray-800">即将到来的活动</div>

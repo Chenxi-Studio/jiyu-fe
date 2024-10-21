@@ -1,16 +1,26 @@
-import React, { useMemo, useState, type FC } from "react";
+import React, {
+  type MouseEventHandler,
+  useMemo,
+  useState,
+  type FC,
+} from "react";
 import { Progress, Radio } from "@nutui/nutui-react-taro";
-import { useSpring, animated } from "@react-spring/web";
+import { animated } from "@react-spring/web";
 import { type SubActivity } from "@/types/activity";
 import { dateBoundary } from "@/utils/unit";
-import { Checklist } from "@nutui/icons-react-taro";
+import { Checked } from "@nutui/icons-react-taro";
 
 export interface SubActivityCardProps {
   sub: SubActivity;
   key: string;
+  onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
-export const SubActivityCard: FC<SubActivityCardProps> = ({ sub, key }) => {
+export const SubActivityCard: FC<SubActivityCardProps> = ({
+  sub,
+  key,
+  onClick,
+}) => {
   const [selected, setSelected] = useState(false);
   const time = useMemo(() => {
     return dateBoundary(sub.startTime, sub.endTime);
@@ -22,21 +32,12 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({ sub, key }) => {
 
   const currentSelected = Math.round(Math.random() * sub.capacity);
 
-  const springs = useSpring({
-    from: {
-      boxShadow: "0px 3px 24px rgba(25,32,45,0.05)",
-    },
-    to: {
-      boxShadow:
-        "0px 3px 24px rgba(25,32,45,0.05), inset 0px 0px 24px 5px rgba(253, 160, 133, 0.5)",
-    },
-  });
-
   return (
     <animated.div
       //   style={{ ...springs }}
-      onClick={() => {
+      onClick={(event) => {
         setSelected(!selected);
+        if (onClick !== undefined) onClick(event);
       }}
       key={key}
       className="rounded-3xl shadow-[0px_3px_24px_rgba(25,32,45,0.05)] my-4 p-4 bg-white btn btn-border-drawing"
@@ -60,8 +61,8 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({ sub, key }) => {
           animated
         />
         <Radio
-          icon={<Checklist size={28} />}
-          activeIcon={<Checklist style={{ color: "#73c088" }} size={28} />}
+          icon={<Checked size={20} />}
+          activeIcon={<Checked style={{ color: "#73c088" }} size={20} />}
           checked={selected}
         />
       </div>

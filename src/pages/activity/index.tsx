@@ -28,10 +28,12 @@ const Activity = (): JSX.Element => {
 
   const loadData = async (): Promise<void> => {
     const mySignListResponse = await api.sign.mySignList();
-    console.log(mySignListResponse);
+    console.log("signlist", mySignListResponse);
 
     setSignList(mySignListResponse);
     const waitListResponse = await api.sign.waitList();
+    console.log("waitlist", waitListResponse);
+
     setWaitList(waitListResponse);
   };
 
@@ -171,18 +173,6 @@ const Activity = (): JSX.Element => {
             </div>
           </Collapse.Item>
         </Collapse>
-
-        <div
-          onClick={() => {
-            if ($Activity.get().id !== undefined) {
-              $Activity.init();
-            }
-            navigateTo("pages/module/new-activity/index");
-          }}
-          className="fixed h-12 w-12 rounded-full bg-blue-200 right-5 bottom-[190rpx] flex justify-center items-center"
-        >
-          <Edit color="white" width={24} height={24} />
-        </div>
       </div>
       <GlobalNotify />
     </PullToRefresh>

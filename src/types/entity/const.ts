@@ -1,4 +1,4 @@
-export declare enum RoleLevel {
+export enum RoleLevel {
   Public = 0,
   User = 10,
   Admin = 20,

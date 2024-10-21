@@ -12,12 +12,13 @@ import { $UI } from "@/store/UI";
 import SimpleFormData from "@/utils/FormData";
 import {
   type TacResponse,
-  type ApprovedPaginationResponse,
+  type PaginationResponse,
   type JWTResponse,
 } from "@/types/api";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { type UserEntity } from "@/types/entity/User.entity";
 import instance, { baseURL, tacInstance } from "./axios";
+import { type ActivityRegisterStatus } from "@/types/common";
 
 const activity2formDate = (
   r: BaseActivityRequest,
@@ -218,7 +219,7 @@ const approve = {
   disapprove: (actID: number, reason: string) => {
     return instance.post(`/activity/disapprove/${actID}`, { reason });
   },
-  approved: (): Promise<ApprovedPaginationResponse> => {
+  approved: (): Promise<PaginationResponse> => {
     const params = new URLSearchParams();
     const queryObject = {
       page: 1,
@@ -235,11 +236,27 @@ const approve = {
 };
 
 const sign = {
+  list: (): Promise<PaginationResponse> => {
+    const params = new URLSearchParams();
+    const queryObject = {
+      page: 1,
+      limit: 100,
+    };
+    for (const [key, value] of Object.entries(queryObject)) {
+      params.append(key, value.toString());
+    }
+    return instance.get(`/sign-act/available`, {
+      params,
+    });
+  },
   mySignList: (): Promise<ActivityEntity[]> =>
     instance.get(`/sign-act/my-sign`),
   waitList: (): Promise<ActivityEntity[]> => instance.get(`/sign-act/my-wait`),
   revocation: (signID: number) => instance.delete(`/sign-act/sign-revokation`),
-  register: (actID: number, subIDs: number[]) =>
+  register: (
+    actID: number,
+    subIDs: number[],
+  ): Promise<ActivityRegisterStatus> =>
     instance.post(`/sign-act/register`, {
       actID,
       subIDs,
