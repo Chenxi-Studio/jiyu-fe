@@ -13,7 +13,6 @@ const Auth = (): JSX.Element => {
   const scope = $User.use((state) => state.scope);
   const code = $User.use((state) => state.code);
   const clientId = $User.use((state) => state.clientId);
-  const [msg, setMsg] = useState<string>("登录中");
   const [buttonContent, setButtonContent] = useState<string>("UIS 登录");
   const [wxButtonContent, setWxButtonContent] = useState<string>("微信登录");
 
@@ -60,7 +59,7 @@ const Auth = (): JSX.Element => {
 
   useEffect(() => {
     if (stateCallback !== undefined && stateCallback !== stateLocal) {
-      setMsg("非法请求: CSRF");
+      setButtonContent("非法请求: CSRF");
       return;
     }
     if (stateCallback === stateLocal) {

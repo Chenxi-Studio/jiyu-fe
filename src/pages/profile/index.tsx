@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { type BaseEventOrig } from "@tarojs/components";
 import { ArrowSize6 } from "@nutui/icons-react-taro";
 import { api } from "@/api";
 import { $User } from "@/store/user";
 import { pic2url } from "@/utils/type";
-import { Avatar } from "./components/avatar";
 import { $Activity } from "@/store/activity";
 import { $UI } from "@/store/UI";
 import { $Tag } from "@/store/tag";
 import { navigateTo } from "@/utils/navigator";
+import { Avatar } from "./components/avatar";
 import "./style.scss";
 
 const Profile = (): JSX.Element => {

@@ -11,7 +11,6 @@ import { $User } from "@/store/user";
 import { $UI } from "@/store/UI";
 import SimpleFormData from "@/utils/FormData";
 import {
-  type TacResponse,
   type PaginationResponse,
   type JWTResponse,
   type RegisterInfoResponse,
