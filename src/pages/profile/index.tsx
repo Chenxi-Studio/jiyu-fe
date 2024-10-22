@@ -5,6 +5,10 @@ import { api } from "@/api";
 import { $User } from "@/store/user";
 import { pic2url } from "@/utils/type";
 import { Avatar } from "./components/avatar";
+import { $Activity } from "@/store/activity";
+import { $UI } from "@/store/UI";
+import { $Tag } from "@/store/tag";
+import { navigateTo } from "@/utils/navigator";
 import "./style.scss";
 
 const Profile = (): JSX.Element => {
@@ -26,6 +30,8 @@ const Profile = (): JSX.Element => {
       void api.user.profile(e.detail.avatarUrl as string);
     }
   };
+
+  console.log("avatar", avatarUrl);
 
   return (
     <div className="text-gray-600">
@@ -84,13 +90,40 @@ const Profile = (): JSX.Element => {
         </div>
       </div>
       <div className="rounded-xl mt-6 shadow-lg mx-6 bg-[rgba(255,255,255,0.75)] px-4">
-        <div className="flex justify-between items-center h-12">
+        <div
+          className="flex justify-between items-center h-12"
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          onClick={async () => {
+            const res = await api.login.wxLogout();
+            if (!res.isSuccess) {
+              $UI.update("wx logout error", (draft) => {
+                draft.notifyMsg = "微信解绑失败 请联系管理员";
+                draft.showNotify = true;
+              });
+            } else {
+              $User.init();
+              $Activity.init();
+              $UI.init();
+              $Tag.init();
+              navigateTo("pages/auth/index");
+            }
+          }}
+        >
           <div>解绑微信</div>
           <div className="flex items-center justify-center">
             <ArrowSize6 size={12} color="#d1d5db" />
           </div>
         </div>
-        <div className="flex justify-between items-center h-12">
+        <div
+          className="flex justify-between items-center h-12"
+          onClick={() => {
+            $User.init();
+            $Activity.init();
+            $UI.init();
+            $Tag.init();
+            navigateTo("pages/auth/index");
+          }}
+        >
           <div>退出登录</div>
           <div className="flex items-center justify-center">
             <ArrowSize6 size={12} color="#d1d5db" />

@@ -69,8 +69,13 @@ const activity2formDate = (
 };
 
 const login = {
-  tac: (clientId: string, code: string): Promise<TacResponse> =>
-    instance.post(`/auth/tac`, { clientId, code }),
+  wxLogout: (): Promise<{ isSuccess: boolean }> =>
+    instance.delete(`/auth/wx-logout`),
+  wxLogin: (wxCode: string): Promise<{ isSuccess: boolean; jwt: string }> => {
+    return instance.post(`/auth/wx-login`, { wxCode });
+  },
+  tac: (tacCode: string, wxCode: string): Promise<{ jwt: string }> =>
+    instance.post(`/auth/tac-wx-login`, { tacCode, wxCode }),
   info: (accessToken: string) => {
     const params = new URLSearchParams();
     const queryObject = {

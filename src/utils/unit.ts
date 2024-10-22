@@ -1,3 +1,8 @@
+import { api } from "@/api";
+import instance from "@/api/axios";
+import { $Tag } from "@/store/tag";
+import { $User } from "@/store/user";
+import { RoleLevel } from "@/types/entity/const";
 import { type PickerOption } from "@nutui/nutui-react-taro";
 import Taro from "@tarojs/taro";
 
@@ -106,4 +111,33 @@ export const dateBoundary = (start: Date, end: Date): string => {
     return `${startTime}-${endTime.replace(/^[0-9]*\/[0-9]*\/[0-9]*[\s]/, "")}`;
   }
   return `${startTime}-${endTime}`;
+};
+
+export const setJWT = async (jwt: string): Promise<void> => {
+  instance.defaults.headers.common.Authorization = `Bearer ${jwt}`;
+  $User.update("prod jwt", (draft) => {
+    draft.jwt = jwt;
+  });
+  const self = await api.user.self();
+  $User.update("update avatar", (draft) => {
+    draft = {
+      ...draft,
+      ...self,
+    };
+    return draft;
+  });
+  console.log("self", self, $User.get());
+  if (self.roleLevel !== undefined && self.roleLevel >= RoleLevel.Admin) {
+    const classes = await api.tag.basicGet("class");
+    const majors = await api.tag.basicGet("major");
+    const grades = await api.tag.basicGet("grade");
+    const tags = await api.tag.tagsGet();
+    $Tag.update("fetch tag", (draft) => {
+      draft.classes = classes.map((item) => item.name);
+      draft.grades = grades.map((item) => item.name);
+      draft.majors = majors.map((item) => item.name);
+      draft.tags = tags;
+    });
+    console.log(tags, grades, majors, classes);
+  }
 };
