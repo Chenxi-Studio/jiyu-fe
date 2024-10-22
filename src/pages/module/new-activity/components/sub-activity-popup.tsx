@@ -6,12 +6,20 @@ import {
 import { Button, Input, Popup } from "@nutui/nutui-react-taro";
 import { $Activity } from "@/store/activity";
 import { TimeInput } from "./time-input";
+import { TagPopup } from "./tag-popup";
 
 const defaultCreateSubActivityRequest = {
   title: "",
   registrationStartTime: new Date(),
   registrationEndTime: new Date(),
-  studentScope: { degree: [], grade: [], major: [], class: [], tags: [] },
+  studentScope: {
+    gender: [],
+    degree: [],
+    grade: [],
+    major: [],
+    class: [],
+    tags: [],
+  },
   capacity: 0,
   checkInStartTime: new Date(),
   checkInEndTime: new Date(),
@@ -35,6 +43,7 @@ export const SubActivityPopUp: FC<SubActivityPopUpProps> = (
     defaultCreateSubActivityRequest,
   );
   const disabled = !validateCreateSubActivityRequest(form);
+  const [showTag, setShowTag] = useState<boolean>(false);
 
   useEffect(() => {
     if (preFill === undefined) {
@@ -68,6 +77,11 @@ export const SubActivityPopUp: FC<SubActivityPopUpProps> = (
         closeable
         visible={show}
         onClose={() => {
+          if (preFill === undefined) {
+            setForm(defaultCreateSubActivityRequest);
+          } else {
+            setForm(preFill);
+          }
           setShow(false);
         }}
         closeOnOverlayClick={false}
@@ -126,62 +140,12 @@ export const SubActivityPopUp: FC<SubActivityPopUpProps> = (
             <Input
               readOnly
               type="text"
-              placeholder="TODO: 暂未支持"
-              onChange={(val) => {
-                setForm((prev) => ({
-                  ...prev,
-                }));
+              value="点击选择参与范围标签"
+              onClick={() => {
+                setShowTag(true);
               }}
             />
           </div>
-          <TimeInput
-            title="开始时间"
-            value={form.startTime}
-            onConfirm={(options, values) => {
-              setForm((prev) => ({
-                ...prev,
-                startTime: new Date(
-                  Number(values[0]),
-                  Number(values[1]) - 1,
-                  Number(values[2]),
-                  Number(values[3]),
-                  Number(values[4]),
-                ),
-              }));
-            }}
-          />
-          <TimeInput
-            title="结束时间"
-            value={form.endTime}
-            onConfirm={(options, values) => {
-              setForm((prev) => ({
-                ...prev,
-                endTime: new Date(
-                  Number(values[0]),
-                  Number(values[1]) - 1,
-                  Number(values[2]),
-                  Number(values[3]),
-                  Number(values[4]),
-                ),
-              }));
-            }}
-          />
-          <TimeInput
-            title="报名开始"
-            value={form.registrationStartTime}
-            onConfirm={(options, values) => {
-              setForm((prev) => ({
-                ...prev,
-                registrationStartTime: new Date(
-                  Number(values[0]),
-                  Number(values[1]) - 1,
-                  Number(values[2]),
-                  Number(values[3]),
-                  Number(values[4]),
-                ),
-              }));
-            }}
-          />
           <TimeInput
             title="报名结束"
             value={form.registrationEndTime}
@@ -243,6 +207,60 @@ export const SubActivityPopUp: FC<SubActivityPopUpProps> = (
           </Button>
         </div>
       </Popup>
+      <TagPopup
+        visible={showTag}
+        onClose={() => {
+          setShowTag(false);
+        }}
+        defaultValue={form.studentScope}
+        onChange={(value, tag, type) => {
+          if (value) {
+            setForm((prev) => {
+              if (type === "class" && typeof tag === "string")
+                prev.studentScope.class.push(tag);
+              if (type === "degree" && typeof tag === "number")
+                prev.studentScope.degree.push(tag);
+              if (type === "gender" && typeof tag === "number")
+                prev.studentScope.gender.push(tag);
+              if (type === "grade" && typeof tag === "string")
+                prev.studentScope.grade.push(tag);
+              if (type === "major" && typeof tag === "string")
+                prev.studentScope.major.push(tag);
+              if (type === "tags" && typeof tag === "number")
+                prev.studentScope.tags.push(tag);
+              return prev;
+            });
+          } else {
+            setForm((prev) => {
+              if (type === "class" && typeof tag === "string")
+                prev.studentScope[type] = prev.studentScope.class.filter(
+                  (item) => item !== tag,
+                );
+              if (type === "degree" && typeof tag === "number")
+                prev.studentScope[type] = prev.studentScope.degree.filter(
+                  (item) => item !== tag,
+                );
+              if (type === "gender" && typeof tag === "number")
+                prev.studentScope[type] = prev.studentScope.gender.filter(
+                  (item) => item !== tag,
+                );
+              if (type === "grade" && typeof tag === "string")
+                prev.studentScope[type] = prev.studentScope.grade.filter(
+                  (item) => item !== tag,
+                );
+              if (type === "major" && typeof tag === "string")
+                prev.studentScope[type] = prev.studentScope.major.filter(
+                  (item) => item !== tag,
+                );
+              if (type === "tags" && typeof tag === "number")
+                prev.studentScope[type] = prev.studentScope.tags.filter(
+                  (item) => item !== tag,
+                );
+              return prev;
+            });
+          }
+        }}
+      />
     </>
   );
 };

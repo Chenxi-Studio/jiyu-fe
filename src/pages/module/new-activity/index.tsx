@@ -35,6 +35,7 @@ const NewActivity = (): JSX.Element => {
         const response = await api.activity.createActivity(
           newValue,
           $Activity.get().coverImage,
+          $Activity.get().groupImage,
         );
 
         setSubmitText("上传子活动");

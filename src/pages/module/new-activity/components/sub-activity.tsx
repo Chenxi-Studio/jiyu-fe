@@ -1,5 +1,6 @@
 import React, { createRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { cloneDeep } from "lodash";
 import { AddCircle } from "@nutui/icons-react-taro";
 import {
   Button,
@@ -108,8 +109,8 @@ export const SubActivity = (): JSX.Element => {
                 <div className="flex justify-between">
                   <div className="text-sm text-gray-500">{item.location}</div>
                   <div className="text-sm text-gray-500">
-                    {formatDate(item.startTime, false)}-
-                    {formatDate(item.endTime, false)}
+                    {formatDate(item.registrationStartTime, false)}-
+                    {formatDate(item.registrationEndTime, false)}
                   </div>
                 </div>
               </div>
@@ -133,7 +134,7 @@ export const SubActivity = (): JSX.Element => {
         <SubActivityPopUp
           show={show}
           setShow={setShow}
-          preFill={preFill}
+          preFill={cloneDeep(preFill)}
           index={index}
         />
       </div>

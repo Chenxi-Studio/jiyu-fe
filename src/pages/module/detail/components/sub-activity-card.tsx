@@ -30,7 +30,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
 }) => {
   const [selected, setSelected] = useState(false);
   const time = useMemo(() => {
-    return dateBoundary(sub.startTime, sub.endTime);
+    return dateBoundary(sub.registrationStartTime, sub.registrationEndTime);
   }, [sub]);
 
   const checkInTime = useMemo(() => {
@@ -63,7 +63,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
         </div>
       </div>
       <div className="flex text-sm mb-2">
-        <div>活动时间: {time}</div>
+        <div>报名时间: {time}</div>
       </div>
       <div className="flex text-sm mb-2">
         <div>签到时间: {checkInTime}</div>

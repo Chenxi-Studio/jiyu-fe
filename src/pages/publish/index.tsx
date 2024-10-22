@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useState } from "react";
+import React, { createRef, useEffect, useRef, useState } from "react";
 import { ArrowDown, Edit } from "@nutui/icons-react-taro";
 import {
   Button,
@@ -34,6 +34,12 @@ const Publish = (): JSX.Element => {
   const [adminPickerVisible, setAdminPickerVisible] = useState(false);
   const [admins, setAdmins] = useState<UserEntity[]>([]);
   const [chosenAdmin, setChosenAdmin] = useState<string>("");
+  const chosenAdminSid = useRef<string>("");
+  const [submitApproveVisible, setSubmitApproveVisible] =
+    useState<boolean>(false);
+  const [submitApproveActivity, setSubmitApproveActivity] = useState<
+    ActivityEntity | undefined
+  >(undefined);
 
   const loadData = async (): Promise<void> => {
     const beforeApprovedResponse = await api.activity.beforeApproved();
@@ -42,7 +48,9 @@ const Publish = (): JSX.Element => {
     setAfterApprovedList(afterApprovedResponse);
     const superAdmins = await api.admin.super();
     setAdmins(superAdmins);
-    setChosenAdmin(superAdmins[0].sid ?? "");
+
+    setChosenAdmin(superAdmins[0].name ?? "");
+    chosenAdminSid.current = superAdmins[0].sid ?? "";
   };
 
   useEffect(() => {
@@ -81,26 +89,55 @@ const Publish = (): JSX.Element => {
       }}
     >
       <Dialog id="Publish" />
+      <Dialog
+        visible={submitApproveVisible}
+        title="审核提示"
+        onConfirm={async () => {
+          try {
+            if (submitApproveActivity?.id !== undefined) {
+              await api.activity.toApprove(
+                submitApproveActivity.id,
+                chosenAdminSid.current,
+              );
+              $UI.update("trigger approve refresh", (draft) => {
+                draft.approveRefresh = true;
+              });
+              const response = await api.activity.beforeApproved();
+              setBeforeApprovedList(response);
+            }
+          } catch (error) {
+            // TODO: 错误问题
+          }
+          setSubmitApproveVisible(false);
+        }}
+        onCancel={() => {
+          setSubmitApproveVisible(false);
+        }}
+      >
+        <div>确认提交审核活动 {submitApproveActivity?.title} 吗？</div>
+        <div
+          className="mt-2 p-2 bg-white border border-solid rounded-lg"
+          onClick={() => {
+            setAdminPickerVisible(true);
+          }}
+        >
+          {chosenAdmin === "" ? "请选择审核老师" : chosenAdmin}
+        </div>
+      </Dialog>
       <Picker
         popupProps={{ zIndex: 9999 }}
         title="请选择审核老师"
         visible={adminPickerVisible}
         options={admins.map((admin) => ({
-          text: admin.name,
-          value: admin.sid,
+          text: admin.name ?? "未知管理员名字",
+          value: admin.sid ?? "未知管理员 sid",
         }))}
-        onConfirm={() => {}}
+        onConfirm={(selectedOptions, selectedValue) => {
+          setChosenAdmin(selectedOptions[0].text.toString());
+          chosenAdminSid.current = selectedValue[0].toString();
+        }}
         onClose={() => {
           setAdminPickerVisible(false);
-        }}
-        onChange={(selectedOptions, selectedValue, columnIndex) => {
-          setChosenAdmin(selectedValue.toString());
-          console.log(
-            "selectedValue",
-            selectedValue,
-            selectedOptions,
-            columnIndex,
-          );
         }}
       />
 
@@ -123,10 +160,12 @@ const Publish = (): JSX.Element => {
                               content: `确认删除活动 ${item.title} 吗？`,
                               onConfirm: async () => {
                                 try {
-                                  await api.activity.delete(item.id);
-                                  const response =
-                                    await api.activity.beforeApproved();
-                                  setBeforeApprovedList(response);
+                                  if (item.id !== undefined) {
+                                    await api.activity.delete(item.id);
+                                    const response =
+                                      await api.activity.beforeApproved();
+                                    setBeforeApprovedList(response);
+                                  }
                                 } catch (error) {
                                   // TODO: 错误问题
                                 }
@@ -146,54 +185,8 @@ const Publish = (): JSX.Element => {
                           type="info"
                           shape="square"
                           onClick={() => {
-                            Dialog.open(`Publish`, {
-                              title: `审核提示`,
-                              content: (
-                                <>
-                                  <div>确认提交审核活动 {item.title} 吗？</div>
-                                  <div
-                                    className="mt-2 p-2 bg-white border border-solid rounded-lg"
-                                    onClick={() => {
-                                      console.log(
-                                        "adminPickerVisible",
-                                        adminPickerVisible,
-                                      );
-
-                                      setAdminPickerVisible(true);
-                                    }}
-                                  >
-                                    {chosenAdmin === ""
-                                      ? "请选择审核老师"
-                                      : admins.filter(
-                                          (admin) => admin.sid === chosenAdmin,
-                                        )[0].name}
-                                  </div>
-                                </>
-                              ),
-                              onConfirm: async () => {
-                                try {
-                                  await api.activity.toApprove(
-                                    item.id,
-                                    chosenAdmin,
-                                  );
-                                  $UI.update(
-                                    "trigger approve refresh",
-                                    (draft) => {
-                                      draft.approveRefresh = true;
-                                    },
-                                  );
-                                  const response =
-                                    await api.activity.beforeApproved();
-                                  setBeforeApprovedList(response);
-                                } catch (error) {
-                                  // TODO: 错误问题
-                                }
-                                Dialog.close(`Publish`);
-                              },
-                              onCancel: () => {
-                                Dialog.close(`Publish`);
-                              },
-                            });
+                            setSubmitApproveVisible(true);
+                            setSubmitApproveActivity(item);
                           }}
                         >
                           提交审核
@@ -209,16 +202,18 @@ const Publish = (): JSX.Element => {
                               content: `确认撤回审核活动 ${item.title} 吗？`,
                               onConfirm: async () => {
                                 try {
-                                  await api.activity.withdrawApprove(item.id);
-                                  $UI.update(
-                                    "trigger approve refresh",
-                                    (draft) => {
-                                      draft.approveRefresh = true;
-                                    },
-                                  );
-                                  const response =
-                                    await api.activity.beforeApproved();
-                                  setBeforeApprovedList(response);
+                                  if (item.id !== undefined) {
+                                    await api.activity.withdrawApprove(item.id);
+                                    $UI.update(
+                                      "trigger approve refresh",
+                                      (draft) => {
+                                        draft.approveRefresh = true;
+                                      },
+                                    );
+                                    const response =
+                                      await api.activity.beforeApproved();
+                                    setBeforeApprovedList(response);
+                                  }
                                 } catch (error) {
                                   // TODO: 错误问题
                                 }

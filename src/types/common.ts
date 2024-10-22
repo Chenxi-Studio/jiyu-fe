@@ -2,11 +2,25 @@ export enum Gender {
   Male = 1,
   Female = 2,
 }
+
+export const genderNames = (i: Gender): string => {
+  if (i === Gender.Male) return "男生";
+  if (i === Gender.Female) return "女生";
+  return `未知性别标签`;
+};
+
 export enum Degree {
   Bachelor = 0,
   Master = 1,
   Doctor = 2,
 }
+
+export const degreeNames = (i: Degree): string => {
+  if (i === Degree.Bachelor) return "本科生";
+  if (i === Degree.Master) return "硕士研究生";
+  if (i === Degree.Doctor) return "博士研究生";
+  return `未知学位标签`;
+};
 
 // 草稿阶段、等待审批阶段、报名阶段、进行阶段、已结束
 export enum ActivityStatus {

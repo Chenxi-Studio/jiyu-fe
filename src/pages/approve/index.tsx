@@ -91,8 +91,10 @@ const Approve = (): JSX.Element => {
                             content: `确认批准通过活动 ${item.title} 吗？`,
                             onConfirm: async () => {
                               try {
-                                await api.approve.approve(item.id);
-                                await fetchList();
+                                if (item.id !== undefined) {
+                                  await api.approve.approve(item.id);
+                                  await fetchList();
+                                }
                               } catch (error) {
                                 // TODO: 错误问题
                               }
@@ -127,11 +129,13 @@ const Approve = (): JSX.Element => {
                             onConfirm: async () => {
                               if (reason.current === "") return;
                               try {
-                                await api.approve.disapprove(
-                                  item.id,
-                                  reason.current,
-                                );
-                                await fetchList();
+                                if (item.id !== undefined) {
+                                  await api.approve.disapprove(
+                                    item.id,
+                                    reason.current,
+                                  );
+                                  await fetchList();
+                                }
                               } catch (error) {
                                 // TODO: 错误问题
                               }

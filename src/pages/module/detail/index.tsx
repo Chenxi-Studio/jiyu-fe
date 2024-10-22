@@ -93,7 +93,6 @@ const Detail = (): JSX.Element => {
           {formatDate(currentActivity?.endTime, false)}
         </div>
         <div className="text-base">{currentActivity?.introduction}</div>
-        <div>子活动</div>
         <div>
           {currentActivity?.subActivities.map((item, index) => {
             return (
@@ -177,16 +176,18 @@ const Detail = (): JSX.Element => {
             onClick={async () => {
               try {
                 if (currentActivity?.id !== undefined) {
-                  console.log(subIDs.current);
-
                   const res = await api.sign.register(
                     currentActivity?.id,
                     subIDs.current,
                   );
-                  if (res === ActivityRegisterStatus.Success) {
+
+                  if (res.registerStatus === ActivityRegisterStatus.Success) {
+                    $UI.update("register success refresh", (draft) => {
+                      draft.activityRefresh = true;
+                    });
                     navigateBack();
                   }
-                  if (res === ActivityRegisterStatus.Fail) {
+                  if (res.registerStatus === ActivityRegisterStatus.Fail) {
                     $UI.update("register error notify", (draft) => {
                       draft.showNotify = true;
                       draft.notifyMsg = "报名失败: 不满足报名条件";

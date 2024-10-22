@@ -1,5 +1,4 @@
 import { type ManageScope } from "./admin";
-import { type ActivityStatus } from "./common";
 
 // 头图专门放在FormData的CoverImage字段里
 export interface BaseActivityRequest {
@@ -22,11 +21,8 @@ export interface CreateActivityWithoutImageRequest extends BaseActivityRequest {
 
 export interface Activity extends BaseActivityRequest {
   id?: number;
-  coverImage: string;
-  groupImage: string;
-  introduction: string;
-  location: string;
-  status: ActivityStatus;
+  coverImage?: string;
+  groupImage?: string;
 }
 
 export interface CreateSubActivityRequest {
@@ -38,8 +34,6 @@ export interface CreateSubActivityRequest {
   capacity: number;
   checkInStartTime: Date;
   checkInEndTime: Date; // 签到结束时间
-  startTime: Date;
-  endTime: Date;
   location: string;
 }
 
@@ -66,7 +60,6 @@ export const validateCreateSubActivityRequest = (
   if (f.location.trim() === "") return false;
   if (f.registrationEndTime < f.registrationStartTime) return false;
   if (f.checkInEndTime < f.checkInStartTime) return false;
-  if (f.endTime < f.startTime) return false;
   return true;
 };
 

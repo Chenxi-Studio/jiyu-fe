@@ -1,4 +1,5 @@
 import { type Activity } from "./activity";
+import { type ActivityStatus } from "./common";
 import { type ActivityEntity } from "./entity/Activity.entity";
 import { type SubActivityEntity } from "./entity/SubActivity.entity";
 
@@ -43,9 +44,13 @@ export interface RegisterInfoResponse {
   }>;
 }
 
+export interface SignListResponseActivity extends Activity {
+  status: ActivityStatus;
+}
+
 export interface SignListResponse {
   actID: number;
-  activity: Activity;
+  activity: SignListResponseActivity;
   id: number;
   signDate: Date;
   subActivities: SubActivityEntity[];

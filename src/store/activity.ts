@@ -4,12 +4,14 @@ import { type Activity, type SubActivity } from "@/types/activity";
 export interface ActivityModel extends Activity {
   subActivities: SubActivity[];
   coverImage: string | undefined;
+  groupImage: string | undefined;
   deleteList: number[];
 }
 
 export const $Activity = model<ActivityModel>("ACTIVITY", {
   title: "测试新增活动",
   coverImage: undefined,
+  groupImage: undefined,
   startTime: new Date(),
   endTime: new Date(new Date().getTime() + 86400000),
   location: "测试地址",
@@ -26,7 +28,7 @@ export const $Activity = model<ActivityModel>("ACTIVITY", {
       registrationStartTime: new Date(),
       registrationEndTime: new Date(new Date().getTime() + 100000),
       studentScope: {
-        gender: [1, 2],
+        gender: [],
         degree: [],
         grade: [],
         major: [],
@@ -36,8 +38,6 @@ export const $Activity = model<ActivityModel>("ACTIVITY", {
       capacity: 100,
       checkInStartTime: new Date(new Date().getTime() + 200000),
       checkInEndTime: new Date(new Date().getTime() + 300000),
-      startTime: new Date(),
-      endTime: new Date(new Date().getTime() + 96400000),
       location: "测试地点",
     },
     {
@@ -45,7 +45,7 @@ export const $Activity = model<ActivityModel>("ACTIVITY", {
       registrationStartTime: new Date(),
       registrationEndTime: new Date(new Date().getTime() + 100000),
       studentScope: {
-        gender: [1, 2],
+        gender: [],
         degree: [],
         grade: [],
         major: [],
@@ -55,8 +55,6 @@ export const $Activity = model<ActivityModel>("ACTIVITY", {
       capacity: 100,
       checkInStartTime: new Date(new Date().getTime() + 200000),
       checkInEndTime: new Date(new Date().getTime() + 300000),
-      startTime: new Date(),
-      endTime: new Date(new Date().getTime() + 96400000),
       location: "测试地点",
     },
   ],

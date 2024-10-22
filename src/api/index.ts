@@ -20,11 +20,13 @@ import {
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { type UserEntity } from "@/types/entity/User.entity";
 import { type ActivityRegisterStatus } from "@/types/common";
+import { type TagEntity } from "@/types/entity/Tag.entity";
 import instance, { baseURL, tacInstance } from "./axios";
 
 const activity2formDate = (
   r: BaseActivityRequest,
-  picSrc: string | undefined | null = undefined,
+  coverImage: string | undefined | null = undefined,
+  groupImage: string | undefined | null = undefined,
 ): SimpleFormData => {
   const formData = new SimpleFormData();
   const rWithSid: CreateActivityWithoutImageRequest = {
@@ -49,11 +51,18 @@ const activity2formDate = (
       formData.append(key, value.toString());
     }
   });
-  if (picSrc !== undefined && picSrc !== null) {
+  if (coverImage !== undefined && coverImage !== null) {
     formData.appendFile(
       "coverImage",
-      picSrc,
-      picSrc.replace(/^http:\/\/tmp\//, ""),
+      coverImage,
+      coverImage.replace(/^http:\/\/tmp\//, ""),
+    );
+  }
+  if (groupImage !== undefined && groupImage !== null) {
+    formData.appendFile(
+      "groupImage",
+      groupImage,
+      groupImage.replace(/^http:\/\/tmp\//, ""),
     );
   }
   return formData;
@@ -95,9 +104,10 @@ const admin = {
 const activity = {
   createActivity: (
     r: BaseActivityRequest,
-    picSrc: string | undefined = undefined,
+    coverImage: string | undefined = undefined,
+    groupImage: string | undefined = undefined,
   ): Promise<ActivityEntity> => {
-    const sandData = activity2formDate(r, picSrc).getData();
+    const sandData = activity2formDate(r, coverImage, groupImage).getData();
 
     return new Promise((resolve, reject) => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -105,7 +115,10 @@ const activity = {
         url: baseURL + "/activity",
         method: "POST",
         data: sandData.buffer,
-        header: { "Content-Type": sandData.contentType },
+        header: {
+          "Content-Type": sandData.contentType,
+          Authorization: `Bearer ${$User.get().jwt}`,
+        },
         success: (res) => {
           const data = res.data;
           if (data.statusCode < 200 || data.statusCode >= 400) {
@@ -152,7 +165,7 @@ const activity = {
     });
   },
   withdrawApprove: (id: number) => {
-    return instance.patch(`/activity/${id}/withdrawal/${$User.get().id}`);
+    return instance.patch(`/activity/${id}/withdrawal`);
   },
   update: (a: Activity, picSrc: string | undefined | null) => {
     if (a.id !== undefined) {
@@ -166,7 +179,10 @@ const activity = {
           url: baseURL + "/activity/" + `${a.id}`,
           method: "PATCH",
           data: sandData.buffer,
-          header: { "Content-Type": sandData.contentType },
+          header: {
+            "Content-Type": sandData.contentType,
+            Authorization: `Bearer ${$User.get().jwt}`,
+          },
           success: (res) => {
             const data = res.data;
             if (data.statusCode < 200 || data.statusCode >= 400) {
@@ -263,7 +279,10 @@ const sign = {
   register: (
     actID: number,
     subIDs: number[],
-  ): Promise<ActivityRegisterStatus> =>
+  ): Promise<{
+    registerStatus: ActivityRegisterStatus;
+    signRecordID: number;
+  }> =>
     instance.post(`/sign-act/register`, {
       actID,
       subIDs,
@@ -314,6 +333,24 @@ const user = {
   self: (): Promise<UserEntity> => instance.get(`/users/self`),
 };
 
+const tag = {
+  basicGet: (
+    type: "grade" | "major" | "class",
+  ): Promise<Array<{ name: string; id: number }>> => {
+    const params = new URLSearchParams();
+    const queryObject = {
+      type,
+    };
+    for (const [key, value] of Object.entries(queryObject)) {
+      params.append(key, value.toString());
+    }
+    return instance.get(`/basic-tag`, {
+      params,
+    });
+  },
+  tagsGet: (): Promise<TagEntity[]> => instance.get(`/tags`),
+};
+
 export const api = {
   login,
   admin,
@@ -322,4 +359,5 @@ export const api = {
   approve,
   sign,
   user,
+  tag,
 };
