@@ -1,4 +1,5 @@
 import { type ManageScope } from "./admin";
+import { type ActivityStatus } from "./common";
 
 // 头图专门放在FormData的CoverImage字段里
 export interface BaseActivityRequest {
@@ -21,6 +22,11 @@ export interface CreateActivityWithoutImageRequest extends BaseActivityRequest {
 
 export interface Activity extends BaseActivityRequest {
   id?: number;
+  coverImage: string;
+  groupImage: string;
+  introduction: string;
+  location: string;
+  status: ActivityStatus;
 }
 
 export interface CreateSubActivityRequest {

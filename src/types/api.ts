@@ -1,4 +1,6 @@
+import { type Activity } from "./activity";
 import { type ActivityEntity } from "./entity/Activity.entity";
+import { type SubActivityEntity } from "./entity/SubActivity.entity";
 
 export interface BaseResponse {
   statusCode?: number;
@@ -30,4 +32,22 @@ export interface JWTResponse {
   isSuccess: boolean;
   jwt: string;
   type: "admin" | "stu" | "Ultradamin";
+}
+
+export interface RegisterInfoResponse {
+  type: "sign" | "wait" | "none";
+  subs: number[];
+  remainings: Array<{
+    subID: number;
+    remaining: number;
+  }>;
+}
+
+export interface SignListResponse {
+  actID: number;
+  activity: Activity;
+  id: number;
+  signDate: Date;
+  subActivities: SubActivityEntity[];
+  useID: number;
 }

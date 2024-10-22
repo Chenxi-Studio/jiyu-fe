@@ -11,6 +11,8 @@ import { pic2url } from "@/utils/type";
 import { Logout, PackageAdd } from "@nutui/icons-react-taro";
 import { api } from "@/api";
 import { GlobalNotify } from "@/components/global-notify";
+import { $User } from "@/store/user";
+import { availableSubIndice } from "@/utils/activity";
 import { SubActivityCard } from "./components/sub-activity-card";
 
 const Detail = (): JSX.Element => {
@@ -21,6 +23,11 @@ const Detail = (): JSX.Element => {
   const [offset, setOffset] = useState<number>(0);
   const [minHeight, setMinHeight] = useState<number>(0);
   const subIDs = useRef<number[]>([]);
+  const [remainings, setRemainings] = useState<
+    Array<{ subID: number; remaining: number }>
+  >([]);
+  const [selected, setSelected] = useState<number[]>([]);
+  const [availables, setAvailables] = useState<number[]>([]);
 
   // TODO: 卡顿？
   useReady(() => {
@@ -41,10 +48,25 @@ const Detail = (): JSX.Element => {
       });
   });
 
+  const load = async (): Promise<void> => {
+    if (currentActivity?.id !== undefined) {
+      const registerInfo = await api.sign.registerInfo(currentActivity?.id);
+      console.log(registerInfo);
+      setRemainings(registerInfo.remainings);
+      if (registerInfo.type === "sign") {
+        setSelected(registerInfo.subs);
+      }
+    }
+  };
+
   useEffect(() => {
     if (currentActivity === undefined) {
       navigateBack();
     }
+    const user = $User.get();
+    if (currentActivity !== undefined && user !== undefined)
+      setAvailables(availableSubIndice(currentActivity, user, true));
+    void load();
   }, []);
 
   return (
@@ -76,7 +98,15 @@ const Detail = (): JSX.Element => {
           {currentActivity?.subActivities.map((item, index) => {
             return (
               <SubActivityCard
+                disabled={!availables.includes(index)}
                 sub={item}
+                remaining={
+                  remainings.find((i) => i.subID === item.id)?.remaining ??
+                  item.capacity
+                }
+                isSelected={
+                  item.id === undefined ? false : selected.includes(item.id)
+                }
                 key={`sub-activity-${index}`}
                 onClick={() => {
                   if (
@@ -141,7 +171,7 @@ const Detail = (): JSX.Element => {
               : "此阶段活动不能修改"}
           </div>
         )}
-        {confirm && (
+        {confirm && selected.length === 0 && (
           <div
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onClick={async () => {

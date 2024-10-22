@@ -6,20 +6,27 @@ import React, {
 } from "react";
 import { Progress, Radio } from "@nutui/nutui-react-taro";
 import { animated } from "@react-spring/web";
-import { type SubActivity } from "@/types/activity";
 import { dateBoundary } from "@/utils/unit";
 import { Checked } from "@nutui/icons-react-taro";
+import { twMerge } from "tailwind-merge";
+import { type SubActivityEntity } from "@/types/entity/SubActivity.entity";
 
 export interface SubActivityCardProps {
-  sub: SubActivity;
+  sub: SubActivityEntity;
   key: string;
+  remaining: number;
+  isSelected?: boolean;
   onClick?: MouseEventHandler<HTMLDivElement>;
+  disabled?: boolean;
 }
 
 export const SubActivityCard: FC<SubActivityCardProps> = ({
   sub,
   key,
+  remaining,
   onClick,
+  isSelected = false,
+  disabled = false,
 }) => {
   const [selected, setSelected] = useState(false);
   const time = useMemo(() => {
@@ -30,21 +37,30 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
     return dateBoundary(sub.checkInStartTime, sub.checkInEndTime);
   }, [sub]);
 
-  const currentSelected = Math.round(Math.random() * sub.capacity);
-
   return (
     <animated.div
       //   style={{ ...springs }}
       onClick={(event) => {
+        if (disabled) return;
         setSelected(!selected);
-        if (onClick !== undefined) onClick(event);
+        if (!isSelected && onClick !== undefined) onClick(event);
       }}
       key={key}
-      className="rounded-3xl shadow-[0px_3px_24px_rgba(25,32,45,0.05)] my-4 p-4 bg-white btn btn-border-drawing"
+      className={twMerge(
+        isSelected
+          ? "shadow-[0px_3px_18px_rgba(1,216,26,0.25)]"
+          : "shadow-[0px_3px_24px_rgba(25,32,45,0.05)]",
+        "rounded-3xl my-4 p-4 bg-white btn btn-border-drawing",
+        disabled && "shadow-[0px_3px_24px_rgba(25,32,45,0.05)] text-gray-300",
+      )}
     >
       <div className="flex justify-between mb-3">
-        <div className="text-black">{sub.title}</div>
-        <div className="text-gray-500">{sub.location}</div>
+        <div className={twMerge(disabled ? "text-gray-300" : "text-black")}>
+          {sub.title}
+        </div>
+        <div className={twMerge(disabled ? "text-gray-300" : "text-gray-500")}>
+          {sub.location}
+        </div>
       </div>
       <div className="flex text-sm mb-2">
         <div>活动时间: {time}</div>
@@ -53,17 +69,22 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
         <div>签到时间: {checkInTime}</div>
       </div>
       <div className="flex text-sm justify-between items-center">
-        <div>余量: {sub.capacity - currentSelected}</div>
+        <div>余量: {remaining}</div>
         <Progress
           className="max-w-[60%]"
-          percent={((sub.capacity - currentSelected) / sub.capacity) * 100}
-          color="linear-gradient(270deg, rgba(18,126,255,1) 0%,rgba(32,147,255,1) 32.815625%,rgba(13,242,204,1) 100%)"
-          animated
+          percent={(remaining / sub.capacity) * 100}
+          color={
+            disabled
+              ? "gray"
+              : "linear-gradient(270deg, rgba(18,126,255,1) 0%,rgba(32,147,255,1) 32.815625%,rgba(13,242,204,1) 100%)"
+          }
+          animated={!disabled}
         />
         <Radio
+          disabled={disabled}
           icon={<Checked size={20} />}
           activeIcon={<Checked style={{ color: "#73c088" }} size={20} />}
-          checked={selected}
+          checked={isSelected || selected}
         />
       </div>
     </animated.div>

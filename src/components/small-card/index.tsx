@@ -14,9 +14,9 @@ export interface SmallCardProps {
 
 export const SmallCard: FC<SmallCardProps> = (props): JSX.Element => {
   const {
-    coverImage = "Unknown",
-    title = "Title Title Title Title",
-    organizer = "Author",
+    coverImage = "默认 coverImage",
+    title = "默认 title",
+    organizer = "默认 Author",
     endTime = new Date(),
     status = ActivityStatus.Draft,
   } = props;
@@ -33,17 +33,17 @@ export const SmallCard: FC<SmallCardProps> = (props): JSX.Element => {
       </div>
       <div className="flex flex-col justify-between flex-grow w-[90%] h-[90%]">
         <div className="flex justify-between text-sm text-gray-300">
-          <div>{organizer}</div>{" "}
+          <div>{organizer}</div>
           <div className="text-gray-400">{ActStatusMapping.get(status)}</div>
         </div>
-        <div className="text-lg">{title}</div>
+        <div className="text-lg text-ellipsis whitespace-nowrap">{title}</div>
         {endTime !== null && (
           <div className="flex justify-between text-gray-400 text-sm">
             <div>{`${endTime.getMonth() + 1}月${endTime.getDate()}日`}</div>
             <div>{`${endTime.getHours().toString().padStart(2, "0")} : ${endTime.getMinutes().toString().padStart(2, "0")}`}</div>
           </div>
         )}
-        {endTime === null && <>未配置结束时间</>}
+        {endTime === null || (endTime === undefined && <>未配置结束时间</>)}
       </div>
     </div>
   );

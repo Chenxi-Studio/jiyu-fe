@@ -4,7 +4,7 @@ import { type FailRecordEntity } from "./FailApproval.entity";
 import { type ActivityStatus } from "../common";
 
 export class ActivityEntity {
-  id: number;
+  id?: number;
   title: string; // 活动标题
   startTime: Date; // 活动开始时间
   endTime: Date; // 活动结束时间
@@ -23,8 +23,8 @@ export class ActivityEntity {
   // 子活动的最少和最多参加数
   minSubParticipants: number;
   maxSubParticipants: number;
-  publisher: AdminEntity;
+  // publisher: AdminEntity;
 
   // 被退回审批历史
-  failRecords: FailRecordEntity[];
+  // failRecords: FailRecordEntity[];
 }

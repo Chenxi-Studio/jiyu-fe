@@ -14,15 +14,15 @@ import { GlobalNotify } from "@/components/global-notify";
 import { SmallCard } from "@/components/small-card";
 import { navigateTo } from "@/utils/navigator";
 import { $UI } from "@/store/UI";
-import { $Activity } from "@/store/activity";
-import { ActivityStatus } from "@/types/common";
 import "./style.scss";
 
-const Activity = (): JSX.Element => {
+const ActivityPage = (): JSX.Element => {
   const refresh = $UI.use((state) => state.activityRefresh);
-  const [signList, setSignList] = useState<ActivityEntity[]>([]);
+  const [signList, setSignList] = useState<
+    Array<{ activity: ActivityEntity; signID: number }>
+  >([]);
   const [waitList, setWaitList] = useState<ActivityEntity[]>([]);
-  const beforeApprovedListRefs = new Array(signList.length)
+  const signListRefs = new Array(signList.length)
     .fill(null)
     .map(() => createRef<SwipeInstance>());
 
@@ -30,11 +30,16 @@ const Activity = (): JSX.Element => {
     const mySignListResponse = await api.sign.mySignList();
     console.log("signlist", mySignListResponse);
 
-    setSignList(mySignListResponse);
-    const waitListResponse = await api.sign.waitList();
-    console.log("waitlist", waitListResponse);
+    setSignList(
+      mySignListResponse.map((item) => ({
+        activity: { subActivities: item.subActivities, ...item.activity },
+        signID: item.id,
+      })),
+    );
+    // const waitListResponse = await api.sign.waitList();
+    // console.log("waitlist", waitListResponse);
 
-    setWaitList(waitListResponse);
+    // setWaitList(waitListResponse);
   };
 
   useEffect(() => {
@@ -80,41 +85,40 @@ const Activity = (): JSX.Element => {
             <div>
               {signList.map((item, index) => (
                 <Swipe
-                  ref={beforeApprovedListRefs[index]}
+                  ref={signListRefs[index]}
                   rightAction={
                     <>
-                      {item.status === ActivityStatus.Draft && (
-                        <Button
-                          type="primary"
-                          shape="square"
-                          onClick={() => {
-                            Dialog.open(`Activity`, {
-                              title: `取消报名提示`,
-                              content: `确认取消报名活动 ${item.title} 吗？`,
-                              onConfirm: async () => {
-                                try {
-                                  alert("todo");
-                                } catch (error) {
-                                  // TODO: 错误问题
-                                }
-                                Dialog.close(`Activity`);
-                              },
-                              onCancel: () => {
-                                Dialog.close(`Activity`);
-                              },
-                            });
-                          }}
-                        >
-                          删除
-                        </Button>
-                      )}
+                      <Button
+                        type="primary"
+                        shape="square"
+                        onClick={() => {
+                          Dialog.open(`Activity`, {
+                            title: `取消报名提示`,
+                            content: `确认取消报名活动 ${item.activity.title} 吗？`,
+                            onConfirm: async () => {
+                              try {
+                                await api.sign.revocation(item.signID);
+                                await loadData();
+                              } catch (error) {
+                                // TODO: 错误问题
+                              }
+                              Dialog.close(`Activity`);
+                            },
+                            onCancel: () => {
+                              Dialog.close(`Activity`);
+                            },
+                          });
+                        }}
+                      >
+                        取消报名
+                      </Button>
                     </>
                   }
                   key={`Activity-${index}`}
                   onTouchStart={() => {
-                    for (const ref of beforeApprovedListRefs) {
+                    for (const ref of signListRefs) {
                       if (
-                        ref !== beforeApprovedListRefs[index] &&
+                        ref !== signListRefs[index] &&
                         ref.current !== null &&
                         typeof ref.current.close === "function"
                       ) {
@@ -124,27 +128,26 @@ const Activity = (): JSX.Element => {
                   }}
                   onActionClick={() => {
                     if (
-                      beforeApprovedListRefs[index].current !== null &&
-                      beforeApprovedListRefs[index].current !== undefined &&
-                      typeof beforeApprovedListRefs[index].current.close ===
-                        "function"
+                      signListRefs[index].current !== null &&
+                      signListRefs[index].current !== undefined &&
+                      typeof signListRefs[index].current.close === "function"
                     ) {
-                      beforeApprovedListRefs[index].current.close();
+                      signListRefs[index].current.close();
                     }
                   }}
                 >
                   <div
                     className="mt-2 px-[52rpx]"
                     onClick={() => {
-                      handleOnclick(item);
+                      handleOnclick(item.activity);
                     }}
                   >
                     <SmallCard
-                      title={item.title}
-                      coverImage={item.coverImage}
-                      organizer={item.organizer}
-                      endTime={item.endTime}
-                      status={item.status}
+                      title={item.activity.title}
+                      coverImage={item.activity.coverImage}
+                      organizer={item.activity.organizer}
+                      endTime={item.activity.endTime}
+                      status={item.activity.status}
                     ></SmallCard>
                   </div>
                 </Swipe>
@@ -179,4 +182,4 @@ const Activity = (): JSX.Element => {
   );
 };
 
-export default Activity;
+export default ActivityPage;

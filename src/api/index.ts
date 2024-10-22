@@ -14,11 +14,13 @@ import {
   type TacResponse,
   type PaginationResponse,
   type JWTResponse,
+  type RegisterInfoResponse,
+  type SignListResponse,
 } from "@/types/api";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { type UserEntity } from "@/types/entity/User.entity";
-import instance, { baseURL, tacInstance } from "./axios";
 import { type ActivityRegisterStatus } from "@/types/common";
+import instance, { baseURL, tacInstance } from "./axios";
 
 const activity2formDate = (
   r: BaseActivityRequest,
@@ -249,10 +251,15 @@ const sign = {
       params,
     });
   },
-  mySignList: (): Promise<ActivityEntity[]> =>
+  mySignList: (): Promise<SignListResponse[]> =>
     instance.get(`/sign-act/my-sign`),
-  waitList: (): Promise<ActivityEntity[]> => instance.get(`/sign-act/my-wait`),
-  revocation: (signID: number) => instance.delete(`/sign-act/sign-revokation`),
+  // waitList: (): Promise<ActivityEntity[]> => instance.get(`/sign-act/my-wait`),
+  revocation: (signID: number) =>
+    instance.delete(`/sign-act/sign-revokation`, {
+      data: {
+        signID,
+      },
+    }),
   register: (
     actID: number,
     subIDs: number[],
@@ -261,6 +268,8 @@ const sign = {
       actID,
       subIDs,
     }),
+  registerInfo: (actID: number): Promise<RegisterInfoResponse> =>
+    instance.get(`/sign-act/act-subs/${actID}`),
 };
 
 const user = {
