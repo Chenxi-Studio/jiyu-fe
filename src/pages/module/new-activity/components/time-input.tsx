@@ -1,18 +1,34 @@
 import { dateFormatter, formatDate } from "@/utils/unit";
-import { DatePicker, Input, type PickerOption } from "@nutui/nutui-react-taro";
+import {
+  Calendar,
+  DatePicker,
+  Input,
+  type PickerOption,
+} from "@nutui/nutui-react-taro";
 import React, { useState, type FC } from "react";
 import { twMerge } from "tailwind-merge";
 
 export interface TimeInputProps {
   title: string;
   value: Date;
-  onConfirm: (options: PickerOption[], values: Array<string | number>) => void;
+  onConfirmMinute: (
+    options: PickerOption[],
+    values: Array<string | number>,
+  ) => void;
+  onConfirmDate: (param: string[]) => void;
   className?: string;
 }
 
 export const TimeInput: FC<TimeInputProps> = (props): JSX.Element => {
-  const { title, value, onConfirm, className = "" } = props;
+  const {
+    title,
+    value,
+    onConfirmMinute,
+    className = "",
+    onConfirmDate,
+  } = props;
   const [show, setShow] = useState<boolean>(false);
+  const [showCalendar, setShowCalendar] = useState<boolean>(false);
   return (
     <div
       className={twMerge(
@@ -24,22 +40,42 @@ export const TimeInput: FC<TimeInputProps> = (props): JSX.Element => {
       <Input
         readOnly
         type="text"
-        placeholder="请输入时间 ..."
-        value={formatDate(value)}
+        style={{ paddingRight: 0 }}
+        placeholder="请选择日期"
+        value={formatDate(value, false)}
+        onClick={() => {
+          setShowCalendar(true);
+        }}
+      />
+      <Input
+        readOnly
+        type="text"
+        placeholder="请选择时间"
+        style={{ paddingLeft: 0 }}
+        value={formatDate(value, true, false)}
         onClick={() => {
           setShow(true);
         }}
       />
       <DatePicker
         title={`${title}选择`}
-        type="datetime"
+        type="hour-minutes"
         visible={show}
         defaultValue={value}
         formatter={dateFormatter}
         onClose={() => {
           setShow(false);
         }}
-        onConfirm={onConfirm}
+        onConfirm={onConfirmMinute}
+      />
+      <Calendar
+        visible={showCalendar}
+        showTitle={false}
+        defaultValue={value.toString()}
+        onClose={() => {
+          setShowCalendar(false);
+        }}
+        onConfirm={onConfirmDate}
       />
     </div>
   );

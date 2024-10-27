@@ -112,14 +112,25 @@ export const MainActivity = (): JSX.Element => {
         <TimeInput
           title="开始时间"
           value={startTime}
-          onConfirm={(options, values) => {
+          onConfirmMinute={(options, values) => {
             $Activity.update("update new startTime", (draft) => {
               draft.startTime = new Date(
+                draft.startTime.getFullYear(),
+                draft.startTime.getMonth(),
+                draft.startTime.getDate(),
                 Number(values[0]),
-                Number(values[1]) - 1,
-                Number(values[2]),
-                Number(values[3]),
-                Number(values[4]),
+                Number(values[1]),
+              );
+            });
+          }}
+          onConfirmDate={(param) => {
+            $Activity.update("update new startTime", (draft) => {
+              draft.startTime = new Date(
+                Number(param[0]),
+                Number(param[1]) - 1,
+                Number(param[2]),
+                draft.startTime.getHours(),
+                draft.startTime.getMinutes(),
               );
             });
           }}
@@ -127,14 +138,25 @@ export const MainActivity = (): JSX.Element => {
         <TimeInput
           title="结束时间"
           value={endTime}
-          onConfirm={(options, values) => {
+          onConfirmMinute={(options, values) => {
             $Activity.update("update new endTime", (draft) => {
               draft.endTime = new Date(
+                draft.endTime.getFullYear(),
+                draft.endTime.getMonth(),
+                draft.endTime.getDate(),
                 Number(values[0]),
-                Number(values[1]) - 1,
-                Number(values[2]),
-                Number(values[3]),
-                Number(values[4]),
+                Number(values[1]),
+              );
+            });
+          }}
+          onConfirmDate={(param) => {
+            $Activity.update("update new endTime", (draft) => {
+              draft.endTime = new Date(
+                Number(param[0]),
+                Number(param[1]) - 1,
+                Number(param[2]),
+                draft.endTime.getHours(),
+                draft.endTime.getMinutes(),
               );
             });
           }}

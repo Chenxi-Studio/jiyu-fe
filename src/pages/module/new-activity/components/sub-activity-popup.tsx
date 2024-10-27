@@ -147,17 +147,57 @@ export const SubActivityPopUp: FC<SubActivityPopUpProps> = (
             />
           </div>
           <TimeInput
+            title="报名开始"
+            value={form.registrationStartTime}
+            onConfirmMinute={(options, values) => {
+              setForm((prev) => ({
+                ...prev,
+                registrationStartTime: new Date(
+                  prev.registrationStartTime.getFullYear(),
+                  prev.registrationStartTime.getMonth(),
+                  prev.registrationStartTime.getDate(),
+                  Number(values[0]),
+                  Number(values[1]),
+                ),
+              }));
+            }}
+            onConfirmDate={(param) => {
+              setForm((prev) => ({
+                ...prev,
+                registrationStartTime: new Date(
+                  Number(param[0]),
+                  Number(param[1]) - 1,
+                  Number(param[2]),
+                  prev.registrationStartTime.getHours(),
+                  prev.registrationStartTime.getMinutes(),
+                ),
+              }));
+            }}
+          />
+          <TimeInput
             title="报名结束"
             value={form.registrationEndTime}
-            onConfirm={(options, values) => {
+            onConfirmMinute={(options, values) => {
               setForm((prev) => ({
                 ...prev,
                 registrationEndTime: new Date(
+                  prev.registrationEndTime.getFullYear(),
+                  prev.registrationEndTime.getMonth(),
+                  prev.registrationEndTime.getDate(),
                   Number(values[0]),
-                  Number(values[1]) - 1,
-                  Number(values[2]),
-                  Number(values[3]),
-                  Number(values[4]),
+                  Number(values[1]),
+                ),
+              }));
+            }}
+            onConfirmDate={(param) => {
+              setForm((prev) => ({
+                ...prev,
+                registrationEndTime: new Date(
+                  Number(param[0]),
+                  Number(param[1]) - 1,
+                  Number(param[2]),
+                  prev.registrationEndTime.getHours(),
+                  prev.registrationEndTime.getMinutes(),
                 ),
               }));
             }}
@@ -165,15 +205,27 @@ export const SubActivityPopUp: FC<SubActivityPopUpProps> = (
           <TimeInput
             title="签到开始"
             value={form.checkInStartTime}
-            onConfirm={(options, values) => {
+            onConfirmMinute={(options, values) => {
               setForm((prev) => ({
                 ...prev,
                 checkInStartTime: new Date(
+                  prev.checkInStartTime.getFullYear(),
+                  prev.checkInStartTime.getMonth(),
+                  prev.checkInStartTime.getDate(),
                   Number(values[0]),
-                  Number(values[1]) - 1,
-                  Number(values[2]),
-                  Number(values[3]),
-                  Number(values[4]),
+                  Number(values[1]),
+                ),
+              }));
+            }}
+            onConfirmDate={(param) => {
+              setForm((prev) => ({
+                ...prev,
+                checkInStartTime: new Date(
+                  Number(param[0]),
+                  Number(param[1]) - 1,
+                  Number(param[2]),
+                  prev.checkInStartTime.getHours(),
+                  prev.checkInStartTime.getMinutes(),
                 ),
               }));
             }}
@@ -182,15 +234,27 @@ export const SubActivityPopUp: FC<SubActivityPopUpProps> = (
             className="mb-4 border-0"
             title="签到结束"
             value={form.checkInEndTime}
-            onConfirm={(options, values) => {
+            onConfirmMinute={(options, values) => {
               setForm((prev) => ({
                 ...prev,
                 checkInEndTime: new Date(
+                  prev.checkInEndTime.getFullYear(),
+                  prev.checkInEndTime.getMonth(),
+                  prev.checkInEndTime.getDate(),
                   Number(values[0]),
-                  Number(values[1]) - 1,
-                  Number(values[2]),
-                  Number(values[3]),
-                  Number(values[4]),
+                  Number(values[1]),
+                ),
+              }));
+            }}
+            onConfirmDate={(param) => {
+              setForm((prev) => ({
+                ...prev,
+                checkInEndTime: new Date(
+                  Number(param[0]),
+                  Number(param[1]) - 1,
+                  Number(param[2]),
+                  prev.checkInEndTime.getHours(),
+                  prev.checkInEndTime.getMinutes(),
                 ),
               }));
             }}

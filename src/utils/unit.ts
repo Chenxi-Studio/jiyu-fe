@@ -16,13 +16,17 @@ export const px2rpx = (px: number): number => px * (750 / windowWidth);
 export const formatDate = (
   startTime: Date | undefined | null,
   withMinute = true,
+  withYear = true,
 ): string => {
   if (startTime === null) return "未配置时间";
   if (startTime === undefined) return "未配置时间";
-  const year = startTime.getFullYear();
-  const month = ("0" + (startTime.getMonth() + 1)).slice(-2); // 月份从0开始，所以需要+1
-  const day = ("0" + startTime.getDate()).slice(-2);
-  let formattedDate = `${year}/${month}/${day}`;
+  let formattedDate = "";
+  if (withYear) {
+    const year = startTime.getFullYear();
+    const month = ("0" + (startTime.getMonth() + 1)).slice(-2); // 月份从0开始，所以需要+1
+    const day = ("0" + startTime.getDate()).slice(-2);
+    formattedDate += `${year}/${month}/${day}`;
+  }
 
   if (withMinute) {
     const hour = ("0" + startTime.getHours()).slice(-2);
