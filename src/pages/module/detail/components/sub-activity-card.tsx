@@ -18,6 +18,7 @@ export interface SubActivityCardProps {
   isSelected?: boolean;
   onClick?: MouseEventHandler<HTMLDivElement>;
   disabled?: boolean;
+  origin?: "home" | "activity" | "detail" | "publish";
 }
 
 export const SubActivityCard: FC<SubActivityCardProps> = ({
@@ -27,6 +28,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
   onClick,
   isSelected = false,
   disabled = false,
+  origin,
 }) => {
   const [selected, setSelected] = useState(false);
   const time = useMemo(() => {
@@ -41,9 +43,10 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
     <animated.div
       //   style={{ ...springs }}
       onClick={(event) => {
+        if (origin !== "home") return;
         if (disabled) return;
-        setSelected(!selected);
         if (!isSelected && onClick !== undefined) onClick(event);
+        setSelected(!selected);
       }}
       key={key}
       className={twMerge(

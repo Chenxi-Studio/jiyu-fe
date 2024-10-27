@@ -107,6 +107,7 @@ const Detail = (): JSX.Element => {
                   item.id === undefined ? false : selected.includes(item.id)
                 }
                 key={`sub-activity-${index}`}
+                origin={origin}
                 onClick={() => {
                   if (
                     item.id !== undefined &&
