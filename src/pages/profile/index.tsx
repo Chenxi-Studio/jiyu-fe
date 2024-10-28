@@ -10,6 +10,7 @@ import { $Tag } from "@/store/tag";
 import { navigateTo } from "@/utils/navigator";
 import { Avatar } from "./components/avatar";
 import "./style.scss";
+import { TabBar } from "@/components/tab-bar";
 
 const Profile = (): JSX.Element => {
   const avatarUrl = $User.use((state) => state.profile);
@@ -129,6 +130,9 @@ const Profile = (): JSX.Element => {
             <ArrowSize6 size={12} color="#d1d5db" />
           </div>
         </div>
+      </div>
+      <div className="fixed bottom-0 left-0 w-full">
+        <TabBar />
       </div>
     </div>
   );

@@ -14,6 +14,7 @@ import { GlobalNotify } from "@/components/global-notify";
 import { SmallCard } from "@/components/small-card";
 import { navigateTo } from "@/utils/navigator";
 import { $UI } from "@/store/UI";
+import { TabBar } from "@/components/tab-bar";
 import "./style.scss";
 
 const ActivityPage = (): JSX.Element => {
@@ -64,121 +65,126 @@ const ActivityPage = (): JSX.Element => {
   };
 
   return (
-    <PullToRefresh
-      onRefresh={async () => {
-        await loadData();
-      }}
-      renderIcon={(status) => {
-        return (
-          <>
-            {(status === "pulling" || status === "complete") && 1}
-            {(status === "canRelease" || status === "refreshing") && 2}
-          </>
-        );
-      }}
-    >
-      <Dialog id="Activity" />
+    <>
+      <PullToRefresh
+        onRefresh={async () => {
+          await loadData();
+        }}
+        renderIcon={(status) => {
+          return (
+            <>
+              {(status === "pulling" || status === "complete") && 1}
+              {(status === "canRelease" || status === "refreshing") && 2}
+            </>
+          );
+        }}
+      >
+        <Dialog id="Activity" />
 
-      <div className="pb-[150rpx]">
-        <Collapse defaultActiveName={["1", "2"]} expandIcon={<ArrowDown />}>
-          <Collapse.Item title="已报名" name="1">
-            <div>
-              {signList.map((item, index) => (
-                <Swipe
-                  ref={signListRefs[index]}
-                  rightAction={
-                    <>
-                      <Button
-                        type="primary"
-                        shape="square"
-                        onClick={() => {
-                          Dialog.open(`Activity`, {
-                            title: `取消报名提示`,
-                            content: `确认取消报名活动 ${item.activity.title} 吗？`,
-                            onConfirm: async () => {
-                              try {
-                                await api.sign.revocation(item.signID);
-                                await loadData();
-                              } catch (error) {
-                                // TODO: 错误问题
-                              }
-                              Dialog.close(`Activity`);
-                            },
-                            onCancel: () => {
-                              Dialog.close(`Activity`);
-                            },
-                          });
-                        }}
-                      >
-                        取消报名
-                      </Button>
-                    </>
-                  }
-                  key={`Activity-${index}`}
-                  onTouchStart={() => {
-                    for (const ref of signListRefs) {
-                      if (
-                        ref !== signListRefs[index] &&
-                        ref.current !== null &&
-                        typeof ref.current.close === "function"
-                      ) {
-                        ref.current.close();
+        <div className="pb-[150rpx]">
+          <Collapse defaultActiveName={["1", "2"]} expandIcon={<ArrowDown />}>
+            <Collapse.Item title="已报名" name="1">
+              <div>
+                {signList.map((item, index) => (
+                  <Swipe
+                    ref={signListRefs[index]}
+                    rightAction={
+                      <>
+                        <Button
+                          type="primary"
+                          shape="square"
+                          onClick={() => {
+                            Dialog.open(`Activity`, {
+                              title: `取消报名提示`,
+                              content: `确认取消报名活动 ${item.activity.title} 吗？`,
+                              onConfirm: async () => {
+                                try {
+                                  await api.sign.revocation(item.signID);
+                                  await loadData();
+                                } catch (error) {
+                                  // TODO: 错误问题
+                                }
+                                Dialog.close(`Activity`);
+                              },
+                              onCancel: () => {
+                                Dialog.close(`Activity`);
+                              },
+                            });
+                          }}
+                        >
+                          取消报名
+                        </Button>
+                      </>
+                    }
+                    key={`Activity-${index}`}
+                    onTouchStart={() => {
+                      for (const ref of signListRefs) {
+                        if (
+                          ref !== signListRefs[index] &&
+                          ref.current !== null &&
+                          typeof ref.current.close === "function"
+                        ) {
+                          ref.current.close();
+                        }
                       }
-                    }
-                  }}
-                  onActionClick={() => {
-                    if (
-                      signListRefs[index].current !== null &&
-                      signListRefs[index].current !== undefined &&
-                      typeof signListRefs[index].current.close === "function"
-                    ) {
-                      signListRefs[index].current.close();
-                    }
-                  }}
-                >
+                    }}
+                    onActionClick={() => {
+                      if (
+                        signListRefs[index].current !== null &&
+                        signListRefs[index].current !== undefined &&
+                        typeof signListRefs[index].current.close === "function"
+                      ) {
+                        signListRefs[index].current.close();
+                      }
+                    }}
+                  >
+                    <div
+                      className="mt-2 px-[52rpx]"
+                      onClick={() => {
+                        handleOnclick(item.activity);
+                      }}
+                    >
+                      <SmallCard
+                        title={item.activity.title}
+                        coverImage={item.activity.coverImage}
+                        organizer={item.activity.organizer}
+                        endTime={item.activity.endTime}
+                        status={item.activity.status}
+                      ></SmallCard>
+                    </div>
+                  </Swipe>
+                ))}
+              </div>
+            </Collapse.Item>
+            <Collapse.Item title="候补中" name="2">
+              <div>
+                {waitList.map((item, index) => (
                   <div
+                    key={`Wait-${index}`}
                     className="mt-2 px-[52rpx]"
                     onClick={() => {
-                      handleOnclick(item.activity);
+                      handleOnclick(item);
                     }}
                   >
                     <SmallCard
-                      title={item.activity.title}
-                      coverImage={item.activity.coverImage}
-                      organizer={item.activity.organizer}
-                      endTime={item.activity.endTime}
-                      status={item.activity.status}
+                      title={item.title}
+                      coverImage={item.coverImage}
+                      organizer={item.organizer}
+                      endTime={item.endTime}
+                      status={item.status}
                     ></SmallCard>
                   </div>
-                </Swipe>
-              ))}
-            </div>
-          </Collapse.Item>
-          <Collapse.Item title="候补中" name="2">
-            <div>
-              {waitList.map((item, index) => (
-                <div
-                  key={`Wait-${index}`}
-                  className="mt-2 px-[52rpx]"
-                  onClick={() => {
-                    handleOnclick(item);
-                  }}
-                >
-                  <SmallCard
-                    title={item.title}
-                    coverImage={item.coverImage}
-                    organizer={item.organizer}
-                    endTime={item.endTime}
-                    status={item.status}
-                  ></SmallCard>
-                </div>
-              ))}
-            </div>
-          </Collapse.Item>
-        </Collapse>
+                ))}
+              </div>
+            </Collapse.Item>
+          </Collapse>
+        </div>
+        <GlobalNotify />
+      </PullToRefresh>
+      <div className="fixed bottom-0 left-0 w-full">
+        <TabBar />
       </div>
-      <GlobalNotify />
-    </PullToRefresh>
+    </>
   );
 };
 

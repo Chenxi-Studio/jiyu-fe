@@ -15,6 +15,7 @@ import { api } from "@/api";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { $UI } from "@/store/UI";
 import { GlobalNotify } from "@/components/global-notify";
+import { TabBar } from "@/components/tab-bar";
 import "./style.scss";
 
 const Approve = (): JSX.Element => {
@@ -58,161 +59,166 @@ const Approve = (): JSX.Element => {
   };
 
   return (
-    <PullToRefresh
-      onRefresh={async () => {
-        await fetchList();
-      }}
-      renderIcon={(status) => {
-        return (
-          <>
-            {(status === "pulling" || status === "complete") && 1}
-            {(status === "canRelease" || status === "refreshing") && 2}
-          </>
-        );
-      }}
-    >
-      <GlobalNotify />
-      <Dialog id="Approve" />
-      <div className="pb-[150rpx]">
-        <Collapse defaultActiveName={["1", "2"]} expandIcon={<ArrowDown />}>
-          <Collapse.Item title="待审核" name="1">
-            <div>
-              {toApproveList.map((item, index) => (
-                <Swipe
-                  ref={refs[index]}
-                  rightAction={
-                    <>
-                      <Button
-                        type="success"
-                        shape="square"
-                        onClick={() => {
-                          Dialog.open(`Approve`, {
-                            title: `批准提示`,
-                            content: `确认批准通过活动 ${item.title} 吗？`,
-                            onConfirm: async () => {
-                              try {
-                                if (item.id !== undefined) {
-                                  await api.approve.approve(item.id);
-                                  await fetchList();
+    <>
+      <PullToRefresh
+        onRefresh={async () => {
+          await fetchList();
+        }}
+        renderIcon={(status) => {
+          return (
+            <>
+              {(status === "pulling" || status === "complete") && 1}
+              {(status === "canRelease" || status === "refreshing") && 2}
+            </>
+          );
+        }}
+      >
+        <GlobalNotify />
+        <Dialog id="Approve" />
+        <div className="pb-[150rpx]">
+          <Collapse defaultActiveName={["1", "2"]} expandIcon={<ArrowDown />}>
+            <Collapse.Item title="待审核" name="1">
+              <div>
+                {toApproveList.map((item, index) => (
+                  <Swipe
+                    ref={refs[index]}
+                    rightAction={
+                      <>
+                        <Button
+                          type="success"
+                          shape="square"
+                          onClick={() => {
+                            Dialog.open(`Approve`, {
+                              title: `批准提示`,
+                              content: `确认批准通过活动 ${item.title} 吗？`,
+                              onConfirm: async () => {
+                                try {
+                                  if (item.id !== undefined) {
+                                    await api.approve.approve(item.id);
+                                    await fetchList();
+                                  }
+                                } catch (error) {
+                                  // TODO: 错误问题
                                 }
-                              } catch (error) {
-                                // TODO: 错误问题
-                              }
-                              Dialog.close(`Approve`);
-                            },
-                            onCancel: () => {
-                              Dialog.close(`Approve`);
-                            },
-                          });
-                        }}
-                      >
-                        批准
-                      </Button>
-                      <Button
-                        type="primary"
-                        shape="square"
-                        onClick={() => {
-                          Dialog.open(`Approve`, {
-                            title: `驳回提示`,
-                            content: (
-                              <>
-                                <div>{`确认驳回活动 ${item.title} 吗？`}</div>
-                                <Input
-                                  className="border-b"
-                                  placeholder="请输入驳回原因"
-                                  onChange={(v) => {
-                                    reason.current = v;
-                                  }}
-                                />
-                              </>
-                            ),
-                            onConfirm: async () => {
-                              if (reason.current === "") return;
-                              try {
-                                if (item.id !== undefined) {
-                                  await api.approve.disapprove(
-                                    item.id,
-                                    reason.current,
-                                  );
-                                  await fetchList();
+                                Dialog.close(`Approve`);
+                              },
+                              onCancel: () => {
+                                Dialog.close(`Approve`);
+                              },
+                            });
+                          }}
+                        >
+                          批准
+                        </Button>
+                        <Button
+                          type="primary"
+                          shape="square"
+                          onClick={() => {
+                            Dialog.open(`Approve`, {
+                              title: `驳回提示`,
+                              content: (
+                                <>
+                                  <div>{`确认驳回活动 ${item.title} 吗？`}</div>
+                                  <Input
+                                    className="border-b"
+                                    placeholder="请输入驳回原因"
+                                    onChange={(v) => {
+                                      reason.current = v;
+                                    }}
+                                  />
+                                </>
+                              ),
+                              onConfirm: async () => {
+                                if (reason.current === "") return;
+                                try {
+                                  if (item.id !== undefined) {
+                                    await api.approve.disapprove(
+                                      item.id,
+                                      reason.current,
+                                    );
+                                    await fetchList();
+                                  }
+                                } catch (error) {
+                                  // TODO: 错误问题
                                 }
-                              } catch (error) {
-                                // TODO: 错误问题
-                              }
-                              Dialog.close(`Approve`);
-                            },
-                            onCancel: () => {
-                              Dialog.close(`Approve`);
-                            },
-                          });
-                        }}
-                      >
-                        驳回
-                      </Button>
-                    </>
-                  }
-                  key={`Approve-ToApprove-${index}`}
-                  onTouchStart={() => {
-                    for (const ref of refs) {
-                      if (
-                        ref !== refs[index] &&
-                        ref.current !== null &&
-                        typeof ref.current.close === "function"
-                      ) {
-                        ref.current.close();
+                                Dialog.close(`Approve`);
+                              },
+                              onCancel: () => {
+                                Dialog.close(`Approve`);
+                              },
+                            });
+                          }}
+                        >
+                          驳回
+                        </Button>
+                      </>
+                    }
+                    key={`Approve-ToApprove-${index}`}
+                    onTouchStart={() => {
+                      for (const ref of refs) {
+                        if (
+                          ref !== refs[index] &&
+                          ref.current !== null &&
+                          typeof ref.current.close === "function"
+                        ) {
+                          ref.current.close();
+                        }
                       }
-                    }
-                  }}
-                  onActionClick={() => {
-                    if (
-                      refs[index].current !== null &&
-                      refs[index].current !== undefined &&
-                      typeof refs[index].current.close === "function"
-                    ) {
-                      refs[index].current.close();
-                    }
-                  }}
-                >
-                  <div
-                    className="mt-2 px-[52rpx]"
-                    onClick={() => {
-                      handleOnclick(item);
+                    }}
+                    onActionClick={() => {
+                      if (
+                        refs[index].current !== null &&
+                        refs[index].current !== undefined &&
+                        typeof refs[index].current.close === "function"
+                      ) {
+                        refs[index].current.close();
+                      }
                     }}
                   >
-                    <SmallCard
-                      title={item.title}
-                      coverImage={item.coverImage}
-                      organizer={item.organizer}
-                      endTime={item.endTime}
-                      status={item.status}
-                    ></SmallCard>
-                  </div>
-                </Swipe>
-              ))}
-            </div>
-          </Collapse.Item>
-          <Collapse.Item title="已审核" name="2">
-            {approvedList.map((item, index) => (
-              <div
-                key={`Approve-Approved-${index}`}
-                className="mt-2 px-[52rpx]"
-                onClick={() => {
-                  handleOnclick(item);
-                }}
-              >
-                <SmallCard
-                  title={item.title}
-                  coverImage={item.coverImage}
-                  organizer={item.organizer}
-                  endTime={item.endTime}
-                  status={item.status}
-                ></SmallCard>
+                    <div
+                      className="mt-2 px-[52rpx]"
+                      onClick={() => {
+                        handleOnclick(item);
+                      }}
+                    >
+                      <SmallCard
+                        title={item.title}
+                        coverImage={item.coverImage}
+                        organizer={item.organizer}
+                        endTime={item.endTime}
+                        status={item.status}
+                      ></SmallCard>
+                    </div>
+                  </Swipe>
+                ))}
               </div>
-            ))}
-          </Collapse.Item>
-        </Collapse>
+            </Collapse.Item>
+            <Collapse.Item title="已审核" name="2">
+              {approvedList.map((item, index) => (
+                <div
+                  key={`Approve-Approved-${index}`}
+                  className="mt-2 px-[52rpx]"
+                  onClick={() => {
+                    handleOnclick(item);
+                  }}
+                >
+                  <SmallCard
+                    title={item.title}
+                    coverImage={item.coverImage}
+                    organizer={item.organizer}
+                    endTime={item.endTime}
+                    status={item.status}
+                  ></SmallCard>
+                </div>
+              ))}
+            </Collapse.Item>
+          </Collapse>
+        </div>
+      </PullToRefresh>
+      <div className="fixed bottom-0 left-0 w-full">
+        <TabBar />
       </div>
-    </PullToRefresh>
+    </>
   );
 };
 
