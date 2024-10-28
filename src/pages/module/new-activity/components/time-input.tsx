@@ -7,6 +7,7 @@ import {
 } from "@nutui/nutui-react-taro";
 import React, { useState, type FC } from "react";
 import { twMerge } from "tailwind-merge";
+import "./time-input.scss";
 
 export interface TimeInputProps {
   title: string;
@@ -37,26 +38,30 @@ export const TimeInput: FC<TimeInputProps> = (props): JSX.Element => {
       )}
     >
       <div className="min-w-16">{title}</div>
-      <Input
-        readOnly
-        type="text"
-        style={{ paddingRight: 0 }}
-        placeholder="请选择日期"
-        value={formatDate(value, false)}
-        onClick={() => {
-          setShowCalendar(true);
-        }}
-      />
-      <Input
-        readOnly
-        type="text"
-        placeholder="请选择时间"
-        style={{ paddingLeft: 0 }}
-        value={formatDate(value, true, false)}
-        onClick={() => {
-          setShow(true);
-        }}
-      />
+      <div className="time-input-left">
+        <Input
+          readOnly
+          type="text"
+          style={{ paddingRight: 0 }}
+          placeholder="请选择日期"
+          value={formatDate(value, false)}
+          onClick={() => {
+            setShowCalendar(true);
+          }}
+        />
+      </div>
+      <div className="time-input-right">
+        <Input
+          readOnly
+          type="text"
+          placeholder="请选择时间"
+          style={{ paddingLeft: 0 }}
+          value={formatDate(value, true, false)}
+          onClick={() => {
+            setShow(true);
+          }}
+        />
+      </div>
       <DatePicker
         title={`${title}选择`}
         type="hour-minutes"

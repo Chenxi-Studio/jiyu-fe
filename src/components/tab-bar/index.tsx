@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   AddRectangle,
   Category,
@@ -18,25 +18,32 @@ const iconSize = 22;
 export const TabBar = (): JSX.Element => {
   const selected = $UI.use((state) => state.selected);
   const roleLevel = $User.use((state) => state.roleLevel);
+  const availableTabList = useMemo(
+    () =>
+      TabList.filter((item) => {
+        if (
+          roleLevel !== undefined &&
+          roleLevel < RoleLevel.Admin &&
+          item.text === "发布"
+        ) {
+          return false;
+        }
+        if (
+          roleLevel !== undefined &&
+          roleLevel < RoleLevel.SuperAdmin &&
+          item.text === "审批"
+        ) {
+          return false;
+        }
+        return true;
+      }),
+    [roleLevel],
+  );
 
   return (
     <>
       <div className="wrapper">
-        {TabList.map((item, index) => {
-          if (
-            roleLevel !== undefined &&
-            roleLevel < RoleLevel.Admin &&
-            item.text === "发布"
-          ) {
-            return undefined;
-          }
-          if (
-            roleLevel !== undefined &&
-            roleLevel < RoleLevel.SuperAdmin &&
-            item.text === "审批"
-          ) {
-            return undefined;
-          }
+        {availableTabList.map((item, index) => {
           return (
             <div
               key={item.text}
@@ -46,6 +53,7 @@ export const TabBar = (): JSX.Element => {
               className={
                 "tab-bar-item " + (selected === index ? "selected" : "")
               }
+              id={`tab-bar-${index}`}
             >
               {item.text === "发布" && <AddRectangle size={iconSize} />}
               {item.text === "审批" && <Received size={iconSize} />}
