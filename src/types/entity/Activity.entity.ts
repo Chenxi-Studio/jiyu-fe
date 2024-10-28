@@ -8,6 +8,7 @@ export class ActivityEntity {
   endTime: Date; // 活动结束时间
   location: string; // 活动地点
   coverImage?: string; // 活动头图
+  groupImage?: string; // 二维码
   organizer: string; // 主办单位
   category: string; // 活动类别
   introduction: string; // 活动简介

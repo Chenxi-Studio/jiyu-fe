@@ -3,23 +3,31 @@ import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { Image } from "@tarojs/components";
 import { formatDate } from "@/utils/unit";
 import { Date } from "@nutui/icons-react-taro";
+import { twMerge } from "tailwind-merge";
+import { pic2url } from "@/utils/type";
 
 export interface MiddleCardProps {
   key?: string | number;
   activity: ActivityEntity;
+  className?: string;
+  id?: string;
 }
 
 export const MiddleCard: FC<MiddleCardProps> = (props) => {
-  const { key, activity } = props;
+  const { key, activity, className, id } = props;
   return (
     <div
-      className="flex p-2 drop-shadow-base bg-white rounded-2xl max-h-[180rpx] min-w-[380rpx]"
+      className={twMerge(
+        "flex p-2 drop-shadow-base bg-white rounded-2xl max-h-[180rpx] min-w-[380rpx]",
+        className,
+      )}
       key={key}
+      id={id}
     >
       <div className="h-[148rpx] w-[148rpx] mr-2">
         <Image
           className="rounded-2xl h-[148rpx] w-[148rpx]"
-          src={`https://${activity.coverImage}`}
+          src={pic2url(activity.coverImage)}
           mode="aspectFill"
         />
       </div>

@@ -2,26 +2,29 @@ import React, { type MouseEventHandler, type FC } from "react";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { dateBoundary } from "@/utils/unit";
 import { Image } from "@tarojs/components";
+import { pic2url } from "@/utils/type";
 import "./style.scss";
 
 export interface BigCardProps {
   key?: string | number;
   activity: ActivityEntity;
   onClick?: MouseEventHandler<HTMLDivElement>;
+  id?: string;
 }
 
 export const BigCard: FC<BigCardProps> = (props) => {
-  const { activity, key, onClick } = props;
+  const { activity, key, onClick, id } = props;
 
   return (
     <div
+      id={id}
       onClick={onClick}
       className="drop-shadow-base bg-white rounded-2xl p-3 h-[560rpx] min-w-[400rpx]"
       key={key}
     >
       <Image
         className="rounded-2xl w-full h-[60%]"
-        src={`https://${activity.coverImage}`}
+        src={pic2url(activity.coverImage)}
         mode="aspectFill"
       />
       <div className="mt-2 min-h-[15%]">{activity.title}</div>

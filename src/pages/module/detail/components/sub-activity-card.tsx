@@ -53,7 +53,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
         isSelected
           ? "shadow-[0px_3px_18px_rgba(1,216,26,0.25)]"
           : "shadow-[0px_3px_24px_rgba(25,32,45,0.05)]",
-        "rounded-3xl my-4 p-4 bg-white btn btn-border-drawing",
+        "rounded-3xl my-4 p-4 bg-white",
         disabled && "shadow-[0px_3px_24px_rgba(25,32,45,0.05)] text-gray-300",
       )}
     >

@@ -128,6 +128,17 @@ const Detail = (): JSX.Element => {
             );
           })}
         </div>
+        {selected.length !== 0 && (
+          <div className="p-4 mb-3 rounded-3xl shadow-[0px_3px_24px_rgba(25,32,45,0.05)] bg-white">
+            <div>群二维码</div>
+            <div className="h-60">
+              <Image
+                src={pic2url(currentActivity?.groupImage)}
+                mode="aspectFit"
+              ></Image>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 flex bg-white px-8 justify-between h-[150rpx] items-center z-20">
