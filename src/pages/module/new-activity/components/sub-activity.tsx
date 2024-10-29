@@ -109,8 +109,8 @@ export const SubActivity = (): JSX.Element => {
                 <div className="flex justify-between">
                   <div className="text-sm text-gray-500">{item.location}</div>
                   <div className="text-sm text-gray-500">
-                    {formatDate(item.registrationStartTime, false)}-
-                    {formatDate(item.registrationEndTime, false)}
+                    {formatDate(item.startTime, false)}-
+                    {formatDate(item.endTime, false)}
                   </div>
                 </div>
               </div>

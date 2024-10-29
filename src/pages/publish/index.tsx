@@ -19,8 +19,8 @@ import { $Activity } from "@/store/activity";
 import { ActivityStatus } from "@/types/common";
 import { type UserEntity } from "@/types/entity/User.entity";
 import { TabBar } from "@/components/tab-bar";
-import "./style.scss";
 import { PublishTour } from "@/components/tours/publish-tour";
+import "./style.scss";
 
 const Publish = (): JSX.Element => {
   const refresh = $UI.use((state) => state.publishRefresh);
@@ -141,22 +141,6 @@ const Publish = (): JSX.Element => {
             {chosenAdmin === "" ? "请选择审核老师" : chosenAdmin}
           </div>
         </Dialog>
-        <Picker
-          popupProps={{ zIndex: 9999 }}
-          title="请选择审核老师"
-          visible={adminPickerVisible}
-          options={admins.map((admin) => ({
-            text: admin.name ?? "未知管理员名字",
-            value: admin.sid ?? "未知管理员 sid",
-          }))}
-          onConfirm={(selectedOptions, selectedValue) => {
-            setChosenAdmin(selectedOptions[0].text.toString());
-            chosenAdminSid.current = selectedValue[0].toString();
-          }}
-          onClose={() => {
-            setAdminPickerVisible(false);
-          }}
-        />
 
         <div className="pb-[150rpx]">
           <Collapse defaultActiveName={["1", "2"]} expandIcon={<ArrowDown />}>
@@ -333,6 +317,24 @@ const Publish = (): JSX.Element => {
       <div className="fixed bottom-0 left-0 w-full">
         <TabBar />
       </div>
+      {admins.length !== 0 && (
+        <Picker
+          popupProps={{ zIndex: 9999 }}
+          title="请选择审核老师"
+          visible={adminPickerVisible}
+          options={admins.map((admin) => ({
+            text: admin.name ?? "未知管理员名字",
+            value: admin.sid ?? "未知管理员 sid",
+          }))}
+          onConfirm={(selectedOptions, selectedValue) => {
+            setChosenAdmin(selectedOptions[0].text.toString());
+            chosenAdminSid.current = selectedValue[0].toString();
+          }}
+          onClose={() => {
+            setAdminPickerVisible(false);
+          }}
+        />
+      )}
       <PublishTour
         swipeOpen={() => {
           beforeApprovedListRefs[0].current?.open("right");

@@ -5,8 +5,8 @@ export class SubActivityEntity {
   id?: number;
   activity: ActivityEntity;
   title: string; // 子活动标题
-  registrationStartTime: Date; // 报名开始时间
-  registrationEndTime: Date; // 报名截止时间
+  // registrationStartTime: Date; // 报名开始时间
+  // registrationEndTime: Date; // 报名截止时间
   studentScope: ManageScope; // 可报名学生范围
   capacity: number; // 活动容量
 

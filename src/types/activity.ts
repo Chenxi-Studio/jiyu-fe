@@ -5,6 +5,8 @@ export interface BaseActivityRequest {
   title: string;
   startTime: Date;
   endTime: Date;
+  registrationStartTime: Date;
+  registrationEndTime: Date;
   location: string;
   organizer: string;
   category: string;
@@ -28,8 +30,8 @@ export interface Activity extends BaseActivityRequest {
 export interface CreateSubActivityRequest {
   // 至少需要一个标题
   title: string;
-  registrationStartTime: Date;
-  registrationEndTime: Date;
+  startTime: Date;
+  endTime: Date;
   studentScope: ManageScope; // 报名权限范围，要么不传，传必须携带ManageScope所有属性
   capacity: number;
   checkInStartTime: Date;
@@ -58,7 +60,7 @@ export const validateCreateSubActivityRequest = (
   if (f.title.trim() === "") return false;
   if (f.capacity <= 0) return false;
   if (f.location.trim() === "") return false;
-  if (f.registrationEndTime < f.registrationStartTime) return false;
+  if (f.endTime < f.startTime) return false;
   if (f.checkInEndTime < f.checkInStartTime) return false;
   return true;
 };

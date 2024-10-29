@@ -33,7 +33,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
 }) => {
   const [selected, setSelected] = useState(false);
   const time = useMemo(() => {
-    return dateBoundary(sub.registrationStartTime, sub.registrationEndTime);
+    return dateBoundary(sub.startTime, sub.endTime);
   }, [sub]);
 
   const checkInTime = useMemo(() => {

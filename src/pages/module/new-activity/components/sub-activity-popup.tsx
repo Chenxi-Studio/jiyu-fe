@@ -10,8 +10,6 @@ import { TagPopup } from "./tag-popup";
 
 const defaultCreateSubActivityRequest = {
   title: "",
-  registrationStartTime: new Date(),
-  registrationEndTime: new Date(),
   studentScope: {
     gender: [],
     degree: [],
@@ -147,15 +145,15 @@ export const SubActivityPopUp: FC<SubActivityPopUpProps> = (
             />
           </div>
           <TimeInput
-            title="报名开始"
-            value={form.registrationStartTime}
+            title="开始时间"
+            value={form.startTime}
             onConfirmMinute={(options, values) => {
               setForm((prev) => ({
                 ...prev,
-                registrationStartTime: new Date(
-                  prev.registrationStartTime.getFullYear(),
-                  prev.registrationStartTime.getMonth(),
-                  prev.registrationStartTime.getDate(),
+                startTime: new Date(
+                  prev.startTime.getFullYear(),
+                  prev.startTime.getMonth(),
+                  prev.startTime.getDate(),
                   Number(values[0]),
                   Number(values[1]),
                 ),
@@ -164,26 +162,26 @@ export const SubActivityPopUp: FC<SubActivityPopUpProps> = (
             onConfirmDate={(param) => {
               setForm((prev) => ({
                 ...prev,
-                registrationStartTime: new Date(
+                startTime: new Date(
                   Number(param[0]),
                   Number(param[1]) - 1,
                   Number(param[2]),
-                  prev.registrationStartTime.getHours(),
-                  prev.registrationStartTime.getMinutes(),
+                  prev.startTime.getHours(),
+                  prev.startTime.getMinutes(),
                 ),
               }));
             }}
           />
           <TimeInput
-            title="报名结束"
-            value={form.registrationEndTime}
+            title="结束时间"
+            value={form.endTime}
             onConfirmMinute={(options, values) => {
               setForm((prev) => ({
                 ...prev,
-                registrationEndTime: new Date(
-                  prev.registrationEndTime.getFullYear(),
-                  prev.registrationEndTime.getMonth(),
-                  prev.registrationEndTime.getDate(),
+                endTime: new Date(
+                  prev.endTime.getFullYear(),
+                  prev.endTime.getMonth(),
+                  prev.endTime.getDate(),
                   Number(values[0]),
                   Number(values[1]),
                 ),
@@ -192,12 +190,12 @@ export const SubActivityPopUp: FC<SubActivityPopUpProps> = (
             onConfirmDate={(param) => {
               setForm((prev) => ({
                 ...prev,
-                registrationEndTime: new Date(
+                endTime: new Date(
                   Number(param[0]),
                   Number(param[1]) - 1,
                   Number(param[2]),
-                  prev.registrationEndTime.getHours(),
-                  prev.registrationEndTime.getMinutes(),
+                  prev.endTime.getHours(),
+                  prev.endTime.getMinutes(),
                 ),
               }));
             }}

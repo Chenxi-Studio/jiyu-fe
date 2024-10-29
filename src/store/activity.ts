@@ -14,6 +14,8 @@ export const $Activity = model<ActivityModel>("ACTIVITY", {
   groupImage: undefined,
   startTime: new Date(new Date().getTime() + 864000001),
   endTime: new Date(new Date().getTime() + 864000001 + 86400000),
+  registrationStartTime: new Date(),
+  registrationEndTime: new Date(new Date().getTime() + 864000000),
   location: "测试地址",
   organizer: "测试组织",
   category: "测试分类",
@@ -25,8 +27,8 @@ export const $Activity = model<ActivityModel>("ACTIVITY", {
   subActivities: [
     {
       title: "测试子活动标题1",
-      registrationStartTime: new Date(),
-      registrationEndTime: new Date(new Date().getTime() + 864000000),
+      startTime: new Date(),
+      endTime: new Date(new Date().getTime() + 864000001 + 8640000),
       studentScope: {
         gender: [],
         degree: [],
@@ -42,8 +44,8 @@ export const $Activity = model<ActivityModel>("ACTIVITY", {
     },
     {
       title: "测试子活动标题2",
-      registrationStartTime: new Date(),
-      registrationEndTime: new Date(new Date().getTime() + 864000000),
+      startTime: new Date(),
+      endTime: new Date(new Date().getTime() + 864000001 + 8640000),
       studentScope: {
         gender: [],
         degree: [],

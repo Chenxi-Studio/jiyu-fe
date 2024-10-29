@@ -13,6 +13,8 @@ export const MainActivity = (): JSX.Element => {
     groupImage,
     startTime,
     endTime,
+    registrationStartTime,
+    registrationEndTime,
     location,
     organizer,
     category,
@@ -157,6 +159,58 @@ export const MainActivity = (): JSX.Element => {
                 Number(param[2]),
                 draft.endTime.getHours(),
                 draft.endTime.getMinutes(),
+              );
+            });
+          }}
+        />
+        <TimeInput
+          title="报名开始"
+          value={registrationStartTime}
+          onConfirmMinute={(options, values) => {
+            $Activity.update("update new registrationStartTime", (draft) => {
+              draft.registrationStartTime = new Date(
+                draft.registrationStartTime.getFullYear(),
+                draft.registrationStartTime.getMonth(),
+                draft.registrationStartTime.getDate(),
+                Number(values[0]),
+                Number(values[1]),
+              );
+            });
+          }}
+          onConfirmDate={(param) => {
+            $Activity.update("update new registrationStartTime", (draft) => {
+              draft.registrationStartTime = new Date(
+                Number(param[0]),
+                Number(param[1]) - 1,
+                Number(param[2]),
+                draft.registrationStartTime.getHours(),
+                draft.registrationStartTime.getMinutes(),
+              );
+            });
+          }}
+        />
+        <TimeInput
+          title="报名结束"
+          value={registrationEndTime}
+          onConfirmMinute={(options, values) => {
+            $Activity.update("update new registrationEndTime", (draft) => {
+              draft.registrationEndTime = new Date(
+                draft.registrationEndTime.getFullYear(),
+                draft.registrationEndTime.getMonth(),
+                draft.registrationEndTime.getDate(),
+                Number(values[0]),
+                Number(values[1]),
+              );
+            });
+          }}
+          onConfirmDate={(param) => {
+            $Activity.update("update new registrationEndTime", (draft) => {
+              draft.registrationEndTime = new Date(
+                Number(param[0]),
+                Number(param[1]) - 1,
+                Number(param[2]),
+                draft.registrationEndTime.getHours(),
+                draft.registrationEndTime.getMinutes(),
               );
             });
           }}
