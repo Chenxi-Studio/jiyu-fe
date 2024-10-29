@@ -3,8 +3,10 @@ import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { api } from "@/api";
 import { $UI } from "@/store/UI";
 import { navigateTo } from "@/utils/navigator";
-import { PullToRefresh, Tour } from "@nutui/nutui-react-taro";
+import { PullToRefresh } from "@nutui/nutui-react-taro";
 import { TabBar } from "@/components/tab-bar";
+import { TabTour } from "@/components/tours/tab-tour";
+import { HomeTour } from "@/components/tours/home-tour";
 import { SearchBar } from "./components/search-bar";
 import { BigCard } from "./components/big-card";
 import "./style.scss";
@@ -16,12 +18,10 @@ const Home = (): JSX.Element => {
   const [searchContent, setSearchContent] = useState<string>("");
   const [activities, setActivities] = useState<ActivityEntity[]>([]);
   const tags = useRef<string[]>([]);
-  const [showTour, setShowTour] = useState<boolean>(false);
 
   const load = async (): Promise<void> => {
     const res = await api.sign.list();
     setActivities(res.data);
-    setShowTour(true);
   };
 
   useEffect(() => {
@@ -55,7 +55,10 @@ const Home = (): JSX.Element => {
             />
           </div>
           <div className="px-10">
-            <div className="flex justify-between text-gray-400 text-sm mt-3">
+            <div
+              className="flex justify-between text-gray-400 text-sm mt-3"
+              id="home-tag"
+            >
               {TagContent.map((item, index) => (
                 <Tag
                   key={`tag-${item}-${index}`}
@@ -75,6 +78,7 @@ const Home = (): JSX.Element => {
             {activities.map((activity, index) => (
               <BigCard
                 key={`Big-Card-${index}`}
+                id={index === 0 ? "home-big-card" : undefined}
                 activity={activity}
                 onClick={() => {
                   $UI.update("from home", (draft) => {
@@ -89,7 +93,11 @@ const Home = (): JSX.Element => {
           <div className="mt-3 px-10 text-xl text-gray-800">即将到来的活动</div>
           <div className="hide-scrollbar py-3 flex gap-6 overflow-x-auto overscroll-y-hidden px-10">
             {activities.map((activity, index) => (
-              <MiddleCard key={`Middle-Card-${index}`} activity={activity} />
+              <MiddleCard
+                key={`Middle-Card-${index}`}
+                activity={activity}
+                id={index === 0 ? "home-middle-card" : undefined}
+              />
             ))}
           </div>
         </div>
@@ -97,6 +105,8 @@ const Home = (): JSX.Element => {
       <div className="fixed bottom-0 left-0 w-full">
         <TabBar />
       </div>
+      <TabTour />
+      <HomeTour />
     </>
   );
 };

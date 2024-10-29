@@ -13,6 +13,7 @@ import { api } from "@/api";
 import { GlobalNotify } from "@/components/global-notify";
 import { $User } from "@/store/user";
 import { availableSubIndice } from "@/utils/activity";
+import { RegisterTour } from "@/components/tours/register-tour";
 import { SubActivityCard } from "./components/sub-activity-card";
 
 const Detail = (): JSX.Element => {
@@ -48,13 +49,32 @@ const Detail = (): JSX.Element => {
       });
   });
 
-  const load = async (): Promise<void> => {
+  const load = async (withTour: boolean = false): Promise<void> => {
     if (currentActivity?.id !== undefined) {
       const registerInfo = await api.sign.registerInfo(currentActivity?.id);
       console.log(registerInfo);
       setRemainings(registerInfo.remainings);
       if (registerInfo.type === "sign") {
         setSelected(registerInfo.subs);
+        if (
+          $UI.get().detailOrigin === "home" &&
+          registerInfo.subs.length === 0 &&
+          withTour
+        ) {
+          setTimeout(() => {
+            $UI.update("trigger register tour", (draft) => {
+              draft.registerTour = true;
+            });
+          }, 1000);
+        }
+      } else {
+        if ($UI.get().detailOrigin === "home" && withTour) {
+          setTimeout(() => {
+            $UI.update("trigger register tour", (draft) => {
+              draft.registerTour = true;
+            });
+          }, 1000);
+        }
       }
     }
   };
@@ -66,7 +86,7 @@ const Detail = (): JSX.Element => {
     const user = $User.get();
     if (currentActivity !== undefined && user !== undefined)
       setAvailables(availableSubIndice(currentActivity, user, true));
-    void load();
+    void load(true);
   }, []);
 
   return (
@@ -124,6 +144,7 @@ const Detail = (): JSX.Element => {
                     subIDs.current.push(item.id);
                   }
                 }}
+                id={index === 0 ? "detail-subactivity-card" : undefined}
               />
             );
           })}
@@ -210,6 +231,7 @@ const Detail = (): JSX.Element => {
                 console.log(error);
               }
             }}
+            id="detail-confirm"
           >
             <PackageAdd />
           </div>
@@ -226,6 +248,7 @@ const Detail = (): JSX.Element => {
           <Logout />
         </div>
       </div>
+      <RegisterTour />
     </div>
   );
 };

@@ -18,6 +18,7 @@ const iconSize = 22;
 export const TabBar = (): JSX.Element => {
   const selected = $UI.use((state) => state.selected);
   const roleLevel = $User.use((state) => state.roleLevel);
+
   const availableTabList = useMemo(
     () =>
       TabList.filter((item) => {

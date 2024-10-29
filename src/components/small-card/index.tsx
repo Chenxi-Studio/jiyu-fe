@@ -10,6 +10,7 @@ export interface SmallCardProps {
   organizer?: string;
   endTime?: Date;
   status?: ActivityStatus;
+  id?: string;
 }
 
 export const SmallCard: FC<SmallCardProps> = (props): JSX.Element => {
@@ -19,10 +20,11 @@ export const SmallCard: FC<SmallCardProps> = (props): JSX.Element => {
     organizer = "默认 Author",
     endTime = new Date(),
     status = ActivityStatus.Draft,
+    id,
   } = props;
 
   return (
-    <div className="flex h-20 gap-5 items-center">
+    <div className="flex h-20 gap-5 items-center" id={id}>
       <div className="flex justify-center items-center w-20 h-20 bg-white rounded-2xl flex-none shadow-sm">
         {/* {coverImage} */}
         <Image

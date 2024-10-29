@@ -16,6 +16,14 @@ export interface UIModel {
   approveRefresh: boolean;
   // activity
   activityRefresh: boolean;
+  // tour
+  navigatorTour: boolean;
+  homeTour: boolean;
+  registerTour: boolean; // 报名流程 tour
+  activityTour: boolean;
+  profileTour: boolean;
+  publishTour: boolean;
+  publishButtonTour: boolean; // 发布按钮的 tour
 }
 
 export const $UI = model<UIModel>("UI", {
@@ -27,4 +35,11 @@ export const $UI = model<UIModel>("UI", {
   publishRefresh: false,
   approveRefresh: false,
   activityRefresh: false,
+  navigatorTour: true,
+  homeTour: false,
+  registerTour: false,
+  activityTour: false,
+  profileTour: true,
+  publishTour: false,
+  publishButtonTour: true,
 });

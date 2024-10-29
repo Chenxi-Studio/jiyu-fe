@@ -6,6 +6,7 @@ import Taro from "@tarojs/taro";
 import { Loading } from "@nutui/icons-react-taro";
 import { setDevJWT } from "@/utils/dev";
 import { setJWT } from "@/utils/unit";
+import { clearStore } from "@/utils/store";
 
 const Auth = (): JSX.Element => {
   const stateCallback = $User.use((state) => state.state);
@@ -78,6 +79,7 @@ const Auth = (): JSX.Element => {
     <>
       <div
         onClick={() => {
+          clearStore();
           setButtonContent("登录中");
           navigateTo("pages/login/index");
         }}
@@ -90,6 +92,7 @@ const Auth = (): JSX.Element => {
       </div>
       <div
         onClick={() => {
+          clearStore();
           setWxButtonContent("登录中");
           void handleWxAuth();
         }}
@@ -102,6 +105,7 @@ const Auth = (): JSX.Element => {
       </div>
       <div
         onClick={() => {
+          clearStore();
           void devLogin("stu");
         }}
         className="fixed bottom-[44%] px-8 w-[calc(100%-128rpx)]"
@@ -112,6 +116,7 @@ const Auth = (): JSX.Element => {
       </div>
       <div
         onClick={() => {
+          clearStore();
           void devLogin("admin");
         }}
         className="fixed bottom-[36%] px-8 w-[calc(100%-128rpx)]"
@@ -122,6 +127,7 @@ const Auth = (): JSX.Element => {
       </div>
       <div
         onClick={() => {
+          clearStore();
           void devLogin("Ultradamin");
         }}
         className="fixed bottom-[28%] px-8 w-[calc(100%-128rpx)]"

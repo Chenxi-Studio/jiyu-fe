@@ -15,6 +15,7 @@ import { SmallCard } from "@/components/small-card";
 import { navigateTo } from "@/utils/navigator";
 import { $UI } from "@/store/UI";
 import { TabBar } from "@/components/tab-bar";
+import { ActivityTour } from "@/components/tours/activity-tour";
 import "./style.scss";
 
 const ActivityPage = (): JSX.Element => {
@@ -26,17 +27,19 @@ const ActivityPage = (): JSX.Element => {
   const signListRefs = new Array(signList.length)
     .fill(null)
     .map(() => createRef<SwipeInstance>());
+  const [tourTrigger, setTourTrigger] = useState<boolean>(false);
 
-  const loadData = async (): Promise<void> => {
+  const loadData = async (withTour: boolean = false): Promise<void> => {
     const mySignListResponse = await api.sign.mySignList();
-    console.log("signlist", mySignListResponse);
-
     setSignList(
       mySignListResponse.map((item) => ({
         activity: { subActivities: item.subActivities, ...item.activity },
         signID: item.id,
       })),
     );
+    if (withTour && mySignListResponse.length !== 0) {
+      setTourTrigger(true);
+    }
     // const waitListResponse = await api.sign.waitList();
     // console.log("waitlist", waitListResponse);
 
@@ -44,7 +47,7 @@ const ActivityPage = (): JSX.Element => {
   };
 
   useEffect(() => {
-    void loadData();
+    void loadData(true);
   }, []);
 
   useEffect(() => {
@@ -55,6 +58,15 @@ const ActivityPage = (): JSX.Element => {
       });
     }
   }, [refresh]);
+
+  useEffect(() => {
+    if (tourTrigger) {
+      $UI.update("trigger activity tour", (draft) => {
+        draft.activityTour = true;
+      });
+      setTourTrigger(false);
+    }
+  }, [tourTrigger]);
 
   const handleOnclick = (item: ActivityEntity): void => {
     $UI.update("update current activity", (draft) => {
@@ -93,6 +105,7 @@ const ActivityPage = (): JSX.Element => {
                         <Button
                           type="primary"
                           shape="square"
+                          id={index === 0 ? "activity-cancel" : undefined}
                           onClick={() => {
                             Dialog.open(`Activity`, {
                               title: `取消报名提示`,
@@ -150,6 +163,7 @@ const ActivityPage = (): JSX.Element => {
                         organizer={item.activity.organizer}
                         endTime={item.activity.endTime}
                         status={item.activity.status}
+                        id={index === 0 ? "activity-small-card" : undefined}
                       ></SmallCard>
                     </div>
                   </Swipe>
@@ -184,6 +198,14 @@ const ActivityPage = (): JSX.Element => {
       <div className="fixed bottom-0 left-0 w-full">
         <TabBar />
       </div>
+      <ActivityTour
+        swipeOpen={() => {
+          signListRefs[0].current?.open("right");
+        }}
+        swipeClose={() => {
+          signListRefs[0].current?.close();
+        }}
+      />
     </>
   );
 };

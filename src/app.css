@@ -15,3 +15,7 @@ button:after {
 button::after {
     border: none;
 }
+
+.nut-tour-content {
+    min-width: 300rpx !important;
+}

@@ -20,6 +20,7 @@ import { ActivityStatus } from "@/types/common";
 import { type UserEntity } from "@/types/entity/User.entity";
 import { TabBar } from "@/components/tab-bar";
 import "./style.scss";
+import { PublishTour } from "@/components/tours/publish-tour";
 
 const Publish = (): JSX.Element => {
   const refresh = $UI.use((state) => state.publishRefresh);
@@ -41,10 +42,15 @@ const Publish = (): JSX.Element => {
   const [submitApproveActivity, setSubmitApproveActivity] = useState<
     ActivityEntity | undefined
   >(undefined);
+  const [tourTrigger, setTourTrigger] = useState<boolean>(false);
 
-  const loadData = async (): Promise<void> => {
+  const loadData = async (withTour: boolean = false): Promise<void> => {
     const beforeApprovedResponse = await api.activity.beforeApproved();
     setBeforeApprovedList(beforeApprovedResponse);
+
+    if (withTour && beforeApprovedResponse.length !== 0) {
+      setTourTrigger(true);
+    }
     const afterApprovedResponse = await api.activity.afterApproved();
     setAfterApprovedList(afterApprovedResponse);
     const superAdmins = await api.admin.super();
@@ -55,7 +61,7 @@ const Publish = (): JSX.Element => {
   };
 
   useEffect(() => {
-    void loadData();
+    void loadData(true);
   }, []);
 
   useEffect(() => {
@@ -66,6 +72,15 @@ const Publish = (): JSX.Element => {
       });
     }
   }, [refresh]);
+
+  useEffect(() => {
+    if (tourTrigger) {
+      $UI.update("trigger publish tour", (draft) => {
+        draft.publishTour = true;
+      });
+      setTourTrigger(false);
+    }
+  }, [tourTrigger]);
 
   const handleOnclick = (item: ActivityEntity): void => {
     $UI.update("update current activity", (draft) => {
@@ -151,7 +166,7 @@ const Publish = (): JSX.Element => {
                   <Swipe
                     ref={beforeApprovedListRefs[index]}
                     rightAction={
-                      <>
+                      <div className="w-full h-full" id="publish-swipe-button">
                         {item.status === ActivityStatus.Draft && (
                           <Button
                             type="primary"
@@ -233,7 +248,7 @@ const Publish = (): JSX.Element => {
                             撤回审核
                           </Button>
                         )}
-                      </>
+                      </div>
                     }
                     key={`Publish-${index}`}
                     onTouchStart={() => {
@@ -270,6 +285,7 @@ const Publish = (): JSX.Element => {
                         organizer={item.organizer}
                         endTime={item.endTime}
                         status={item.status}
+                        id="publish-small-card"
                       ></SmallCard>
                     </div>
                   </Swipe>
@@ -307,6 +323,7 @@ const Publish = (): JSX.Element => {
               navigateTo("pages/module/new-activity/index");
             }}
             className="fixed h-12 w-12 rounded-full bg-blue-200 right-5 bottom-[190rpx] flex justify-center items-center"
+            id="publish-button"
           >
             <Edit color="white" width={24} height={24} />
           </div>
@@ -316,6 +333,14 @@ const Publish = (): JSX.Element => {
       <div className="fixed bottom-0 left-0 w-full">
         <TabBar />
       </div>
+      <PublishTour
+        swipeOpen={() => {
+          beforeApprovedListRefs[0].current?.open("right");
+        }}
+        swipeClose={() => {
+          beforeApprovedListRefs[0].current?.close();
+        }}
+      />
     </>
   );
 };

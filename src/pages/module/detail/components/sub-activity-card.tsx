@@ -5,7 +5,6 @@ import React, {
   type FC,
 } from "react";
 import { Progress, Radio } from "@nutui/nutui-react-taro";
-import { animated } from "@react-spring/web";
 import { dateBoundary } from "@/utils/unit";
 import { Checked } from "@nutui/icons-react-taro";
 import { twMerge } from "tailwind-merge";
@@ -19,6 +18,7 @@ export interface SubActivityCardProps {
   onClick?: MouseEventHandler<HTMLDivElement>;
   disabled?: boolean;
   origin?: "home" | "activity" | "detail" | "publish";
+  id?: string;
 }
 
 export const SubActivityCard: FC<SubActivityCardProps> = ({
@@ -29,6 +29,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
   isSelected = false,
   disabled = false,
   origin,
+  id,
 }) => {
   const [selected, setSelected] = useState(false);
   const time = useMemo(() => {
@@ -40,8 +41,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
   }, [sub]);
 
   return (
-    <animated.div
-      //   style={{ ...springs }}
+    <div
       onClick={(event) => {
         if (origin !== "home") return;
         if (disabled) return;
@@ -56,6 +56,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
         "rounded-3xl my-4 p-4 bg-white",
         disabled && "shadow-[0px_3px_24px_rgba(25,32,45,0.05)] text-gray-300",
       )}
+      id={id}
     >
       <div className="flex justify-between mb-3">
         <div className={twMerge(disabled ? "text-gray-300" : "text-black")}>
@@ -90,6 +91,6 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
           checked={isSelected || selected}
         />
       </div>
-    </animated.div>
+    </div>
   );
 };

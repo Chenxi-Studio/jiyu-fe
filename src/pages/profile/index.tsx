@@ -4,13 +4,12 @@ import { ArrowSize6 } from "@nutui/icons-react-taro";
 import { api } from "@/api";
 import { $User } from "@/store/user";
 import { pic2url } from "@/utils/type";
-import { $Activity } from "@/store/activity";
 import { $UI } from "@/store/UI";
-import { $Tag } from "@/store/tag";
 import { navigateTo } from "@/utils/navigator";
+import { TabBar } from "@/components/tab-bar";
+import { ProfileTour } from "@/components/tours/profile-tour";
 import { Avatar } from "./components/avatar";
 import "./style.scss";
-import { TabBar } from "@/components/tab-bar";
 
 const Profile = (): JSX.Element => {
   const avatarUrl = $User.use((state) => state.profile);
@@ -48,6 +47,7 @@ const Profile = (): JSX.Element => {
         <Avatar
           onChooseAvatar={handleChooseAvatar}
           avatarUrl={pic2url(avatarUrl)}
+          id="profile-big-avatar"
         />
       </div>
       <div className="flex justify-center w-full pt-2 z-50">个人设置</div>
@@ -80,7 +80,7 @@ const Profile = (): JSX.Element => {
           <div>手机</div>
           <div className="flex items-center justify-center gap-4 text-gray-500">
             <div>{phone}</div>
-            <ArrowSize6 size={12} color="#d1d5db" />
+            {/* <ArrowSize6 size={12} color="#d1d5db" /> */}
           </div>
         </div>
         <div className="flex justify-between items-center h-14">
@@ -102,13 +102,10 @@ const Profile = (): JSX.Element => {
                 draft.showNotify = true;
               });
             } else {
-              $User.init();
-              $Activity.init();
-              $UI.init();
-              $Tag.init();
               navigateTo("pages/auth/index");
             }
           }}
+          id="profile-unbind"
         >
           <div>解绑微信</div>
           <div className="flex items-center justify-center">
@@ -118,10 +115,6 @@ const Profile = (): JSX.Element => {
         <div
           className="flex justify-between items-center h-12"
           onClick={() => {
-            $User.init();
-            $Activity.init();
-            $UI.init();
-            $Tag.init();
             navigateTo("pages/auth/index");
           }}
         >
@@ -134,6 +127,7 @@ const Profile = (): JSX.Element => {
       <div className="fixed bottom-0 left-0 w-full">
         <TabBar />
       </div>
+      <ProfileTour />
     </div>
   );
 };
