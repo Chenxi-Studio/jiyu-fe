@@ -1,6 +1,6 @@
 /* custom-tab-bar 不支持 tailwind css */
 
-.wrapper {
+.tab-bar-wrapper {
     display: flex;
     height: 150rpx;
     align-items: center;
@@ -11,7 +11,7 @@
     z-index: 100;
 }
 
-.selected {
+.tab-bar-selected {
     color: red !important;
 }
 

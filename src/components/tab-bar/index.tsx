@@ -43,7 +43,7 @@ export const TabBar = (): JSX.Element => {
 
   return (
     <>
-      <div className="wrapper">
+      <div className="tab-bar-wrapper">
         {availableTabList.map((item, index) => {
           return (
             <div
@@ -52,7 +52,7 @@ export const TabBar = (): JSX.Element => {
                 switchTab(item.pagePath);
               }}
               className={
-                "tab-bar-item " + (selected === index ? "selected" : "")
+                "tab-bar-item " + (selected === index ? "tab-bar-selected" : "")
               }
               id={`tab-bar-${index}`}
             >
