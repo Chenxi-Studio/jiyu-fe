@@ -1,4 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  type TouchEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Taro, { useReady } from "@tarojs/taro";
 import { Dialog, Image } from "@nutui/nutui-react-taro";
 import { $UI } from "@/store/UI";
@@ -31,10 +36,13 @@ const Detail = (): JSX.Element => {
   const [selected, setSelected] = useState<number[]>([]);
   const [availables, setAvailables] = useState<number[]>([]);
   const registerTour = $UI.use((state) => state.registerTour);
+  const lastY = useRef<number>(0);
+  const onScroll = useRef<boolean>(false);
+  const documentScrollHeight = useRef<number>(0);
 
   // TODO: 卡顿？
   useReady(() => {
-    // taro 的 view ref 对象未实现 offset 属性 只能使用 createSelectorQuery 方法
+    // taro 的 view ref 对象未实现 offset 属性 只能使用 createSelectorQuery 方法·
     // https://taro-docs.jd.com/docs/ref#在子组件中获取
     Taro.createSelectorQuery()
       .select("#detail-pic")
@@ -95,12 +103,55 @@ const Detail = (): JSX.Element => {
     if (currentActivity !== undefined && user !== undefined)
       setAvailables(availableSubIndice(currentActivity, user));
     void load(true);
+    getScrollViewHeight();
   }, []);
+
+  const getScrollViewHeight = (): void => {
+    Taro.createSelectorQuery()
+      .select("#scrollView")
+      .boundingClientRect((rect) => {
+        if (Array.isArray(rect)) {
+          documentScrollHeight.current = rect[0].height;
+        } else {
+          documentScrollHeight.current = rect.height;
+        }
+      })
+      .exec();
+  };
+
+  const handleScroll: TouchEventHandler = (event) => {
+    const currentY = event.changedTouches[0].clientY;
+    if (!onScroll.current) {
+      if (lastY.current < currentY) {
+        onScroll.current = true;
+        void Taro.pageScrollTo({
+          scrollTop: 0,
+        }).then(() => {
+          onScroll.current = false;
+        });
+      } else {
+        onScroll.current = true;
+        void Taro.pageScrollTo({
+          scrollTop: window.innerHeight,
+        }).then(() => {
+          onScroll.current = false;
+        });
+      }
+      lastY.current = currentY;
+    }
+  };
+  const handleTouchStart: TouchEventHandler = (event) => {
+    const currentY = event.changedTouches[0].clientY;
+    lastY.current = currentY;
+  };
 
   return (
     <div
+      id="scrollView"
       className="h-[100vh] bg-[#FCFCFC]"
       style={registerTour ? { overflow: "hidden" } : { overflow: "visible" }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleScroll}
     >
       <GlobalNotify />
       <Dialog id="Detail" />
