@@ -1,6 +1,8 @@
 import React, { type FC } from "react";
 import { $UI } from "@/store/UI";
 import { Tour } from "@nutui/nutui-react-taro";
+import { getTourStorage } from "@/utils/store";
+import Taro from "@tarojs/taro";
 
 export const ProfileTour: FC = () => {
   const showTour = $UI.use((state) => state.profileTour);
@@ -23,8 +25,13 @@ export const ProfileTour: FC = () => {
         className="nut-custom-tour"
         visible={showTour}
         onClose={() => {
+          const prev = getTourStorage();
           $UI.update("close home tour", (draft) => {
             draft.profileTour = false;
+            Taro.setStorageSync("tours", {
+              ...prev,
+              profileTour: false,
+            });
           });
         }}
         list={steps}

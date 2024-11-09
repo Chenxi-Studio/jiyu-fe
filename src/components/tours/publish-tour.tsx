@@ -1,6 +1,8 @@
 import React, { useEffect, useState, type FC } from "react";
 import { $UI } from "@/store/UI";
 import { Tour } from "@nutui/nutui-react-taro";
+import { getTourStorage } from "@/utils/store";
+import Taro from "@tarojs/taro";
 
 export interface PublishTourProps {
   swipeOpen?: () => void;
@@ -30,8 +32,13 @@ export const PublishTour: FC<PublishTourProps> = ({
         visible={showPublish}
         type="tile"
         onClose={() => {
+          const prev = getTourStorage();
           $UI.update("close publishButtonTour", (draft) => {
             draft.publishButtonTour = false;
+            Taro.setStorageSync("tours", {
+              ...prev,
+              publishButtonTour: false,
+            });
           });
           if (showTour) setShowCard(true);
         }}
@@ -67,8 +74,13 @@ export const PublishTour: FC<PublishTourProps> = ({
         visible={showButton}
         type="tile"
         onClose={() => {
+          const prev = getTourStorage();
           $UI.update("close publishTour", (draft) => {
             draft.publishTour = false;
+            Taro.setStorageSync("tours", {
+              ...prev,
+              publishTour: false,
+            });
           });
           if (swipeClose !== undefined) swipeClose();
         }}

@@ -2,7 +2,9 @@ import { $UI } from "@/store/UI";
 import { $User } from "@/store/user";
 import { RoleLevel } from "@/types/entity/const";
 import { TabList } from "@/types/tab";
+import { getTourStorage } from "@/utils/store";
 import { Tour } from "@nutui/nutui-react-taro";
+import Taro from "@tarojs/taro";
 import React, { useMemo, type FC } from "react";
 
 export const TabTour: FC = () => {
@@ -82,7 +84,12 @@ export const TabTour: FC = () => {
         onClose={() => {
           $UI.update("close navigator tour", (draft) => {
             draft.navigatorTour = false;
+            const prev = getTourStorage();
             draft.homeTour = true;
+            Taro.setStorageSync("tours", {
+              ...prev,
+              navigatorTour: false,
+            });
           });
         }}
         list={steps}

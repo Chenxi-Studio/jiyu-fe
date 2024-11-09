@@ -17,6 +17,7 @@ import { $UI } from "@/store/UI";
 import { TabBar } from "@/components/tab-bar";
 import { ActivityTour } from "@/components/tours/activity-tour";
 import "./style.scss";
+import { getTourStorage } from "@/utils/store";
 
 const ActivityPage = (): JSX.Element => {
   const refresh = $UI.use((state) => state.activityRefresh);
@@ -61,9 +62,12 @@ const ActivityPage = (): JSX.Element => {
 
   useEffect(() => {
     if (tourTrigger) {
-      $UI.update("trigger activity tour", (draft) => {
-        draft.activityTour = true;
-      });
+      const prev = getTourStorage();
+      if (prev?.activityTour === undefined || prev.activityTour) {
+        $UI.update("trigger activity tour", (draft) => {
+          draft.activityTour = true;
+        });
+      }
       setTourTrigger(false);
     }
   }, [tourTrigger]);

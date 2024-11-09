@@ -1,6 +1,8 @@
 import React, { useEffect, useState, type FC } from "react";
 import { $UI } from "@/store/UI";
 import { Tour } from "@nutui/nutui-react-taro";
+import { getTourStorage } from "@/utils/store";
+import Taro from "@tarojs/taro";
 
 export interface ActivityTourProps {
   swipeOpen?: () => void;
@@ -47,8 +49,13 @@ export const ActivityTour: FC<ActivityTourProps> = ({
         visible={showButton}
         type="tile"
         onClose={() => {
+          const prev = getTourStorage();
           $UI.update("close activityTour", (draft) => {
             draft.activityTour = false;
+            Taro.setStorageSync("tours", {
+              ...prev,
+              activityTour: false,
+            });
           });
           if (swipeClose !== undefined) swipeClose();
         }}

@@ -14,6 +14,7 @@ import { GlobalNotify } from "@/components/global-notify";
 import { $User } from "@/store/user";
 import { availableSubIndice } from "@/utils/activity";
 import { RegisterTour } from "@/components/tours/register-tour";
+import { getTourStorage } from "@/utils/store";
 import { SubActivityCard } from "./components/sub-activity-card";
 
 const Detail = (): JSX.Element => {
@@ -62,19 +63,25 @@ const Detail = (): JSX.Element => {
           registerInfo.subs.length === 0 &&
           withTour
         ) {
-          setTimeout(() => {
-            $UI.update("trigger register tour", (draft) => {
-              draft.registerTour = true;
-            });
-          }, 1500);
+          const prev = getTourStorage();
+          if (prev?.registerTour === undefined || prev.registerTour) {
+            setTimeout(() => {
+              $UI.update("trigger register tour", (draft) => {
+                draft.registerTour = true;
+              });
+            }, 1500);
+          }
         }
       } else {
         if ($UI.get().detailOrigin === "home" && withTour) {
-          setTimeout(() => {
-            $UI.update("trigger register tour", (draft) => {
-              draft.registerTour = true;
-            });
-          }, 1500);
+          const prev = getTourStorage();
+          if (prev?.registerTour === undefined || prev.registerTour) {
+            setTimeout(() => {
+              $UI.update("trigger register tour", (draft) => {
+                draft.registerTour = true;
+              });
+            }, 1500);
+          }
         }
       }
     }

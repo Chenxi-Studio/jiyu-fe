@@ -21,6 +21,7 @@ import { type UserEntity } from "@/types/entity/User.entity";
 import { TabBar } from "@/components/tab-bar";
 import { PublishTour } from "@/components/tours/publish-tour";
 import "./style.scss";
+import { getTourStorage } from "@/utils/store";
 
 const Publish = (): JSX.Element => {
   const refresh = $UI.use((state) => state.publishRefresh);
@@ -75,9 +76,12 @@ const Publish = (): JSX.Element => {
 
   useEffect(() => {
     if (tourTrigger) {
-      $UI.update("trigger publish tour", (draft) => {
-        draft.publishTour = true;
-      });
+      const prev = getTourStorage();
+      if (prev?.publishTour === undefined || prev.publishTour) {
+        $UI.update("trigger publish tour", (draft) => {
+          draft.publishTour = true;
+        });
+      }
       setTourTrigger(false);
     }
   }, [tourTrigger]);

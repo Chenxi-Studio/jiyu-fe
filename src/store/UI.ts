@@ -1,5 +1,6 @@
 import { model } from "@/model";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
+import { getTourStorage } from "@/utils/store";
 
 export interface UIModel {
   // nav bar
@@ -26,6 +27,18 @@ export interface UIModel {
   publishButtonTour: boolean; // 发布按钮的 tour
 }
 
+export interface Tours {
+  navigatorTour: boolean;
+  homeTour: boolean;
+  registerTour: boolean; // 报名流程 tour
+  activityTour: boolean;
+  profileTour: boolean;
+  publishTour: boolean;
+  publishButtonTour: boolean; // 发布按钮的 tour
+}
+
+const storageTours = getTourStorage();
+
 export const $UI = model<UIModel>("UI", {
   selected: 0,
   currentActivity: undefined,
@@ -35,11 +48,11 @@ export const $UI = model<UIModel>("UI", {
   publishRefresh: false,
   approveRefresh: false,
   activityRefresh: false,
-  navigatorTour: true,
+  navigatorTour: storageTours?.navigatorTour ?? true,
   homeTour: false,
   registerTour: false,
   activityTour: false,
-  profileTour: true,
+  profileTour: storageTours?.profileTour ?? true,
   publishTour: false,
-  publishButtonTour: true,
+  publishButtonTour: storageTours?.publishButtonTour ?? true,
 });
