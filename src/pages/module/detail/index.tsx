@@ -93,7 +93,7 @@ const Detail = (): JSX.Element => {
     }
     const user = $User.get();
     if (currentActivity !== undefined && user !== undefined)
-      setAvailables(availableSubIndice(currentActivity, user, true));
+      setAvailables(availableSubIndice(currentActivity, user));
     void load(true);
   }, []);
 
