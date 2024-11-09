@@ -15,6 +15,7 @@ import {
   type JWTResponse,
   type RegisterInfoResponse,
   type SignListResponse,
+  type ActivityWithRemain,
 } from "@/types/api";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { type UserEntity } from "@/types/entity/User.entity";
@@ -355,6 +356,15 @@ const tag = {
   tagsGet: (): Promise<TagEntity[]> => instance.get(`/tags`),
 };
 
+const show = {
+  upcoming: (): Promise<ActivityWithRemain[]> =>
+    instance.get("/show-act/upcoming"),
+  ongoing: (): Promise<ActivityWithRemain[]> =>
+    instance.get("/show-act/ongoing"),
+  finished: (): Promise<ActivityWithRemain[]> =>
+    instance.get("/show-act/finished"),
+};
+
 export const api = {
   login,
   admin,
@@ -364,4 +374,5 @@ export const api = {
   sign,
   user,
   tag,
+  show,
 };

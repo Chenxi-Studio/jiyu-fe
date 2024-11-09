@@ -21,7 +21,7 @@ export const PublishTour: FC<PublishTourProps> = ({
       setTimeout(() => {
         setShowCard(true);
       }, 100);
-  }, [showTour]);
+  }, [showTour, showPublish]);
 
   return (
     <>

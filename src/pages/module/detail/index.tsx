@@ -29,6 +29,7 @@ const Detail = (): JSX.Element => {
   >([]);
   const [selected, setSelected] = useState<number[]>([]);
   const [availables, setAvailables] = useState<number[]>([]);
+  const registerTour = $UI.use((state) => state.registerTour);
 
   // TODO: 卡顿？
   useReady(() => {
@@ -65,7 +66,7 @@ const Detail = (): JSX.Element => {
             $UI.update("trigger register tour", (draft) => {
               draft.registerTour = true;
             });
-          }, 1000);
+          }, 1500);
         }
       } else {
         if ($UI.get().detailOrigin === "home" && withTour) {
@@ -73,7 +74,7 @@ const Detail = (): JSX.Element => {
             $UI.update("trigger register tour", (draft) => {
               draft.registerTour = true;
             });
-          }, 1000);
+          }, 1500);
         }
       }
     }
@@ -90,7 +91,10 @@ const Detail = (): JSX.Element => {
   }, []);
 
   return (
-    <div className="h-[100vh] bg-[#FCFCFC]">
+    <div
+      className="h-[100vh] bg-[#FCFCFC]"
+      style={registerTour ? { overflow: "hidden" } : { overflow: "visible" }}
+    >
       <GlobalNotify />
       <Dialog id="Detail" />
       <div className="h-48 w-full fixed top-0 z-0" id="detail-pic">
@@ -151,7 +155,7 @@ const Detail = (): JSX.Element => {
         </div>
         {selected.length !== 0 && (
           <div className="p-4 mb-3 rounded-3xl shadow-[0px_3px_24px_rgba(25,32,45,0.05)] bg-white">
-            <div>群二维码</div>
+            <div className="mb-2">群二维码</div>
             <div className="h-60">
               <Image
                 src={pic2url(currentActivity?.groupImage)}

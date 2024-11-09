@@ -7,9 +7,7 @@ export type basicTag = "major" | "class" | "grade";
 export const availableSubIndice = (
   act: ActivityEntity,
   user: UserEntity,
-  needCheckTime = false,
 ): number[] => {
-  // 返回下标而非 id
   const result: number[] = [];
   let index = 0;
   for (const subAct of act.subActivities) {
@@ -24,29 +22,21 @@ export const availableSubIndice = (
       "tags",
     ] as Array<basicTag | "gender" | "tags">;
     const attrMatch = attrArr.every((attr) =>
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      tagMatch(attr, scope, user.selfScope!),
+      tagMatch(attr, scope, user.selfScope),
     );
-
-    const now = new Date();
-    let availFlag = attrMatch;
-    if (needCheckTime) {
-      availFlag &&=
-        subAct.registrationStartTime <= now &&
-        now <= subAct.registrationEndTime;
-    }
-    if (availFlag) {
+    if (attrMatch) {
       result.push(index);
     }
     index++;
   }
   return result;
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   function tagMatch(
     b: basicTag | "gender" | "tags",
     requireScope: ManageScope,
     userScope: ManageScope,
-  ): boolean {
+  ) {
     // 当要求标签为空数组（无要求）或者用户标签满足要求标签数组中的一项
     const rs = requireScope[b];
     const us = userScope[b];

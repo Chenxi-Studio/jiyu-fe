@@ -56,3 +56,11 @@ export interface SignListResponse {
   subActivities: SubActivityEntity[];
   useID: number;
 }
+
+export interface SubActivityWithRemain extends SubActivityEntity {
+  remains: number;
+}
+
+export interface ActivityWithRemain extends ActivityEntity {
+  subActivities: SubActivityWithRemain[];
+}
