@@ -13,7 +13,7 @@ import { $Activity } from "@/store/activity";
 import { baseActivityRequestIsEmpty } from "@/types/activity";
 import { ActivityRegisterStatus, ActivityStatus } from "@/types/common";
 import { pic2url } from "@/utils/type";
-import { Logout, PackageAdd } from "@nutui/icons-react-taro";
+import { PackageAdd } from "@nutui/icons-react-taro";
 import { api } from "@/api";
 import { GlobalNotify } from "@/components/global-notify";
 import { $User } from "@/store/user";
@@ -21,6 +21,7 @@ import { availableSubIndice } from "@/utils/activity";
 import { RegisterTour } from "@/components/tours/register-tour";
 import { getTourStorage } from "@/utils/store";
 import { SubActivityCard } from "./components/sub-activity-card";
+import IconFont from "@/components/iconfont/iconfont";
 
 const Detail = (): JSX.Element => {
   const currentActivity = $UI.use((state) => state.currentActivity);
@@ -260,9 +261,11 @@ const Detail = (): JSX.Element => {
               }
             }}
           >
-            {currentActivity?.status === ActivityStatus.Draft
-              ? "Edit"
-              : "此阶段活动不能修改"}
+            {currentActivity?.status === ActivityStatus.Draft ? (
+              <IconFont name="icon-bianji" size={24} />
+            ) : (
+              "此阶段活动不能修改"
+            )}
           </div>
         )}
         {confirm && selected.length === 0 && (
@@ -295,7 +298,7 @@ const Detail = (): JSX.Element => {
             }}
             id="detail-confirm"
           >
-            <PackageAdd />
+            <IconFont name="icon-shangchuan" size={24} />
           </div>
         )}
         <div
@@ -307,7 +310,7 @@ const Detail = (): JSX.Element => {
             navigateBack();
           }}
         >
-          <Logout />
+          <IconFont name="icon-tuichu" size={24} />
         </div>
       </div>
       <RegisterTour />

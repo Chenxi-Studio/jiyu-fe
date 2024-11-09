@@ -1,7 +1,7 @@
 {
-    "local_svgs": "请参考README.md，本地svg文件夹，使用本地svg图标时配置",
+    "symbol_url": "http://at.alicdn.com/t/c/font_4719860_j7y8f98vh9.js",
     "save_dir": "./src/components/iconfont",
-    "use_typescript": false,
+    "use_typescript": true,
     "platforms": "*",
     "use_rpx": true,
     "trim_icon_prefix": "icon",
