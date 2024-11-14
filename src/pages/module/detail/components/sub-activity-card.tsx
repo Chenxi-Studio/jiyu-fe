@@ -67,7 +67,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
         </div>
       </div>
       <div className="flex text-sm mb-2">
-        <div>报名时间: {time}</div>
+        <div>起止时间: {time}</div>
       </div>
       <div className="flex text-sm mb-2">
         <div>签到时间: {checkInTime}</div>

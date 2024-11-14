@@ -14,6 +14,7 @@ export const RegisterTour: FC = () => {
     {
       content: "选择所有想参加的系列活动后，点击提交报名",
       target: "detail-confirm",
+      location: "top-end",
     },
   ];
 

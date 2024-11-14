@@ -20,8 +20,8 @@ import { $User } from "@/store/user";
 import { availableSubIndice } from "@/utils/activity";
 import { RegisterTour } from "@/components/tours/register-tour";
 import { getTourStorage } from "@/utils/store";
-import { SubActivityCard } from "./components/sub-activity-card";
 import IconFont from "@/components/iconfont/iconfont";
+import { SubActivityCard } from "./components/sub-activity-card";
 
 const Detail = (): JSX.Element => {
   const currentActivity = $UI.use((state) => state.currentActivity);
@@ -40,9 +40,74 @@ const Detail = (): JSX.Element => {
   const lastY = useRef<number>(0);
   const onScroll = useRef<boolean>(false);
   const documentScrollHeight = useRef<number>(0);
+  const [scrollToTour, setScrollToTour] = useState<boolean>(false);
 
-  // TODO: 卡顿？
-  useReady(() => {
+  const load = async (withTour: boolean = false): Promise<void> => {
+    if (currentActivity?.id !== undefined) {
+      const registerInfo = await api.sign.registerInfo(currentActivity?.id);
+      setRemainings(registerInfo.remainings);
+      if (registerInfo.type === "sign") {
+        setSelected(registerInfo.subs);
+        if (
+          $UI.get().detailOrigin === "home" &&
+          registerInfo.subs.length === 0 &&
+          withTour
+        ) {
+          const prev = getTourStorage();
+          if (prev?.registerTour === undefined || prev.registerTour) {
+            setScrollToTour(true);
+            React.createElement("div", {
+              className: "nut-tour-masked",
+              style: {
+                display: scrollToTour ? "block" : "none",
+                width: "100vw",
+                height: "100vh",
+                zIndex: 500,
+              },
+              catchMove: true,
+            });
+            setTimeout(() => {
+              void Taro.pageScrollTo({
+                selector: "#detail-subactivity-card",
+              }).then(() => {
+                $UI.update("trigger register tour", (draft) => {
+                  draft.registerTour = true;
+                });
+              });
+            }, 1500);
+          }
+        }
+      } else {
+        if ($UI.get().detailOrigin === "home" && withTour) {
+          const prev = getTourStorage();
+          if (prev?.registerTour === undefined || prev.registerTour) {
+            setScrollToTour(true);
+            React.createElement("div", {
+              className: "nut-tour-masked",
+              style: {
+                display: scrollToTour ? "block" : "none",
+                width: "100vw",
+                height: "100vh",
+                zIndex: 500,
+              },
+              catchMove: true,
+            });
+            setTimeout(() => {
+              void Taro.pageScrollTo({
+                selector: "#detail-subactivity-card",
+              }).then(() => {
+                $UI.update("trigger register tour", (draft) => {
+                  draft.registerTour = true;
+                });
+              });
+            }, 1500);
+          }
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
     // taro 的 view ref 对象未实现 offset 属性 只能使用 createSelectorQuery 方法·
     // https://taro-docs.jd.com/docs/ref#在子组件中获取
     Taro.createSelectorQuery()
@@ -58,45 +123,6 @@ const Detail = (): JSX.Element => {
           setMinHeight(px2rpx(windowHeight) - 150);
         }
       });
-  });
-
-  const load = async (withTour: boolean = false): Promise<void> => {
-    if (currentActivity?.id !== undefined) {
-      const registerInfo = await api.sign.registerInfo(currentActivity?.id);
-      console.log(registerInfo);
-      setRemainings(registerInfo.remainings);
-      if (registerInfo.type === "sign") {
-        setSelected(registerInfo.subs);
-        if (
-          $UI.get().detailOrigin === "home" &&
-          registerInfo.subs.length === 0 &&
-          withTour
-        ) {
-          const prev = getTourStorage();
-          if (prev?.registerTour === undefined || prev.registerTour) {
-            setTimeout(() => {
-              $UI.update("trigger register tour", (draft) => {
-                draft.registerTour = true;
-              });
-            }, 1500);
-          }
-        }
-      } else {
-        if ($UI.get().detailOrigin === "home" && withTour) {
-          const prev = getTourStorage();
-          if (prev?.registerTour === undefined || prev.registerTour) {
-            setTimeout(() => {
-              $UI.update("trigger register tour", (draft) => {
-                draft.registerTour = true;
-              });
-            }, 1500);
-          }
-        }
-      }
-    }
-  };
-
-  useEffect(() => {
     if (currentActivity === undefined) {
       navigateBack();
     }
@@ -121,6 +147,7 @@ const Detail = (): JSX.Element => {
   };
 
   const handleScroll: TouchEventHandler = (event) => {
+    if (registerTour) return;
     const currentY = event.changedTouches[0].clientY;
     if (!onScroll.current) {
       if (lastY.current < currentY) {
@@ -142,6 +169,7 @@ const Detail = (): JSX.Element => {
     }
   };
   const handleTouchStart: TouchEventHandler = (event) => {
+    if (registerTour) return;
     const currentY = event.changedTouches[0].clientY;
     lastY.current = currentY;
   };
@@ -150,7 +178,7 @@ const Detail = (): JSX.Element => {
     <div
       id="scrollView"
       className="h-[100vh] bg-[#FCFCFC]"
-      style={registerTour ? { overflow: "hidden" } : { overflow: "visible" }}
+      // style={registerTour ? { overflow: "hidden" } : { overflow: "visible" }}
       onTouchStart={handleTouchStart}
       onTouchMove={handleScroll}
     >
@@ -171,11 +199,18 @@ const Detail = (): JSX.Element => {
           {currentActivity?.title}
         </div>
         <div className="rounded-2xl p-3 border-gray-200 border-2 text-base text-center border-solid text-gray-400 mb-4">
-          {currentActivity?.organizer} ·{" "}
-          {formatDate(currentActivity?.startTime, false)} -{" "}
+          起止时间 · {formatDate(currentActivity?.startTime, false)} -{" "}
           {formatDate(currentActivity?.endTime, false)}
         </div>
-        <div className="text-base">{currentActivity?.introduction}</div>
+        <div className="p-4 mb-4 rounded-3xl shadow-[0px_3px_24px_rgba(25,32,45,0.05)] bg-white">
+          <div className="text-base mb-2">
+            举办方：{currentActivity?.organizer}
+          </div>
+          <div className="text-base">联系人：{currentActivity?.contactMan}</div>
+        </div>
+        <div className="p-4 mb-3 rounded-3xl shadow-[0px_3px_24px_rgba(25,32,45,0.05)] bg-white">
+          <div className="text-base">{currentActivity?.introduction}</div>
+        </div>
         <div>
           {currentActivity?.subActivities.map((item, index) => {
             return (
@@ -226,6 +261,17 @@ const Detail = (): JSX.Element => {
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 flex bg-white px-8 justify-between h-[150rpx] items-center z-20">
+        <div
+          onClick={() => {
+            if (editable)
+              $UI.update("detail navigate back", (draft) => {
+                draft.detailOrigin = "home";
+              });
+            navigateBack();
+          }}
+        >
+          <IconFont name="icon-tuichu" size={24} />
+        </div>
         {editable && (
           <div
             onClick={() => {
@@ -301,19 +347,8 @@ const Detail = (): JSX.Element => {
             <IconFont name="icon-shangchuan" size={24} />
           </div>
         )}
-        <div
-          onClick={() => {
-            if (editable)
-              $UI.update("detail navigate back", (draft) => {
-                draft.detailOrigin = "home";
-              });
-            navigateBack();
-          }}
-        >
-          <IconFont name="icon-tuichu" size={24} />
-        </div>
       </div>
-      <RegisterTour />
+      {scrollToTour && <RegisterTour />}
     </div>
   );
 };

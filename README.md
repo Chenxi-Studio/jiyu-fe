@@ -19,3 +19,9 @@ const open = (side) => {
     }
   };
 ```
+
+dost/esm/tour.taro
+
+```javascript
+React__default.createElement("div", { className: "nut-tour-masked", style: { display: showTour ? "block" : "none" }, onClick: handleClickMask, "catchMove": true }),
+```

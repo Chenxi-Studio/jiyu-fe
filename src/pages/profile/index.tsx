@@ -9,6 +9,8 @@ import { navigateTo } from "@/utils/navigator";
 import { TabBar } from "@/components/tab-bar";
 import { ProfileTour } from "@/components/tours/profile-tour";
 import { Avatar } from "./components/avatar";
+import Taro from "@tarojs/taro";
+import { GlobalNotify } from "@/components/global-notify";
 import "./style.scss";
 
 const Profile = (): JSX.Element => {
@@ -114,6 +116,22 @@ const Profile = (): JSX.Element => {
         </div>
         <div
           className="flex justify-between items-center h-12"
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          onClick={async () => {
+            Taro.setStorageSync("tours", {});
+            $UI.update("clear storage", (draft) => {
+              draft.notifyMsg = "清理缓存成功";
+              draft.showNotify = true;
+            });
+          }}
+        >
+          <div>清理缓存</div>
+          <div className="flex items-center justify-center">
+            <ArrowSize6 size={12} color="#d1d5db" />
+          </div>
+        </div>
+        <div
+          className="flex justify-between items-center h-12"
           onClick={() => {
             navigateTo("pages/auth/index");
           }}
@@ -128,6 +146,7 @@ const Profile = (): JSX.Element => {
         <TabBar />
       </div>
       <ProfileTour />
+      <GlobalNotify />
     </div>
   );
 };
