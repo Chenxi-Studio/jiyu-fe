@@ -7,6 +7,10 @@ import { Loading } from "@nutui/icons-react-taro";
 import { setDevJWT } from "@/utils/dev";
 import { setJWT } from "@/utils/unit";
 import { clearStore } from "@/utils/store";
+import { Cover } from "@/components/cover";
+import { Logo } from "@/components/logo";
+import "./style.css";
+import { twMerge } from "tailwind-merge";
 
 const Auth = (): JSX.Element => {
   const stateCallback = $User.use((state) => state.state);
@@ -76,7 +80,14 @@ const Auth = (): JSX.Element => {
   };
 
   return (
-    <>
+    <div>
+      <div
+        className="fixed top-0 bottom-0 w-[100vw] h-[100vh] auth-background -z-10 bg-cover"
+        // style={{ backgroundSize: "50%" }}
+      />
+      {/* <div className="flex items-center justify-center w-full mt-20 z-50">
+        <Cover />
+      </div> */}
       <div
         onClick={() => {
           clearStore();
@@ -85,7 +96,14 @@ const Auth = (): JSX.Element => {
         }}
         className="fixed bottom-[12%] px-8 w-[calc(100%-128rpx)]"
       >
-        <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3">
+        <div
+          className={twMerge(
+            "flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-[#ffdd96] text-[#000] shadow-[0_8rpx]",
+            buttonContent === "登录中"
+              ? "shadow-[inset_2rpx_5rpx_8rpx_rgba(0,0,0,0.4)]"
+              : "shadow-[0_8rpx]",
+          )}
+        >
           {buttonContent === "登录中" && <Loading size={20} />}
           {buttonContent}
         </div>
@@ -96,9 +114,16 @@ const Auth = (): JSX.Element => {
           setWxButtonContent("登录中");
           void handleWxAuth();
         }}
-        className="fixed bottom-[20%] px-8 w-[calc(100%-128rpx)]"
+        className="fixed bottom-[22%] px-8 w-[calc(100%-128rpx)]"
       >
-        <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3">
+        <div
+          className={twMerge(
+            "flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-[#ffdd96] text-[#000]",
+            wxButtonContent === "登录中"
+              ? "shadow-[inset_2rpx_5rpx_8rpx_rgba(0,0,0,0.4)]"
+              : "shadow-[0_8rpx]",
+          )}
+        >
           {wxButtonContent === "登录中" && <Loading size={20} />}
           {wxButtonContent}
         </div>
@@ -110,7 +135,7 @@ const Auth = (): JSX.Element => {
         }}
         className="fixed bottom-[44%] px-8 w-[calc(100%-128rpx)]"
       >
-        <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3">
+        <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-white">
           Stu 测试登录
         </div>
       </div>
@@ -121,7 +146,7 @@ const Auth = (): JSX.Element => {
         }}
         className="fixed bottom-[36%] px-8 w-[calc(100%-128rpx)]"
       >
-        <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3">
+        <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-white">
           Admin 测试登录
         </div>
       </div>
@@ -132,11 +157,14 @@ const Auth = (): JSX.Element => {
         }}
         className="fixed bottom-[28%] px-8 w-[calc(100%-128rpx)]"
       >
-        <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3">
+        <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-white">
           UltraAdmin 测试登录
         </div>
       </div>
-    </>
+      <div className="fixed bottom-[5%] px-8 w-[calc(100%-128rpx)] flex items-center justify-center">
+        <Logo />
+      </div>
+    </div>
   );
 };
 

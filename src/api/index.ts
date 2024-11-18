@@ -172,10 +172,14 @@ const activity = {
   withdrawApprove: (id: number) => {
     return instance.patch(`/activity/${id}/withdrawal`);
   },
-  update: (a: Activity, picSrc: string | undefined | null) => {
+  update: (
+    a: Activity,
+    coverImage: string | undefined = undefined,
+    groupImage: string | undefined = undefined,
+  ) => {
     if (a.id !== undefined) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      const formData = activity2formDate(a, picSrc);
+      const formData = activity2formDate(a, coverImage, groupImage);
       const sandData = formData.getData();
 
       return new Promise((resolve, reject) => {

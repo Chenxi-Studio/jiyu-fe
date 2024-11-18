@@ -70,6 +70,10 @@ const NewActivity = (): JSX.Element => {
             $Activity.get().coverImage?.match(/^http:\/\/tmp/) !== null
             ? $Activity.get().coverImage
             : undefined,
+          $Activity.get().groupImage !== undefined &&
+            $Activity.get().groupImage?.match(/^http:\/\/tmp/) !== null
+            ? $Activity.get().groupImage
+            : undefined,
         );
 
         if (

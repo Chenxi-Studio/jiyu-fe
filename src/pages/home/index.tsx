@@ -121,7 +121,9 @@ const Home = (): JSX.Element => {
               ),
             )}
           </div>
-          <div className="mt-3 px-10 text-lg text-gray-800">即将到来的活动</div>
+          <div className="mt-3 px-10 text-base text-gray-800">
+            即将到来的活动
+          </div>
           <div className="hide-scrollbar py-3 flex gap-6 overflow-x-auto overscroll-y-hidden px-10">
             {upcomingActivities.map((activity, index) => (
               <MiddleCard
@@ -131,7 +133,9 @@ const Home = (): JSX.Element => {
               />
             ))}
           </div>
-          <div className="mt-3 px-10 text-lg text-gray-800">正在进行的活动</div>
+          <div className="mt-3 px-10 text-base text-gray-800">
+            正在进行的活动
+          </div>
           <div className="hide-scrollbar py-3 flex gap-6 overflow-x-auto overscroll-y-hidden px-10">
             {ongoingActivities.map((activity, index) => (
               <MiddleCard

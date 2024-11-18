@@ -4,7 +4,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import Taro, { useReady } from "@tarojs/taro";
+import Taro from "@tarojs/taro";
 import { Dialog, Image } from "@nutui/nutui-react-taro";
 import { $UI } from "@/store/UI";
 import { navigateBack, navigateTo } from "@/utils/navigator";
@@ -13,7 +13,6 @@ import { $Activity } from "@/store/activity";
 import { baseActivityRequestIsEmpty } from "@/types/activity";
 import { ActivityRegisterStatus, ActivityStatus } from "@/types/common";
 import { pic2url } from "@/utils/type";
-import { PackageAdd } from "@nutui/icons-react-taro";
 import { api } from "@/api";
 import { GlobalNotify } from "@/components/global-notify";
 import { $User } from "@/store/user";
