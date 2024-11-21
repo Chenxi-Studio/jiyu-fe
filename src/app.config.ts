@@ -10,6 +10,7 @@ export default defineAppConfig({
     navigationBarBackgroundColor: "#fff",
     navigationBarTitleText: "WeChat",
     navigationBarTextStyle: "black",
+    navigationStyle: "custom",
   },
   subpackages: [
     // 仅支持字面量

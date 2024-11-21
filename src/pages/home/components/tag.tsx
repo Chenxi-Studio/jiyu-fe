@@ -14,14 +14,22 @@ export const Tag: FC<TagProps> = (props) => {
   return (
     <div
       key={key}
-      className={twMerge("flex", selected && "text-blue-400")}
+      className={twMerge(
+        "text-xs min-w-[144rpx] h-6 rounded-full border border-solid flex items-center justify-center",
+        selected && "text-white bg-[rgb(255,170,68)] border-[rgb(255,170,68)]",
+      )}
+      style={{
+        transitionProperty:
+          "color, background-color, border-color, text-decoration-color, fill, stroke",
+        transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+        transitionDuration: "150ms",
+      }}
       onClick={(e) => {
         setSelected(!selected);
         if (onClick !== undefined) onClick(e);
       }}
       id={id}
     >
-      <div>#</div>
       <div>{content}</div>
     </div>
   );

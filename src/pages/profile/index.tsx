@@ -31,17 +31,15 @@ const Profile = (): JSX.Element => {
     }
   };
 
-  console.log("avatar", avatarUrl);
-
   return (
-    <div className="text-gray-600">
+    <div className="relative text-gray-600 pb-5">
       <div
-        className="fixed w-[100vw] top-0 h-[70vh] z-[-1] comp-blur"
+        className="absolute w-[100vw] top-0 h-[70vh] z-[-1] comp-blur"
         style={{
           backgroundImage: `url(${pic2url(avatarUrl)})`,
         }}
       />
-      <div className="fixed w-[100vw] top-0 h-[100vh] z-[-1] bg-[rgba(255,255,255,0.6)]"></div>
+      <div className="absolute w-[100vw] top-0 h-[100vh] z-[-1] bg-[rgba(255,255,255,0.6)]"></div>
 
       <div className="flex justify-center w-full pt-8 z-10">
         <Avatar

@@ -7,15 +7,23 @@ import { PullToRefresh } from "@nutui/nutui-react-taro";
 import { TabTour } from "@/components/tours/tab-tour";
 import { HomeTour } from "@/components/tours/home-tour";
 import { type ActivityWithRemain } from "@/types/api";
-import { SearchBar } from "./components/search-bar";
+import { $Common } from "@/store/common";
 import { BigCard } from "./components/big-card";
 import "./style.scss";
 import { MiddleCard } from "./components/middle-card";
 import { Tag } from "./components/tag";
 
-const TagContent = ["邯郸", "江湾", "学研", "团学联"];
+const TagContent = [
+  "党旗引领",
+  "志愿服务",
+  "学术讲座",
+  "校园文化",
+  "文体赛事",
+  "社会实践",
+];
 const Home = (): JSX.Element => {
-  const [searchContent, setSearchContent] = useState<string>("");
+  const searchContent = $Common.use((state) => state.searchContent);
+
   const [activities, setActivities] = useState<ActivityEntity[]>([]);
   const homeTour = $UI.use((state) => state.homeTour);
   const navigatorTour = $UI.use((state) => state.navigatorTour);
@@ -66,7 +74,7 @@ const Home = (): JSX.Element => {
             </>
           );
         }}
-        className="max-h-[100vh]"
+        className="max-h-full"
         style={
           homeTour || navigatorTour
             ? { overflow: "hidden", paddingBottom: "0rpx" }
@@ -74,35 +82,7 @@ const Home = (): JSX.Element => {
         }
       >
         <div className="bg-[#FCFCFC] min-h-[100vh]">
-          <div className="px-10 mt-4">
-            <SearchBar
-              value={searchContent}
-              onChange={(input) => {
-                setSearchContent(input);
-              }}
-            />
-          </div>
-          <div className="px-10">
-            <div
-              className="flex justify-between text-gray-400 text-sm mt-3"
-              id="home-tag"
-            >
-              {TagContent.map((item, index) => (
-                <Tag
-                  key={`tag-${item}-${index}`}
-                  content={item}
-                  onClick={() => {
-                    if (tags.current.includes(item))
-                      tags.current = tags.current.filter((tag) => tag !== item);
-                    else {
-                      tags.current.push(item);
-                    }
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="hide-scrollbar py-3 flex gap-6 overflow-x-auto overscroll-y-hidden px-10 mt-3">
+          <div className="hide-scrollbar pb-3 flex gap-6 overflow-x-auto overscroll-y-hidden px-10 pt-6">
             {(searchContent === "" ? activities : filteredActivities).map(
               (activity, index) => (
                 <BigCard
@@ -120,10 +100,27 @@ const Home = (): JSX.Element => {
               ),
             )}
           </div>
-          <div className="mt-3 px-10 text-base text-gray-800">
-            即将到来的活动
+
+          <div
+            className="flex justify-between text-gray-400 text-sm hide-scrollbar py-3 gap-4 overflow-x-auto overscroll-y-hidden px-10"
+            id="home-tag"
+          >
+            {TagContent.map((item, index) => (
+              <Tag
+                key={`tag-${item}-${index}`}
+                content={item}
+                onClick={() => {
+                  if (tags.current.includes(item))
+                    tags.current = tags.current.filter((tag) => tag !== item);
+                  else {
+                    tags.current.push(item);
+                  }
+                }}
+              />
+            ))}
           </div>
-          <div className="hide-scrollbar py-3 flex gap-6 overflow-x-auto overscroll-y-hidden px-10">
+
+          <div className="hide-scrollbar py-3 flex flex-col gap-6 overflow-x-auto overscroll-y-hidden px-10">
             {upcomingActivities.map((activity, index) => (
               <MiddleCard
                 key={`Middle-Card-${index}`}
@@ -132,10 +129,7 @@ const Home = (): JSX.Element => {
               />
             ))}
           </div>
-          <div className="mt-3 px-10 text-base text-gray-800">
-            正在进行的活动
-          </div>
-          <div className="hide-scrollbar py-3 flex gap-6 overflow-x-auto overscroll-y-hidden px-10">
+          <div className="hide-scrollbar py-3 flex-col gap-6 overflow-x-auto overscroll-y-hidden px-10">
             {ongoingActivities.map((activity, index) => (
               <MiddleCard
                 key={`Middle-Card-${index}`}
@@ -146,7 +140,6 @@ const Home = (): JSX.Element => {
           </div>
         </div>
       </PullToRefresh>
-
       <TabTour />
       <HomeTour />
     </>

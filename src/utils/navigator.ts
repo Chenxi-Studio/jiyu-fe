@@ -44,3 +44,31 @@ export const switchTab = (url: string): void => {
 export const navigateBack = (delta: number = 1): void => {
   void Taro.navigateBack({ delta });
 };
+
+export const useCurrentPage = ():
+  | "主页"
+  | "发布"
+  | "审批"
+  | "活动"
+  | "个人" => {
+  const current = $UI.use((state) => state.selected);
+  const roleLevel = $User.use((state) => state.roleLevel);
+  const availableTabList = TabList.filter((item) => {
+    if (
+      roleLevel !== undefined &&
+      roleLevel < RoleLevel.Admin &&
+      item.text === "发布"
+    ) {
+      return false;
+    }
+    if (
+      roleLevel !== undefined &&
+      roleLevel < RoleLevel.SuperAdmin &&
+      item.text === "审批"
+    ) {
+      return false;
+    }
+    return true;
+  });
+  return availableTabList[current].text;
+};

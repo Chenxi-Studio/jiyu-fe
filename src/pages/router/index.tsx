@@ -4,49 +4,28 @@ import Approve from "@/pages/approve";
 import Home from "@/pages/home";
 import Profile from "@/pages/profile";
 import Publish from "@/pages/publish";
-import { $UI } from "@/store/UI";
-import { $User } from "@/store/user";
-import { RoleLevel } from "@/types/entity/const";
-import { TabList } from "@/types/tab";
 import { TabBar } from "@/components/tab-bar";
 import { GlobalNotify } from "@/components/global-notify";
+import { Header } from "@/components/header";
+import { useCurrentPage } from "@/utils/navigator";
 
 const Router: FC = () => {
-  const current = $UI.use((state) => state.selected);
-  const roleLevel = $User.use((state) => state.roleLevel);
-  const availableTabList = TabList.filter((item) => {
-    if (
-      roleLevel !== undefined &&
-      roleLevel < RoleLevel.Admin &&
-      item.text === "发布"
-    ) {
-      return false;
-    }
-    if (
-      roleLevel !== undefined &&
-      roleLevel < RoleLevel.SuperAdmin &&
-      item.text === "审批"
-    ) {
-      return false;
-    }
-    return true;
-  });
-
-  console.log("current", current);
+  const currentPage = useCurrentPage();
 
   return (
-    <>
+    <div className="overflow-hidden max-h-[100vh] flex flex-col">
+      <Header />
       <GlobalNotify />
-      {availableTabList[current].text === "主页" && <Home />}
-      {availableTabList[current].text === "个人" && <Profile />}
-      {availableTabList[current].text === "发布" && <Publish />}
-      {availableTabList[current].text === "审批" && <Approve />}
-      {availableTabList[current].text === "活动" && <ActivityPage />}
+      {currentPage === "主页" && <Home />}
+      {currentPage === "个人" && <Profile />}
+      {currentPage === "发布" && <Publish />}
+      {currentPage === "审批" && <Approve />}
+      {currentPage === "活动" && <ActivityPage />}
 
       <div className="fixed bottom-0 left-0 w-full">
         <TabBar />
       </div>
-    </>
+    </div>
   );
 };
 

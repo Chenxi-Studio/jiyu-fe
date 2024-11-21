@@ -1,10 +1,12 @@
 import { Search } from "@nutui/icons-react-taro";
 import { Input } from "@tarojs/components";
 import React, { type CSSProperties, useState, type FC } from "react";
+import { twMerge } from "tailwind-merge";
 
 export interface SearchBarProps {
   value: string;
   onChange: (input: string) => void;
+  className?: string;
 }
 
 const baseStyle: CSSProperties = {
@@ -26,17 +28,20 @@ const normalStyle: CSSProperties = {
 };
 
 export const SearchBar: FC<SearchBarProps> = (props) => {
-  const { value, onChange: handleChange } = props;
+  const { value, onChange: handleChange, className } = props;
   const [isFocus, setIsFocus] = useState<boolean>(false);
 
   return (
     <div
-      className="flex bg-white items-center justify-center gap-3 py-2 px-3 rounded-2xl h-6 border-solid border-4"
+      className={twMerge(
+        "flex bg-white items-center justify-center gap-3 py-[2px] px-3 rounded-2xl h-6 border-solid border-4",
+        className,
+      )}
       style={isFocus ? focusStyle : normalStyle}
     >
-      <Search size={14} color="#9ca3af" />
+      <Search size={12} color="#9ca3af" />
       <Input
-        className="flex-1 text-gray-700"
+        className="flex-1 text-gray-700 text-xs"
         type="text"
         value={value}
         onInput={(event) => {
