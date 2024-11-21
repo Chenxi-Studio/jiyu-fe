@@ -8,10 +8,13 @@ import { TabTour } from "@/components/tours/tab-tour";
 import { HomeTour } from "@/components/tours/home-tour";
 import { type ActivityWithRemain } from "@/types/api";
 import { $Common } from "@/store/common";
+import { Icon1 } from "@/components/icon/icon-1";
+import { Icon2 } from "@/components/icon/icon-2";
 import { BigCard } from "./components/big-card";
 import "./style.scss";
 import { MiddleCard } from "./components/middle-card";
 import { Tag } from "./components/tag";
+import { pullToRefreshRenderIcon } from "@/utils/ui";
 
 const TagContent = [
   "党旗引领",
@@ -66,14 +69,7 @@ const Home = (): JSX.Element => {
         onRefresh={async () => {
           await load();
         }}
-        renderIcon={(status) => {
-          return (
-            <>
-              {(status === "pulling" || status === "complete") && 1}
-              {(status === "canRelease" || status === "refreshing") && 2}
-            </>
-          );
-        }}
+        renderIcon={pullToRefreshRenderIcon}
         className="max-h-full"
         style={
           homeTour || navigatorTour
@@ -102,7 +98,7 @@ const Home = (): JSX.Element => {
           </div>
 
           <div
-            className="flex justify-between text-gray-400 text-sm hide-scrollbar py-3 gap-4 overflow-x-auto overscroll-y-hidden px-10"
+            className="flex justify-between text-gray-400 text-sm hide-scrollbar py-2 gap-4 overflow-x-auto overscroll-y-hidden px-10"
             id="home-tag"
           >
             {TagContent.map((item, index) => (
