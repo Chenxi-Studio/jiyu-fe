@@ -6,11 +6,9 @@ import { $User } from "@/store/user";
 import { pic2url } from "@/utils/type";
 import { $UI } from "@/store/UI";
 import { navigateTo } from "@/utils/navigator";
-import { TabBar } from "@/components/tab-bar";
 import { ProfileTour } from "@/components/tours/profile-tour";
-import { Avatar } from "./components/avatar";
 import Taro from "@tarojs/taro";
-import { GlobalNotify } from "@/components/global-notify";
+import { Avatar } from "./components/avatar";
 import "./style.scss";
 
 const Profile = (): JSX.Element => {
@@ -142,11 +140,8 @@ const Profile = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0 left-0 w-full">
-        <TabBar />
-      </div>
+
       <ProfileTour />
-      <GlobalNotify />
     </div>
   );
 };

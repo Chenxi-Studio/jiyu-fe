@@ -7,10 +7,9 @@ import { Loading } from "@nutui/icons-react-taro";
 import { setDevJWT } from "@/utils/dev";
 import { setJWT } from "@/utils/unit";
 import { clearStore } from "@/utils/store";
-import { Cover } from "@/components/cover";
 import { Logo } from "@/components/logo";
-import "./style.css";
 import { twMerge } from "tailwind-merge";
+import "./style.css";
 
 const Auth = (): JSX.Element => {
   const stateCallback = $User.use((state) => state.state);
@@ -30,7 +29,7 @@ const Auth = (): JSX.Element => {
         // const wxLoginRes = await api.login.wxLogin(loginRes.code);
         console.log("tacLoginRes", tacLoginRes);
         await setJWT(tacLoginRes.jwt);
-        switchTab("pages/home/index");
+        switchTab("pages/router/index");
       } else {
         throw Error(`登录失败 ${loginRes.errMsg}`);
       }
@@ -49,7 +48,7 @@ const Auth = (): JSX.Element => {
         console.log("wxLoginRes", wxLoginRes);
         if (wxLoginRes.isSuccess) {
           await setJWT(wxLoginRes.jwt);
-          switchTab("pages/home/index");
+          switchTab("pages/router/index");
         } else {
           throw Error(`登录失败`);
         }
@@ -76,7 +75,7 @@ const Auth = (): JSX.Element => {
     type: "stu" | "admin" | "Ultradamin",
   ): Promise<void> => {
     await setDevJWT(type);
-    switchTab("pages/home/index");
+    switchTab("pages/router/index");
   };
 
   return (

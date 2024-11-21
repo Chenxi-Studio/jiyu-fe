@@ -14,7 +14,6 @@ import { baseActivityRequestIsEmpty } from "@/types/activity";
 import { ActivityRegisterStatus, ActivityStatus } from "@/types/common";
 import { pic2url } from "@/utils/type";
 import { api } from "@/api";
-import { GlobalNotify } from "@/components/global-notify";
 import { $User } from "@/store/user";
 import { availableSubIndice } from "@/utils/activity";
 import { RegisterTour } from "@/components/tours/register-tour";
@@ -181,7 +180,6 @@ const Detail = (): JSX.Element => {
       onTouchStart={handleTouchStart}
       onTouchMove={handleScroll}
     >
-      <GlobalNotify />
       <Dialog id="Detail" />
       <div className="h-48 w-full fixed top-0 z-0" id="detail-pic">
         <Image src={pic2url(currentActivity?.coverImage)} mode="aspectFill" />

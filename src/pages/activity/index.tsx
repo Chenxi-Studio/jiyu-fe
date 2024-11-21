@@ -10,14 +10,12 @@ import {
 } from "@nutui/nutui-react-taro";
 import { api } from "@/api";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
-import { GlobalNotify } from "@/components/global-notify";
 import { SmallCard } from "@/components/small-card";
 import { navigateTo } from "@/utils/navigator";
 import { $UI } from "@/store/UI";
-import { TabBar } from "@/components/tab-bar";
 import { ActivityTour } from "@/components/tours/activity-tour";
-import "./style.scss";
 import { getTourStorage } from "@/utils/store";
+import "./style.scss";
 
 const ActivityPage = (): JSX.Element => {
   const refresh = $UI.use((state) => state.activityRefresh);
@@ -197,11 +195,8 @@ const ActivityPage = (): JSX.Element => {
             </Collapse.Item>
           </Collapse>
         </div>
-        <GlobalNotify />
       </PullToRefresh>
-      <div className="fixed bottom-0 left-0 w-full">
-        <TabBar />
-      </div>
+
       <ActivityTour
         swipeOpen={() => {
           signListRefs[0].current?.open("right");

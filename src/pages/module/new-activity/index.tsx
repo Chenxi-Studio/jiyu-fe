@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button } from "@nutui/nutui-react-taro";
-import { GlobalNotify } from "@/components/global-notify";
 import { Title } from "@/pages/module/new-activity/components/title";
 import { navigateBack } from "@/utils/navigator";
 import { $Activity } from "@/store/activity";
@@ -121,7 +120,6 @@ const NewActivity = (): JSX.Element => {
 
   return (
     <div className="bg-[#F7F8FA] pb-[150rpx]">
-      <GlobalNotify />
       <div className="py-2">
         <Title content="活动信息" />
       </div>
@@ -156,7 +154,6 @@ const NewActivity = (): JSX.Element => {
           {submitText}
         </Button>
       </div>
-      <GlobalNotify />
     </div>
   );
 };

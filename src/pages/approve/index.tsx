@@ -14,8 +14,6 @@ import { navigateTo } from "@/utils/navigator";
 import { api } from "@/api";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { $UI } from "@/store/UI";
-import { GlobalNotify } from "@/components/global-notify";
-import { TabBar } from "@/components/tab-bar";
 import "./style.scss";
 
 const Approve = (): JSX.Element => {
@@ -73,7 +71,6 @@ const Approve = (): JSX.Element => {
           );
         }}
       >
-        <GlobalNotify />
         <Dialog id="Approve" />
         <div className="pb-[150rpx]">
           <Collapse defaultActiveName={["1", "2"]} expandIcon={<ArrowDown />}>
@@ -215,9 +212,6 @@ const Approve = (): JSX.Element => {
           </Collapse>
         </div>
       </PullToRefresh>
-      <div className="fixed bottom-0 left-0 w-full">
-        <TabBar />
-      </div>
     </>
   );
 };

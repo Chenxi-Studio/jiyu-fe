@@ -10,6 +10,10 @@ export const navigateTo = (url: string): void => {
 
 export const switchTab = (url: string): void => {
   console.log("switch url", url);
+  if (url === "pages/router/index") {
+    void Taro.navigateTo({ url: `/${url}` });
+    return;
+  }
   const roleLevel = $User.get().roleLevel;
   const availableTabList = TabList.filter((item) => {
     if (
@@ -34,7 +38,7 @@ export const switchTab = (url: string): void => {
       (item) => item.pagePath === url,
     );
   });
-  void Taro.switchTab({ url: `/${url}` });
+  // void Taro.switchTab({ url: `/${url}` });
 };
 
 export const navigateBack = (delta: number = 1): void => {

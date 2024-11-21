@@ -4,7 +4,6 @@ import { api } from "@/api";
 import { $UI } from "@/store/UI";
 import { navigateTo } from "@/utils/navigator";
 import { PullToRefresh } from "@nutui/nutui-react-taro";
-import { TabBar } from "@/components/tab-bar";
 import { TabTour } from "@/components/tours/tab-tour";
 import { HomeTour } from "@/components/tours/home-tour";
 import { type ActivityWithRemain } from "@/types/api";
@@ -147,9 +146,7 @@ const Home = (): JSX.Element => {
           </div>
         </div>
       </PullToRefresh>
-      <div className="fixed bottom-0 left-0 w-full">
-        <TabBar />
-      </div>
+
       <TabTour />
       <HomeTour />
     </>

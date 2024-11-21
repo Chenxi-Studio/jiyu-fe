@@ -11,17 +11,15 @@ import {
 } from "@nutui/nutui-react-taro";
 import { api } from "@/api";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
-import { GlobalNotify } from "@/components/global-notify";
 import { SmallCard } from "@/components/small-card";
 import { navigateTo } from "@/utils/navigator";
 import { $UI } from "@/store/UI";
 import { $Activity } from "@/store/activity";
 import { ActivityStatus } from "@/types/common";
 import { type UserEntity } from "@/types/entity/User.entity";
-import { TabBar } from "@/components/tab-bar";
 import { PublishTour } from "@/components/tours/publish-tour";
-import "./style.scss";
 import { getTourStorage } from "@/utils/store";
+import "./style.scss";
 
 const Publish = (): JSX.Element => {
   const refresh = $UI.use((state) => state.publishRefresh);
@@ -316,11 +314,8 @@ const Publish = (): JSX.Element => {
             <Edit color="white" width={24} height={24} />
           </div>
         </div>
-        <GlobalNotify />
       </PullToRefresh>
-      <div className="fixed bottom-0 left-0 w-full">
-        <TabBar />
-      </div>
+
       {admins.length !== 0 && (
         <Picker
           popupProps={{ zIndex: 9999 }}
