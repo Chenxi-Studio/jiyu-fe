@@ -80,13 +80,8 @@ const Auth = (): JSX.Element => {
 
   return (
     <div>
-      <div
-        className="fixed top-0 bottom-0 w-[100vw] h-[100vh] auth-background -z-10 bg-cover"
-        // style={{ backgroundSize: "50%" }}
-      />
-      {/* <div className="flex items-center justify-center w-full mt-20 z-50">
-        <Cover />
-      </div> */}
+      <div className="fixed top-0 bottom-0 w-[100vw] h-[100vh] auth-background -z-10 bg-cover" />
+
       <div
         onClick={() => {
           clearStore();
@@ -127,7 +122,7 @@ const Auth = (): JSX.Element => {
           {wxButtonContent}
         </div>
       </div>
-      <div
+      {/* <div
         onClick={() => {
           clearStore();
           void devLogin("stu");
@@ -159,7 +154,7 @@ const Auth = (): JSX.Element => {
         <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-white">
           UltraAdmin 测试登录
         </div>
-      </div>
+      </div> */}
       <div className="fixed bottom-[5%] px-8 w-[calc(100%-128rpx)] flex items-center justify-center">
         <Logo />
       </div>

@@ -340,6 +340,12 @@ const user = {
     });
   },
   self: (): Promise<UserEntity> => instance.get(`/users/self`),
+  update: (email: string | undefined, phone: string | undefined) =>
+    instance.patch("/users", {
+      wxOpenID: $User.get().wxOpenID,
+      email: email ?? $User.get().email,
+      phone: phone ?? $User.get().phone,
+    }),
 };
 
 const tag = {
