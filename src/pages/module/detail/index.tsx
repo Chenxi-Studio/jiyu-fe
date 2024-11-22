@@ -251,6 +251,7 @@ const Detail = (): JSX.Element => {
               <Image
                 src={pic2url(currentActivity?.groupImage)}
                 mode="aspectFit"
+                showMenuByLongpress
               ></Image>
             </div>
           </div>
