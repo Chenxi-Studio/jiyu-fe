@@ -203,11 +203,12 @@ const Detail = (): JSX.Element => {
           <div className="text-base mb-2">
             举办方：{currentActivity?.organizer}
           </div>
-          <div className="text-base">联系人：{currentActivity?.contactMan}</div>
-        </div>
-        <div className="p-4 mb-3 rounded-3xl shadow-[0px_3px_24px_rgba(25,32,45,0.05)] bg-white">
+          <div className="text-base mb-4">
+            联系人：{currentActivity?.contactMan}
+          </div>
           <div className="text-base">{currentActivity?.introduction}</div>
         </div>
+
         <div>
           {currentActivity?.subActivities.map((item, index) => {
             return (
