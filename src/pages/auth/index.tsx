@@ -122,7 +122,7 @@ const Auth = (): JSX.Element => {
           {wxButtonContent}
         </div>
       </div>
-      {/* <div
+      <div
         onClick={() => {
           clearStore();
           void devLogin("stu");
@@ -154,7 +154,7 @@ const Auth = (): JSX.Element => {
         <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-white">
           UltraAdmin 测试登录
         </div>
-      </div> */}
+      </div>
       <div className="fixed bottom-[5%] px-8 w-[calc(100%-128rpx)] flex items-center justify-center">
         <Logo />
       </div>

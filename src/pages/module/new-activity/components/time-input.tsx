@@ -66,6 +66,7 @@ export const TimeInput: FC<TimeInputProps> = (props): JSX.Element => {
         title={`${title}选择`}
         type="hour-minutes"
         visible={show}
+        minuteStep={5}
         defaultValue={value}
         formatter={dateFormatter}
         onClose={() => {
