@@ -9,6 +9,8 @@ import { setJWT } from "@/utils/unit";
 import { clearStore } from "@/utils/store";
 import { Logo } from "@/components/logo";
 import { twMerge } from "tailwind-merge";
+import { InteractiveDiv } from "@/components/interactive-div";
+import { AudioSrc } from "@/utils/audio";
 import "./style.css";
 
 const Auth = (): JSX.Element => {
@@ -82,7 +84,10 @@ const Auth = (): JSX.Element => {
     <div>
       <div className="fixed top-0 bottom-0 w-[100vw] h-[100vh] auth-background -z-10 bg-cover" />
 
-      <div
+      <InteractiveDiv
+        onClickVibrate
+        onClickSound
+        onClickSoundSrc={AudioSrc.login}
         onClick={() => {
           clearStore();
           setButtonContent("登录中");
@@ -101,8 +106,11 @@ const Auth = (): JSX.Element => {
           {buttonContent === "登录中" && <Loading size={20} />}
           {buttonContent}
         </div>
-      </div>
-      <div
+      </InteractiveDiv>
+      <InteractiveDiv
+        onClickVibrate
+        onClickSound
+        onClickSoundSrc={AudioSrc.login}
         onClick={() => {
           clearStore();
           setWxButtonContent("登录中");
@@ -121,7 +129,7 @@ const Auth = (): JSX.Element => {
           {wxButtonContent === "登录中" && <Loading size={20} />}
           {wxButtonContent}
         </div>
-      </div>
+      </InteractiveDiv>
       <div
         onClick={() => {
           clearStore();
