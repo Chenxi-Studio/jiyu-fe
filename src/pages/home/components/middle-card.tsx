@@ -11,10 +11,11 @@ export interface MiddleCardProps {
   activity: ActivityEntity;
   className?: string;
   id?: string;
+  onClick?: () => void;
 }
 
 export const MiddleCard: FC<MiddleCardProps> = (props) => {
-  const { key, activity, className, id } = props;
+  const { key, activity, className, id, onClick } = props;
   return (
     <div
       className={twMerge(
@@ -23,6 +24,7 @@ export const MiddleCard: FC<MiddleCardProps> = (props) => {
       )}
       key={key}
       id={id}
+      onClick={onClick}
     >
       <div className="h-[148rpx] w-[148rpx] mr-2">
         <Image

@@ -21,7 +21,7 @@ export const InteractiveDiv: FC<InteractiveDivProps> = (props) => {
       {...rest}
       onClick={(e) => {
         if (onClickVibrate) {
-          void Taro.vibrateShort().then((res) => {
+          void Taro.vibrateLong().then((res) => {
             console.log("vibrate: ", res);
           });
         }

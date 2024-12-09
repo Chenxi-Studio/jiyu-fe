@@ -122,6 +122,13 @@ const Home = (): JSX.Element => {
                 key={`Middle-Card-${index}`}
                 activity={activity}
                 id={index === 0 ? "home-middle-card" : undefined}
+                onClick={() => {
+                  $UI.update("from home", (draft) => {
+                    draft.currentActivity = activity;
+                    draft.detailOrigin = "home";
+                  });
+                  navigateTo(`pages/module/detail/index`);
+                }}
               />
             ))}
           </div>
@@ -131,6 +138,13 @@ const Home = (): JSX.Element => {
                 key={`Middle-Card-${index}`}
                 activity={activity}
                 id={index === 0 ? "home-middle-card" : undefined}
+                onClick={() => {
+                  $UI.update("from home", (draft) => {
+                    draft.currentActivity = activity;
+                    draft.detailOrigin = "home";
+                  });
+                  navigateTo(`pages/module/detail/index`);
+                }}
               />
             ))}
           </div>

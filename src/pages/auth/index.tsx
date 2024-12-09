@@ -130,7 +130,7 @@ const Auth = (): JSX.Element => {
           {wxButtonContent}
         </div>
       </InteractiveDiv>
-      <div
+      {/* <div
         onClick={() => {
           clearStore();
           void devLogin("stu");
@@ -140,8 +140,8 @@ const Auth = (): JSX.Element => {
         <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-white">
           Stu 测试登录
         </div>
-      </div>
-      <div
+      </div> */}
+      {/* <div
         onClick={() => {
           clearStore();
           void devLogin("admin");
@@ -151,7 +151,7 @@ const Auth = (): JSX.Element => {
         <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-white">
           Admin 测试登录
         </div>
-      </div>
+      </div> */}
       <div
         onClick={() => {
           clearStore();
