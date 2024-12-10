@@ -4,8 +4,10 @@ import { switchTab } from "@/utils/navigator";
 import { $UI } from "@/store/UI";
 import { $User } from "@/store/user";
 import { RoleLevel } from "@/types/entity/const";
+import { IconsUrl } from "@/utils/icons";
 import "./style.scss";
 import IconFont from "../iconfont/iconfont";
+import { CommonIcon } from "../icon/common-icon";
 
 const iconSize = 24;
 
@@ -51,25 +53,11 @@ export const TabBar = (): JSX.Element => {
               }
               id={`tab-bar-${index}`}
             >
-              {item.text === "发布" && (
-                <IconFont
-                  name="icon-beifen"
-                  size={iconSize}
-                  customClassName="grayscale"
-                />
-              )}
-              {item.text === "审批" && (
-                <IconFont name="icon-shenhe" size={iconSize} />
-              )}
-              {item.text === "主页" && (
-                <IconFont name="icon-zhuye2" size={iconSize} />
-              )}
-              {item.text === "活动" && (
-                <IconFont name="icon-liebiao" size={iconSize} />
-              )}
-              {item.text === "个人" && (
-                <IconFont name="icon-wode" size={iconSize} />
-              )}
+              {item.text === "发布" && <CommonIcon src={IconsUrl.backup} />}
+              {item.text === "审批" && <CommonIcon src={IconsUrl.approve} />}
+              {item.text === "主页" && <CommonIcon src={IconsUrl.home} />}
+              {item.text === "活动" && <CommonIcon src={IconsUrl.list} />}
+              {item.text === "个人" && <CommonIcon src={IconsUrl.my} />}
               {/* <div>{item.text}</div> */}
             </div>
           );
