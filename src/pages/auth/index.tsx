@@ -11,7 +11,19 @@ import { Logo } from "@/components/logo";
 import { twMerge } from "tailwind-merge";
 import { InteractiveDiv } from "@/components/interactive-div";
 import { AudioSrc } from "@/utils/audio";
-import "./style.css";
+import { pic2url } from "@/utils/type";
+
+const baseUrl =
+  "https://jiyu-1306028870.cos.ap-shanghai.myqcloud.com/wxapp/ui/";
+
+const backgroundColors = [
+  "#feb1a2",
+  "#ffce81",
+  "#a6c189",
+  "#a5c3f6",
+  "#d8ceff",
+  "#ffc4c8",
+];
 
 const Auth = (): JSX.Element => {
   const stateCallback = $User.use((state) => state.state);
@@ -21,6 +33,12 @@ const Auth = (): JSX.Element => {
   const clientId = $User.use((state) => state.clientId);
   const [buttonContent, setButtonContent] = useState<string>("UIS 登录");
   const [wxButtonContent, setWxButtonContent] = useState<string>("微信登录");
+  const [themeNumber] = useState(Math.floor(Math.random() * 6) + 1);
+  const backgroundImage = pic2url(
+    baseUrl + themeNumber.toString() + "-background.jpg",
+  );
+  const lionImage = pic2url(baseUrl + themeNumber.toString() + "-lion.png");
+  const buttonColor = backgroundColors[themeNumber - 1];
 
   const handleTacAuth = async (): Promise<void> => {
     try {
@@ -82,7 +100,16 @@ const Auth = (): JSX.Element => {
 
   return (
     <div>
-      <div className="fixed top-0 bottom-0 w-[100vw] h-[100vh] auth-background -z-10 bg-cover" />
+      <div
+        className="fixed top-0 left-0 w-[100vw] h-[100vh] -z-10"
+        style={{ backgroundImage: `url("${backgroundImage}")` }}
+      />
+      <div className="fixed top-0 left-0 w-[100vw] h-[100vh] -z-10 flex items-center justify-center">
+        <div
+          className="bg-contain bg-no-repeat w-[75%] h-[60%]"
+          style={{ backgroundImage: `url("${lionImage}")` }}
+        ></div>
+      </div>
 
       <InteractiveDiv
         onClickVibrate
@@ -97,11 +124,12 @@ const Auth = (): JSX.Element => {
       >
         <div
           className={twMerge(
-            "flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-[#ffdd96] text-[#000] shadow-[0_8rpx]",
+            "flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 text-[#000] shadow-[0_8rpx]",
             buttonContent === "登录中"
               ? "shadow-[inset_2rpx_5rpx_8rpx_rgba(0,0,0,0.4)]"
               : "shadow-[0_8rpx]",
           )}
+          style={{ backgroundColor: buttonColor }}
         >
           {buttonContent === "登录中" && <Loading size={20} />}
           {buttonContent}
@@ -120,11 +148,12 @@ const Auth = (): JSX.Element => {
       >
         <div
           className={twMerge(
-            "flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-[#ffdd96] text-[#000]",
+            "flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 text-[#000]",
             wxButtonContent === "登录中"
               ? "shadow-[inset_2rpx_5rpx_8rpx_rgba(0,0,0,0.4)]"
               : "shadow-[0_8rpx]",
           )}
+          style={{ backgroundColor: buttonColor }}
         >
           {wxButtonContent === "登录中" && <Loading size={20} />}
           {wxButtonContent}
@@ -152,7 +181,7 @@ const Auth = (): JSX.Element => {
           Admin 测试登录
         </div>
       </div> */}
-      <div
+      {/* <div
         onClick={() => {
           clearStore();
           void devLogin("Ultradamin");
@@ -162,7 +191,7 @@ const Auth = (): JSX.Element => {
         <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-white">
           UltraAdmin 测试登录
         </div>
-      </div>
+      </div> */}
       <div className="fixed bottom-[5%] px-8 w-[calc(100%-128rpx)] flex items-center justify-center">
         <Logo />
       </div>
