@@ -11,20 +11,20 @@ import { twMerge } from "tailwind-merge";
 import Taro from "@tarojs/taro";
 import { approximatelyEqual, px2rpx, rpx2str } from "@/utils/unit";
 import { useId } from "@/utils/store";
-import { BigStyledCardBackground } from "./big-styled-card-background";
+import { StyledCardBackground } from "./styled-card-background";
+import { StyledImageProps } from "./config";
 
-interface BigStyledCardProps extends HTMLAttributes<HTMLDivElement> {
+interface StyledCardProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
+  size: "big" | "medium";
 }
 
-const originWidth = 1800;
-const originBottomHeight = 404;
-const originHeaderHeight = 203;
-
-export const BigStyledCard: FC<BigStyledCardProps> = (props) => {
-  const { children, className, style, ...rest } = props;
+export const StyledCard: FC<StyledCardProps> = (props) => {
+  const { children, className, style, size, ...rest } = props;
   const id = useId("big-styled-card");
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const { originWidth, originBottomHeight, originHeaderHeight } =
+    StyledImageProps[size];
 
   useEffect(() => {
     Taro.createSelectorQuery()
@@ -46,8 +46,6 @@ export const BigStyledCard: FC<BigStyledCardProps> = (props) => {
       });
   }, []);
 
-  console.log("dimensions", dimensions);
-
   return (
     <div
       className={twMerge("relative", className)}
@@ -64,7 +62,8 @@ export const BigStyledCard: FC<BigStyledCardProps> = (props) => {
       }}
     >
       {children}
-      <BigStyledCardBackground
+      <StyledCardBackground
+        size={size}
         className="absolute top-0 left-0"
         originWidth={originWidth}
         originHeaderHeight={originHeaderHeight}

@@ -3,7 +3,7 @@ import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { dateBoundary } from "@/utils/unit";
 import { Image } from "@tarojs/components";
 import { pic2url } from "@/utils/type";
-import { BigStyledCard } from "@/components/big-styled-card";
+import { StyledCard } from "@/components/styled-card";
 import "./style.scss";
 
 export interface BigCardProps {
@@ -17,7 +17,7 @@ export const BigCard: FC<BigCardProps> = (props) => {
   const { activity, key, onClick, id } = props;
 
   return (
-    <BigStyledCard>
+    <StyledCard size="big">
       <div
         id={id}
         onClick={onClick}
@@ -40,6 +40,6 @@ export const BigCard: FC<BigCardProps> = (props) => {
           {/* <div>按钮</div> */}
         </div>
       </div>
-    </BigStyledCard>
+    </StyledCard>
   );
 };

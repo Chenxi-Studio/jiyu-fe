@@ -5,23 +5,23 @@ import React, { type HTMLAttributes, type FC } from "react";
 const baseUrl =
   "https://jiyu-1306028870.cos.ap-shanghai.myqcloud.com/wxapp/ui/";
 
-interface BigStyledCardBackgroundProps extends HTMLAttributes<HTMLDivElement> {
+interface StyledCardBackgroundProps extends HTMLAttributes<HTMLDivElement> {
   width: number;
   height: number;
   originWidth: number;
   originBottomHeight: number;
   originHeaderHeight: number;
+  size: "big" | "medium";
 }
 
-export const BigStyledCardBackground: FC<BigStyledCardBackgroundProps> = (
-  props,
-) => {
+export const StyledCardBackground: FC<StyledCardBackgroundProps> = (props) => {
   const {
     width,
     height,
     originWidth,
     originBottomHeight,
     originHeaderHeight,
+    size,
     ...rest
   } = props;
   return (
@@ -30,7 +30,7 @@ export const BigStyledCardBackground: FC<BigStyledCardBackgroundProps> = (
         className="w-full"
         style={{
           height: rpx2str((width / originWidth) * originHeaderHeight),
-          background: `url('${pic2url(baseUrl + "big-header.png")}')`,
+          background: `url('${pic2url(baseUrl + size + "-header.png")}')`,
           backgroundSize: "100% auto",
         }}
       />
@@ -41,7 +41,7 @@ export const BigStyledCardBackground: FC<BigStyledCardBackgroundProps> = (
             height -
               (width / originWidth) * (originHeaderHeight + originBottomHeight),
           ),
-          background: `url('${pic2url(baseUrl + "big-middle.png")}') repeat-y`,
+          background: `url('${pic2url(baseUrl + size + "-middle.png")}') repeat-y`,
           backgroundSize: "100% auto",
         }}
       />
@@ -49,7 +49,7 @@ export const BigStyledCardBackground: FC<BigStyledCardBackgroundProps> = (
         className="w-full"
         style={{
           height: rpx2str((width / originWidth) * originBottomHeight),
-          background: `url('${pic2url(baseUrl + "big-bottom.png")}')`,
+          background: `url('${pic2url(baseUrl + size + "-bottom.png")}')`,
           backgroundSize: "100% auto",
         }}
       />
