@@ -11,7 +11,25 @@ import { Logo } from "@/components/logo";
 import { twMerge } from "tailwind-merge";
 import { InteractiveDiv } from "@/components/interactive-div";
 import { AudioSrc } from "@/utils/audio";
-import "./style.css";
+import { pic2url } from "@/utils/type";
+
+const baseUrl =
+  "https://jiyu-1306028870.cos.ap-shanghai.myqcloud.com/wxapp/ui/";
+
+const backgroundColors = [
+  "#feb1a2",
+  "#ffce81",
+  "#a6c189",
+  "#a5c3f6",
+  "#d8ceff",
+  "#ffc4c8",
+];
+
+function getDayAsNumber(): number {
+  const date = new Date();
+  const day = date.getDay();
+  return day === 0 ? 7 : day;
+}
 
 const Auth = (): JSX.Element => {
   const stateCallback = $User.use((state) => state.state);
@@ -21,6 +39,15 @@ const Auth = (): JSX.Element => {
   const clientId = $User.use((state) => state.clientId);
   const [buttonContent, setButtonContent] = useState<string>("UIS 登录");
   const [wxButtonContent, setWxButtonContent] = useState<string>("微信登录");
+  const weekday = getDayAsNumber();
+  const [themeNumber] = useState(
+    weekday === 7 ? Math.floor(Math.random() * 6) + 1 : weekday,
+  );
+  const backgroundImage = pic2url(
+    baseUrl + themeNumber.toString() + "-background.jpg",
+  );
+  const lionImage = pic2url(baseUrl + themeNumber.toString() + "-lion.png");
+  const buttonColor = backgroundColors[themeNumber - 1];
 
   const handleTacAuth = async (): Promise<void> => {
     try {
@@ -82,7 +109,16 @@ const Auth = (): JSX.Element => {
 
   return (
     <div>
-      <div className="fixed top-0 bottom-0 w-[100vw] h-[100vh] auth-background -z-10 bg-cover" />
+      <div
+        className="fixed top-0 left-0 w-[100vw] h-[100vh] -z-10"
+        style={{ backgroundImage: `url("${backgroundImage}")` }}
+      />
+      <div className="fixed top-0 left-0 w-[100vw] h-[100vh] -z-10 flex items-center justify-center">
+        <div
+          className="bg-contain bg-no-repeat w-[65%] h-[55%]"
+          style={{ backgroundImage: `url("${lionImage}")` }}
+        ></div>
+      </div>
 
       <InteractiveDiv
         onClickVibrate
