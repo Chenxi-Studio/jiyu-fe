@@ -9,17 +9,21 @@ import React, {
 } from "react";
 import { twMerge } from "tailwind-merge";
 import Taro from "@tarojs/taro";
-import { px2rpx } from "@/utils/unit";
-import { v4 as uuidv4 } from "uuid";
+import { approximatelyEqual, px2rpx, rpx2str } from "@/utils/unit";
+import { useId } from "@/utils/store";
 import { BigStyledCardBackground } from "./big-styled-card-background";
 
 interface BigStyledCardProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
 }
 
+const originWidth = 1800;
+const originBottomHeight = 404;
+const originHeaderHeight = 203;
+
 export const BigStyledCard: FC<BigStyledCardProps> = (props) => {
-  const { children, className, ...rest } = props;
-  const id = uuidv4();
+  const { children, className, style, ...rest } = props;
+  const id = useId("big-styled-card");
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
@@ -27,9 +31,11 @@ export const BigStyledCard: FC<BigStyledCardProps> = (props) => {
       .select(`#${id}`)
       .boundingClientRect()
       .exec((res) => {
-        console.log("???", res, id, `#${id}`);
-
-        if (res[0]?.height && dimensions.width !== res[0].width) {
+        if (
+          res[0]?.height &&
+          (!approximatelyEqual(dimensions.width, res[0].width, 1e-5) ||
+            !approximatelyEqual(dimensions.height, res[0].height, 1e-5))
+        ) {
           console.log("changed", res[0].width, dimensions.width);
 
           setDimensions({
@@ -43,12 +49,33 @@ export const BigStyledCard: FC<BigStyledCardProps> = (props) => {
   console.log("dimensions", dimensions);
 
   return (
-    <div className={twMerge("relative", className)} {...rest} id={id}>
+    <div
+      className={twMerge("relative", className)}
+      {...rest}
+      id={id}
+      style={{
+        paddingTop: rpx2str(
+          (dimensions.width / originWidth) * originHeaderHeight,
+        ),
+        paddingBottom: rpx2str(
+          (dimensions.width / originWidth) * originBottomHeight,
+        ),
+        ...style,
+      }}
+    >
+      {children}
       <BigStyledCardBackground
         className="absolute top-0 left-0"
-        {...dimensions}
+        originWidth={originWidth}
+        originHeaderHeight={originHeaderHeight}
+        originBottomHeight={originBottomHeight}
+        width={dimensions.width}
+        height={
+          dimensions.height +
+          (dimensions.width / originWidth) *
+            (originHeaderHeight + originBottomHeight)
+        }
       />
-      {children}
     </div>
   );
 };

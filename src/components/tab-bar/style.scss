@@ -31,9 +31,9 @@ $vendor-prefixes: -webkit-, -moz-, -ms-, -o-, ;
     font-size: 22rpx;
     gap: 4rpx;
     color: black;
-    @include grayscale-filter(100%);
+    // @include grayscale-filter(100%);
 }
 
 .tab-bar-selected {
-    @include grayscale-filter(0);
+    // @include grayscale-filter(0);
 }

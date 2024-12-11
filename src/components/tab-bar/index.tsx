@@ -53,11 +53,27 @@ export const TabBar = (): JSX.Element => {
               }
               id={`tab-bar-${index}`}
             >
-              {item.text === "发布" && <CommonIcon src={IconsUrl.backup} />}
-              {item.text === "审批" && <CommonIcon src={IconsUrl.approve} />}
-              {item.text === "主页" && <CommonIcon src={IconsUrl.home} />}
-              {item.text === "活动" && <CommonIcon src={IconsUrl.list} />}
-              {item.text === "个人" && <CommonIcon src={IconsUrl.my} />}
+              {item.text === "发布" && (
+                <CommonIcon
+                  src={IconsUrl.backup}
+                  selected={selected === index}
+                />
+              )}
+              {item.text === "审批" && (
+                <CommonIcon
+                  src={IconsUrl.approve}
+                  selected={selected === index}
+                />
+              )}
+              {item.text === "主页" && (
+                <CommonIcon src={IconsUrl.home} selected={selected === index} />
+              )}
+              {item.text === "活动" && (
+                <CommonIcon src={IconsUrl.list} selected={selected === index} />
+              )}
+              {item.text === "个人" && (
+                <CommonIcon src={IconsUrl.my} selected={selected === index} />
+              )}
               {/* <div>{item.text}</div> */}
             </div>
           );

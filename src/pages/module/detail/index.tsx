@@ -8,7 +8,7 @@ import Taro from "@tarojs/taro";
 import { Dialog, Image } from "@nutui/nutui-react-taro";
 import { $UI } from "@/store/UI";
 import { navigateBack, navigateTo } from "@/utils/navigator";
-import { formatDate, px2rpx, windowHeight } from "@/utils/unit";
+import { formatDate, px2rpx, rpx2str, windowHeight } from "@/utils/unit";
 import { $Activity } from "@/store/activity";
 import { baseActivityRequestIsEmpty } from "@/types/activity";
 import { ActivityRegisterStatus, ActivityStatus } from "@/types/common";
@@ -189,8 +189,8 @@ const Detail = (): JSX.Element => {
       <div
         className="bg-[#FCFCFC] rounded-[64rpx] pt-10 px-8 relative z-10 pb-[150rpx]"
         style={{
-          top: `${offset}rpx`,
-          minHeight: `${minHeight}rpx`,
+          top: rpx2str(offset),
+          minHeight: rpx2str(minHeight),
           transition: "top 1s ease-in-out",
         }}
       >

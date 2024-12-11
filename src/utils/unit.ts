@@ -145,3 +145,15 @@ export const setJWT = async (jwt: string): Promise<void> => {
     console.log(tags, grades, majors, classes);
   }
 };
+
+export const rpx2str = (rpx: number): string => {
+  return `${rpx}rpx`;
+};
+
+export function approximatelyEqual(
+  a: number,
+  b: number,
+  epsilon: number = Number.EPSILON,
+): boolean {
+  return Math.abs(a - b) < epsilon;
+}

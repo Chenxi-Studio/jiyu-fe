@@ -8,13 +8,11 @@ import { TabTour } from "@/components/tours/tab-tour";
 import { HomeTour } from "@/components/tours/home-tour";
 import { type ActivityWithRemain } from "@/types/api";
 import { $Common } from "@/store/common";
-import { Icon1 } from "@/components/icon/icon-1";
-import { Icon2 } from "@/components/icon/icon-2";
+import { pullToRefreshRenderIcon } from "@/utils/ui";
 import { BigCard } from "./components/big-card";
 import "./style.scss";
 import { MiddleCard } from "./components/middle-card";
 import { Tag } from "./components/tag";
-import { pullToRefreshRenderIcon } from "@/utils/ui";
 
 const TagContent = [
   "党旗引领",
