@@ -30,7 +30,7 @@ export const MiddleCard: FC<MiddleCardProps> = (props) => {
       >
         <div className="h-[148rpx] w-[148rpx] mr-2">
           <Image
-            className="rounded-2xl h-[148rpx] w-[148rpx]"
+            className="h-[148rpx] w-[148rpx]"
             src={pic2url(activity.coverImage)}
             mode="aspectFill"
           />

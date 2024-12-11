@@ -46,6 +46,8 @@ export const StyledCard: FC<StyledCardProps> = (props) => {
       });
   }, []);
 
+  console.log("now", dimensions.width, dimensions.height, style);
+
   return (
     <div
       className={twMerge("relative", className)}

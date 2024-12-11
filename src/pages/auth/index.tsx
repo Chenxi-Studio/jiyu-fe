@@ -25,6 +25,12 @@ const backgroundColors = [
   "#ffc4c8",
 ];
 
+function getDayAsNumber(): number {
+  const date = new Date();
+  const day = date.getDay();
+  return day === 0 ? 7 : day;
+}
+
 const Auth = (): JSX.Element => {
   const stateCallback = $User.use((state) => state.state);
   const stateLocal = $User.use((state) => state.state_key);
@@ -33,7 +39,10 @@ const Auth = (): JSX.Element => {
   const clientId = $User.use((state) => state.clientId);
   const [buttonContent, setButtonContent] = useState<string>("UIS 登录");
   const [wxButtonContent, setWxButtonContent] = useState<string>("微信登录");
-  const [themeNumber] = useState(Math.floor(Math.random() * 6) + 1);
+  const weekday = getDayAsNumber();
+  const [themeNumber] = useState(
+    weekday === 7 ? Math.floor(Math.random() * 6) + 1 : weekday,
+  );
   const backgroundImage = pic2url(
     baseUrl + themeNumber.toString() + "-background.jpg",
   );
@@ -106,7 +115,7 @@ const Auth = (): JSX.Element => {
       />
       <div className="fixed top-0 left-0 w-[100vw] h-[100vh] -z-10 flex items-center justify-center">
         <div
-          className="bg-contain bg-no-repeat w-[75%] h-[60%]"
+          className="bg-contain bg-no-repeat w-[65%] h-[55%]"
           style={{ backgroundImage: `url("${lionImage}")` }}
         ></div>
       </div>

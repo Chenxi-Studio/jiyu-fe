@@ -17,15 +17,14 @@ export const BigCard: FC<BigCardProps> = (props) => {
   const { activity, key, onClick, id } = props;
 
   return (
-    <StyledCard size="big">
+    <StyledCard size="big" onClick={onClick}>
       <div
         id={id}
-        onClick={onClick}
         className="drop-shadow-base bg-white rounded-2xl pl-3 pt-3 pr-[36rpx] h-[560rpx] min-w-[400rpx]"
         key={key}
       >
         <Image
-          className="rounded-2xl w-full h-[60%]"
+          className="w-full h-[60%]"
           src={pic2url(activity.coverImage)}
           mode="aspectFill"
         />
