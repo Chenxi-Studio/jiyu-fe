@@ -53,7 +53,7 @@ export const StyledCard: FC<StyledCardProps> = (props) => {
 
   return (
     <div
-      className={twMerge("relative", className)}
+      className={twMerge("relative z-10", className)}
       {...rest}
       id={id}
       style={{
@@ -69,7 +69,7 @@ export const StyledCard: FC<StyledCardProps> = (props) => {
       {children}
       <StyledCardBackground
         size={size}
-        className="absolute top-0 left-0"
+        className="absolute top-0 left-0 -z-10"
         originWidth={originWidth}
         originHeaderHeight={originHeaderHeight}
         originBottomHeight={originBottomHeight}
