@@ -21,7 +21,7 @@ export const MiddleCard: FC<MiddleCardProps> = (props) => {
     <StyledCard size="medium">
       <div
         className={twMerge(
-          "flex p-2 drop-shadow-base bg-white rounded-2xl max-h-[180rpx] min-w-[380rpx]",
+          "flex px-4 max-h-[180rpx] min-w-[380rpx]",
           className,
         )}
         key={key}
@@ -35,13 +35,17 @@ export const MiddleCard: FC<MiddleCardProps> = (props) => {
             mode="aspectFill"
           />
         </div>
-        <div className="flex flex-col justify-between">
+        <div className="flex flex-col justify-between flex-1 pr-4">
           <div className="flex text-sm flex-1 text-gray-800">
             {activity.title}
           </div>
-          <div className="flex text-gray-400 text-sm gap-1 items-center">
-            <Date size={12} />
-            <div>{formatDate(activity.startTime, false)}</div>
+          <div>{activity.organizer}</div>
+          <div className="flex items-center justify-between">
+            <div className="flex text-gray-400 text-sm gap-1 items-center">
+              <Date size={12} />
+              <div>{formatDate(activity.startTime, false)}</div>
+            </div>
+            <div>{activity.category}</div>
           </div>
         </div>
       </div>

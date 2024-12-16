@@ -8,12 +8,11 @@ import { TabTour } from "@/components/tours/tab-tour";
 import { HomeTour } from "@/components/tours/home-tour";
 import { type ActivityWithRemain } from "@/types/api";
 import { $Common } from "@/store/common";
+import { StyledButton } from "@/components/button";
 import { pullToRefreshRenderIcon } from "@/utils/ui";
 import { BigCard } from "./components/big-card";
 import "./style.scss";
 import { MiddleCard } from "./components/middle-card";
-import { Tag } from "./components/tag";
-import { StyledButton } from "@/components/button";
 
 const TagContent = [
   "党旗引领",
@@ -24,7 +23,7 @@ const TagContent = [
   "社会实践",
 ];
 const Home = (): JSX.Element => {
-  const searchContent = $Common.use((state) => state.searchContent);
+  const searchContent = $Common.use((state) => state.searchContent).trim();
 
   const [activities, setActivities] = useState<ActivityEntity[]>([]);
   const homeTour = $UI.use((state) => state.homeTour);
@@ -62,6 +61,44 @@ const Home = (): JSX.Element => {
     void load();
   }, []);
 
+  if (searchContent !== "") {
+    return (
+      <>
+        <PullToRefresh
+          onRefresh={async () => {
+            await load();
+          }}
+          renderIcon={pullToRefreshRenderIcon}
+          className="max-h-full"
+          style={
+            homeTour || navigatorTour
+              ? { overflow: "hidden", paddingBottom: "0rpx" }
+              : { overflow: "scroll", paddingBottom: "150rpx" }
+          }
+        >
+          <div className="bg-[#FCFCFC] min-h-[100vh]">
+            <div className="hide-scrollbar pb-3 flex items-center justify-center flex-col gap-6 px-12 pt-6">
+              {filteredActivities.map((activity, index) => (
+                <BigCard
+                  key={`Big-Card-${index}`}
+                  id={index === 0 ? "home-big-card" : undefined}
+                  activity={activity}
+                  onClick={() => {
+                    $UI.update("from home", (draft) => {
+                      draft.currentActivity = activity;
+                      draft.detailOrigin = "home";
+                    });
+                    navigateTo(`pages/module/detail/index`);
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        </PullToRefresh>
+      </>
+    );
+  }
+
   return (
     <>
       <PullToRefresh
@@ -78,22 +115,20 @@ const Home = (): JSX.Element => {
       >
         <div className="bg-[#FCFCFC] min-h-[100vh]">
           <div className="hide-scrollbar pb-3 flex gap-6 overflow-x-auto overscroll-y-hidden px-10 pt-6">
-            {(searchContent === "" ? activities : filteredActivities).map(
-              (activity, index) => (
-                <BigCard
-                  key={`Big-Card-${index}`}
-                  id={index === 0 ? "home-big-card" : undefined}
-                  activity={activity}
-                  onClick={() => {
-                    $UI.update("from home", (draft) => {
-                      draft.currentActivity = activity;
-                      draft.detailOrigin = "home";
-                    });
-                    navigateTo(`pages/module/detail/index`);
-                  }}
-                />
-              ),
-            )}
+            {activities.map((activity, index) => (
+              <BigCard
+                key={`Big-Card-${index}`}
+                id={index === 0 ? "home-big-card" : undefined}
+                activity={activity}
+                onClick={() => {
+                  $UI.update("from home", (draft) => {
+                    draft.currentActivity = activity;
+                    draft.detailOrigin = "home";
+                  });
+                  navigateTo(`pages/module/detail/index`);
+                }}
+              />
+            ))}
           </div>
 
           <div
@@ -117,7 +152,7 @@ const Home = (): JSX.Element => {
             ))}
           </div>
 
-          <div className="hide-scrollbar py-3 flex flex-col gap-6 overflow-x-auto overscroll-y-hidden px-10">
+          <div className="hide-scrollbar py-3 flex flex-col gap-6 overflow-x-auto overscroll-y-hidden pl-10 pr-7">
             {upcomingActivities.map((activity, index) => (
               <MiddleCard
                 key={`Middle-Card-${index}`}
@@ -133,7 +168,7 @@ const Home = (): JSX.Element => {
               />
             ))}
           </div>
-          <div className="hide-scrollbar py-3 flex-col gap-6 overflow-x-auto overscroll-y-hidden px-10">
+          <div className="hide-scrollbar py-3 flex-col gap-6 overflow-x-auto overscroll-y-hidden pl-10 pr-7">
             {ongoingActivities.map((activity, index) => (
               <MiddleCard
                 key={`Middle-Card-${index}`}

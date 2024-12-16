@@ -6,7 +6,6 @@ import React, {
   type ReactNode,
   useEffect,
   useState,
-  useRef,
 } from "react";
 import { twMerge } from "tailwind-merge";
 import Taro from "@tarojs/taro";

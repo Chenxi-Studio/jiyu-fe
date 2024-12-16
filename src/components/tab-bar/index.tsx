@@ -6,10 +6,7 @@ import { $User } from "@/store/user";
 import { RoleLevel } from "@/types/entity/const";
 import { IconsUrl } from "@/utils/icons";
 import "./style.scss";
-import IconFont from "../iconfont/iconfont";
 import { CommonIcon } from "../icon/common-icon";
-
-const iconSize = 24;
 
 export const TabBar = (): JSX.Element => {
   const selected = $UI.use((state) => state.selected);
@@ -38,47 +35,42 @@ export const TabBar = (): JSX.Element => {
   );
 
   return (
-    <>
-      <div className="tab-bar-wrapper">
-        {availableTabList.map((item, index) => {
-          return (
-            <div
-              key={item.text}
-              onClick={() => {
-                switchTab(item.pagePath);
-              }}
-              className={
-                "tab-bar-item " +
-                (selected === index ? "tab-bar-selected" : "grayscale")
-              }
-              id={`tab-bar-${index}`}
-            >
-              {item.text === "发布" && (
-                <CommonIcon
-                  src={IconsUrl.backup}
-                  selected={selected === index}
-                />
-              )}
-              {item.text === "审批" && (
-                <CommonIcon
-                  src={IconsUrl.approve}
-                  selected={selected === index}
-                />
-              )}
-              {item.text === "主页" && (
-                <CommonIcon src={IconsUrl.home} selected={selected === index} />
-              )}
-              {item.text === "活动" && (
-                <CommonIcon src={IconsUrl.list} selected={selected === index} />
-              )}
-              {item.text === "个人" && (
-                <CommonIcon src={IconsUrl.my} selected={selected === index} />
-              )}
-              {/* <div>{item.text}</div> */}
-            </div>
-          );
-        })}
-      </div>
-    </>
+    <div className="tab-bar-wrapper">
+      {availableTabList.map((item, index) => {
+        return (
+          <div
+            key={item.text}
+            onClick={() => {
+              switchTab(item.pagePath);
+            }}
+            className={
+              "tab-bar-item " +
+              (selected === index ? "tab-bar-selected" : "grayscale")
+            }
+            id={`tab-bar-${index}`}
+          >
+            {item.text === "发布" && (
+              <CommonIcon src={IconsUrl.backup} selected={selected === index} />
+            )}
+            {item.text === "审批" && (
+              <CommonIcon
+                src={IconsUrl.approve}
+                selected={selected === index}
+              />
+            )}
+            {item.text === "主页" && (
+              <CommonIcon src={IconsUrl.home} selected={selected === index} />
+            )}
+            {item.text === "活动" && (
+              <CommonIcon src={IconsUrl.list} selected={selected === index} />
+            )}
+            {item.text === "个人" && (
+              <CommonIcon src={IconsUrl.my} selected={selected === index} />
+            )}
+            {/* <div>{item.text}</div> */}
+          </div>
+        );
+      })}
+    </div>
   );
 };

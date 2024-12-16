@@ -1,6 +1,6 @@
 import React, { type MouseEventHandler, type FC } from "react";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
-import { dateBoundary } from "@/utils/unit";
+import { formatDate } from "@/utils/unit";
 import { Image } from "@tarojs/components";
 import { pic2url } from "@/utils/type";
 import { StyledCard } from "@/components/styled-card";
@@ -20,7 +20,7 @@ export const BigCard: FC<BigCardProps> = (props) => {
     <StyledCard size="big" onClick={onClick}>
       <div
         id={id}
-        className="drop-shadow-base bg-white rounded-2xl pl-3 pt-3 pr-[36rpx] h-[560rpx] min-w-[400rpx]"
+        className="relative pl-3 pt-3 pr-[36rpx] h-[560rpx] min-w-[420rpx]"
         key={key}
       >
         <Image
@@ -28,15 +28,18 @@ export const BigCard: FC<BigCardProps> = (props) => {
           src={pic2url(activity.coverImage)}
           mode="aspectFill"
         />
-        <div className="mt-2 min-h-[15%]">{activity.title}</div>
+        <div className="mt-2 min-h-[15%] text-lg">{activity.title}</div>
         <div className="flex mt-2 text-xs justify-between">
           <div>
             <div className="text-sm mb-1">{activity.organizer}</div>
             <div className="text-gray-400">
-              {dateBoundary(activity.startTime, activity.endTime)}
+              {formatDate(activity.registrationEndTime)}
             </div>
           </div>
-          {/* <div>按钮</div> */}
+          <div className="flex flex-col items-end">
+            <div className="text-sm mb-1">{activity.category}</div>
+            <div className="text-gray-400">{activity.location}</div>
+          </div>
         </div>
       </div>
     </StyledCard>

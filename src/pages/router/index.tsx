@@ -22,7 +22,7 @@ const Router: FC = () => {
       {currentPage === "审批" && <Approve />}
       {currentPage === "活动" && <ActivityPage />}
 
-      <div className="fixed bottom-0 left-0 w-full">
+      <div className="fixed bottom-0 left-0 w-full z-50">
         <TabBar />
       </div>
     </div>
