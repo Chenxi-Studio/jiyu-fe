@@ -22,6 +22,7 @@ import IconFont from "@/components/iconfont/iconfont";
 import { CommonIcon } from "@/components/icon/common-icon";
 import { IconsUrl } from "@/utils/icons";
 import { SubActivityCard } from "./components/sub-activity-card";
+import { StyledCard } from "@/components/styled-card";
 
 const Detail = (): JSX.Element => {
   const currentActivity = $UI.use((state) => state.currentActivity);
@@ -41,6 +42,7 @@ const Detail = (): JSX.Element => {
   const onScroll = useRef<boolean>(false);
   const documentScrollHeight = useRef<number>(0);
   const [scrollToTour, setScrollToTour] = useState<boolean>(false);
+  const [statusBarHeight, setStatusBarHeight] = useState<number>(0);
 
   const load = async (withTour: boolean = false): Promise<void> => {
     if (currentActivity?.id !== undefined) {
@@ -108,6 +110,7 @@ const Detail = (): JSX.Element => {
   };
 
   useEffect(() => {
+    setStatusBarHeight(Taro.getSystemInfoSync().statusBarHeight ?? 0);
     // taro 的 view ref 对象未实现 offset 属性 只能使用 createSelectorQuery 方法·
     // https://taro-docs.jd.com/docs/ref#在子组件中获取
     Taro.createSelectorQuery()
@@ -182,14 +185,23 @@ const Detail = (): JSX.Element => {
       onTouchStart={handleTouchStart}
       onTouchMove={handleScroll}
     >
+      <div
+        className="fixed bg-[#FCFCFC] w-full z-50"
+        style={{ height: statusBarHeight }}
+      ></div>
       <Dialog id="Detail" />
-      <div className="h-48 w-full fixed top-0 z-0" id="detail-pic">
+      <div
+        className="h-48 w-full fixed z-0"
+        id="detail-pic"
+        style={{ top: statusBarHeight }}
+      >
         <Image src={pic2url(currentActivity?.coverImage)} mode="aspectFill" />
       </div>
-      <div
-        className="bg-[#FCFCFC] rounded-[64rpx] pt-10 px-8 relative z-10 pb-[150rpx]"
+      <StyledCard
+        size="medium"
+        className="pt-10 px-8 relative z-10"
         style={{
-          top: rpx2str(offset),
+          top: rpx2str(px2rpx(statusBarHeight) + offset),
           minHeight: rpx2str(minHeight),
           transition: "top 1s ease-in-out",
         }}
@@ -259,7 +271,14 @@ const Detail = (): JSX.Element => {
             </div>
           </div>
         )}
-      </div>
+      </StyledCard>
+
+      <div
+        className="relative z-10 h-[150rpx]"
+        style={{
+          top: rpx2str(px2rpx(statusBarHeight) + offset),
+        }}
+      ></div>
 
       <div className="fixed bottom-0 left-0 right-0 flex bg-white px-8 justify-between h-[150rpx] items-center z-20">
         <div
