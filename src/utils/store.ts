@@ -23,8 +23,8 @@ export const getTourStorage = (): Tours | undefined => {
 let globalIdCounter = 0;
 
 export function useId(prefix = "id"): string {
-  const idRef = useRef<string>();
-  if (idRef.current !== null) {
+  const idRef = useRef<string | null>(null);
+  if (idRef.current === null) {
     idRef.current = `${prefix}-${globalIdCounter++}`;
   }
   return idRef.current;

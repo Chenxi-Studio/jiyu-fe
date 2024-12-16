@@ -115,7 +115,7 @@ const Auth = (): JSX.Element => {
       />
       <div className="fixed top-0 left-0 w-[100vw] h-[100vh] -z-10 flex items-center justify-center">
         <div
-          className="bg-contain bg-no-repeat w-[65%] h-[55%]"
+          className="bg-contain bg-no-repeat w-[70%] h-[55%]"
           style={{ backgroundImage: `url("${lionImage}")` }}
         ></div>
       </div>

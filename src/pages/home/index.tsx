@@ -13,6 +13,7 @@ import { BigCard } from "./components/big-card";
 import "./style.scss";
 import { MiddleCard } from "./components/middle-card";
 import { Tag } from "./components/tag";
+import { StyledButton } from "@/components/button";
 
 const TagContent = [
   "党旗引领",
@@ -100,17 +101,19 @@ const Home = (): JSX.Element => {
             id="home-tag"
           >
             {TagContent.map((item, index) => (
-              <Tag
-                key={`tag-${item}-${index}`}
-                content={item}
-                onClick={() => {
-                  if (tags.current.includes(item))
-                    tags.current = tags.current.filter((tag) => tag !== item);
-                  else {
-                    tags.current.push(item);
-                  }
-                }}
-              />
+              <StyledButton key={`tag-${item}-${index}`} height={32}>
+                {/* <Tag
+                  content={item}
+                  onClick={() => {
+                    if (tags.current.includes(item))
+                      tags.current = tags.current.filter((tag) => tag !== item);
+                    else {
+                      tags.current.push(item);
+                    }
+                  }}
+                /> */}
+                <div className="text-black text-xs">{item}</div>
+              </StyledButton>
             ))}
           </div>
 

@@ -15,7 +15,7 @@ export const Tag: FC<TagProps> = (props) => {
     <div
       key={key}
       className={twMerge(
-        "text-xs min-w-[144rpx] h-6 rounded-full border border-solid flex items-center justify-center",
+        "h-full text-xs flex items-center justify-center",
         selected && "text-white bg-[rgb(255,170,68)] border-[rgb(255,170,68)]",
       )}
       style={{

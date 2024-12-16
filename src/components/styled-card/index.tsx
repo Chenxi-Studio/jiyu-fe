@@ -6,6 +6,7 @@ import React, {
   type ReactNode,
   useEffect,
   useState,
+  useRef,
 } from "react";
 import { twMerge } from "tailwind-merge";
 import Taro from "@tarojs/taro";
@@ -27,26 +28,28 @@ export const StyledCard: FC<StyledCardProps> = (props) => {
     StyledImageProps[size];
 
   useEffect(() => {
-    Taro.createSelectorQuery()
-      .select(`#${id}`)
-      .boundingClientRect()
-      .exec((res) => {
-        if (
-          res[0]?.height &&
-          (!approximatelyEqual(dimensions.width, res[0].width, 1e-5) ||
-            !approximatelyEqual(dimensions.height, res[0].height, 1e-5))
-        ) {
-          console.log("changed", res[0].width, dimensions.width);
-
-          setDimensions({
-            width: px2rpx(res[0].width),
-            height: Math.floor(px2rpx(res[0].height)),
-          });
-        }
-      });
+    setTimeout(() => {
+      Taro.createSelectorQuery()
+        .select(`#${id}`)
+        .boundingClientRect()
+        .exec((res) => {
+          if (res[0]?.height) {
+            if (
+              !approximatelyEqual(dimensions.width, res[0].width, 1e-5) ||
+              !approximatelyEqual(dimensions.height, res[0].height, 1e-5)
+            ) {
+              console.log("boundingClientRect", res[0].width, dimensions.width);
+              setDimensions({
+                width: px2rpx(res[0].width),
+                height: Math.floor(px2rpx(res[0].height)),
+              });
+            }
+          }
+        });
+    }, 0);
   }, []);
 
-  console.log("now", dimensions.width, dimensions.height, style);
+  console.log("now", id, dimensions.width, dimensions.height, style);
 
   return (
     <div
