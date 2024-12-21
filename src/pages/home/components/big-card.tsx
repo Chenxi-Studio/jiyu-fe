@@ -1,8 +1,9 @@
 import React, { type MouseEventHandler, type FC } from "react";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
-import { dateBoundary } from "@/utils/unit";
+import { formatDate } from "@/utils/unit";
 import { Image } from "@tarojs/components";
 import { pic2url } from "@/utils/type";
+import { ActStatusMapping } from "@/types/common";
 import "./style.scss";
 
 export interface BigCardProps {
@@ -27,15 +28,18 @@ export const BigCard: FC<BigCardProps> = (props) => {
         src={pic2url(activity.coverImage)}
         mode="aspectFill"
       />
-      <div className="mt-2 min-h-[15%]">{activity.title}</div>
-      <div className="flex mt-2 text-xs justify-between">
-        <div>
-          <div className="text-sm mb-1">{activity.organizer}</div>
-          <div className="text-gray-400">
-            {dateBoundary(activity.startTime, activity.endTime)}
+      <div className="mt-2 min-h-[15%] text-base">{activity.title}</div>
+      <div className="flex mt-2 text-xs justify-between w-full">
+        <div className="w-full">
+          <div className="flex items-center justify-between text-sm mb-1 w-full">
+            <div>{activity.organizer}</div>
+            <div>{activity.category}</div>
+          </div>
+          <div className="flex items-center justify-between text-gray-400">
+            <div>截止：{formatDate(activity.registrationEndTime)}</div>
+            <div>{ActStatusMapping.get(activity.status)}</div>
           </div>
         </div>
-        {/* <div>按钮</div> */}
       </div>
     </div>
   );

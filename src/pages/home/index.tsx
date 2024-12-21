@@ -100,7 +100,7 @@ const Home = (): JSX.Element => {
       >
         <div className="bg-[#FCFCFC] min-h-[100vh]">
           {filtered ? (
-            <div className="hide-scrollbar pb-3 flex flex-col gap-6 px-10 pt-2">
+            <div className="hide-scrollbar pb-3 flex flex-col gap-6 px-[52rpx] pt-2">
               {filteredActivities.map((activity, index) => (
                 <BigCard
                   key={`Big-Card-${index}`}
@@ -117,7 +117,7 @@ const Home = (): JSX.Element => {
               ))}
             </div>
           ) : (
-            <div className="hide-scrollbar pb-3 flex gap-6 overflow-x-auto overscroll-y-hidden px-10 pt-2">
+            <div className="hide-scrollbar pb-3 flex gap-6 overflow-x-auto overscroll-y-hidden px-[52rpx] pt-2">
               {activities.map((activity, index) => (
                 <BigCard
                   key={`Big-Card-${index}`}
@@ -136,7 +136,7 @@ const Home = (): JSX.Element => {
           )}
 
           {!filtered && (
-            <div className="hide-scrollbar py-3 flex flex-col gap-6 overflow-x-auto overscroll-y-hidden px-10">
+            <div className="hide-scrollbar py-3 flex flex-col gap-6 overflow-x-auto overscroll-y-hidden px-[52rpx]">
               {upcomingActivities.map((activity, index) => (
                 <MiddleCard
                   key={`Middle-Card-${index}`}
@@ -154,7 +154,7 @@ const Home = (): JSX.Element => {
             </div>
           )}
           {!filtered && (
-            <div className="hide-scrollbar py-3 flex-col gap-6 overflow-x-auto overscroll-y-hidden px-10">
+            <div className="hide-scrollbar py-3 flex-col gap-6 overflow-x-auto overscroll-y-hidden px-[52rpx]">
               {ongoingActivities.map((activity, index) => (
                 <MiddleCard
                   key={`Middle-Card-${index}`}
