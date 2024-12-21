@@ -6,6 +6,7 @@ import { $Activity } from "@/store/activity";
 import { type BaseActivityRequest } from "@/types/activity";
 import { api } from "@/api";
 import { $UI } from "@/store/UI";
+import { GlobalNotify } from "@/components/global-notify";
 import { MainActivity } from "./components/main-activity";
 import { SubActivity } from "./components/sub-activity";
 
@@ -120,6 +121,7 @@ const NewActivity = (): JSX.Element => {
 
   return (
     <div className="bg-[#F7F8FA] pb-[150rpx]">
+      <GlobalNotify />
       <div className="py-2">
         <Title content="活动信息" />
       </div>

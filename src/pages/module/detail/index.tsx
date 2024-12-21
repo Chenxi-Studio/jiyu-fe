@@ -19,6 +19,7 @@ import { availableSubIndice } from "@/utils/activity";
 import { RegisterTour } from "@/components/tours/register-tour";
 import { getTourStorage } from "@/utils/store";
 import IconFont from "@/components/iconfont/iconfont";
+import { GlobalNotify } from "@/components/global-notify";
 import { SubActivityCard } from "./components/sub-activity-card";
 
 const Detail = (): JSX.Element => {
@@ -182,6 +183,7 @@ const Detail = (): JSX.Element => {
       onTouchStart={handleTouchStart}
       onTouchMove={handleScroll}
     >
+      <GlobalNotify />
       <Dialog id="Detail" />
       <div
         className="fixed bg-white w-full top-0 left-0 z-50"
