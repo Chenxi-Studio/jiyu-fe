@@ -182,7 +182,7 @@ const Approve = (): JSX.Element => {
                         title={item.title}
                         coverImage={item.coverImage}
                         organizer={item.organizer}
-                        endTime={item.endTime}
+                        startTime={item.startTime}
                         status={item.status}
                       ></SmallCard>
                     </div>
@@ -203,7 +203,7 @@ const Approve = (): JSX.Element => {
                     title={item.title}
                     coverImage={item.coverImage}
                     organizer={item.organizer}
-                    endTime={item.endTime}
+                    startTime={item.startTime}
                     status={item.status}
                   ></SmallCard>
                 </div>

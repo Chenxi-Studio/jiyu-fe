@@ -269,7 +269,7 @@ const Publish = (): JSX.Element => {
                         title={item.title}
                         coverImage={item.coverImage}
                         organizer={item.organizer}
-                        endTime={item.endTime}
+                        startTime={item.startTime}
                         status={item.status}
                         id="publish-small-card"
                       ></SmallCard>
@@ -292,7 +292,7 @@ const Publish = (): JSX.Element => {
                       title={item.title}
                       coverImage={item.coverImage}
                       organizer={item.organizer}
-                      endTime={item.endTime}
+                      startTime={item.startTime}
                       status={item.status}
                     ></SmallCard>
                   </div>

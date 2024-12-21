@@ -13,6 +13,7 @@ import { navigateTo } from "@/utils/navigator";
 import { $UI } from "@/store/UI";
 import { ActivityTour } from "@/components/tours/activity-tour";
 import { getTourStorage } from "@/utils/store";
+import { pullToRefreshRenderIcon } from "@/utils/ui";
 import "./style.scss";
 
 const ActivityPage = (): JSX.Element => {
@@ -82,14 +83,8 @@ const ActivityPage = (): JSX.Element => {
         onRefresh={async () => {
           await loadData();
         }}
-        renderIcon={(status) => {
-          return (
-            <>
-              {(status === "pulling" || status === "complete") && 1}
-              {(status === "canRelease" || status === "refreshing") && 2}
-            </>
-          );
-        }}
+        renderIcon={pullToRefreshRenderIcon}
+        completeDelay={750}
         className="bg-[#FCFCFC] pb-[150rpx] min-h-[100vh]"
       >
         <Dialog id="Activity" />
@@ -159,7 +154,7 @@ const ActivityPage = (): JSX.Element => {
                   title={item.activity.title}
                   coverImage={item.activity.coverImage}
                   organizer={item.activity.organizer}
-                  endTime={item.activity.endTime}
+                  startTime={item.activity.startTime}
                   status={item.activity.status}
                   id={index === 0 ? "activity-small-card" : undefined}
                 ></SmallCard>

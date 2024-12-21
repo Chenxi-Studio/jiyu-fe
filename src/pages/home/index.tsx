@@ -90,6 +90,7 @@ const Home = (): JSX.Element => {
         onRefresh={async () => {
           await load();
         }}
+        completeDelay={750}
         renderIcon={pullToRefreshRenderIcon}
         className="max-h-full"
         style={
