@@ -8,13 +8,11 @@ import { TabTour } from "@/components/tours/tab-tour";
 import { HomeTour } from "@/components/tours/home-tour";
 import { type ActivityWithRemain } from "@/types/api";
 import { $Common } from "@/store/common";
-import { Icon1 } from "@/components/icon/icon-1";
-import { Icon2 } from "@/components/icon/icon-2";
+import { pullToRefreshRenderIcon } from "@/utils/ui";
 import { BigCard } from "./components/big-card";
 import "./style.scss";
 import { MiddleCard } from "./components/middle-card";
 import { Tag } from "./components/tag";
-import { pullToRefreshRenderIcon } from "@/utils/ui";
 
 const TagContent = [
   "党旗引领",
@@ -23,13 +21,18 @@ const TagContent = [
   "校园文化",
   "文体赛事",
   "社会实践",
+  "邯郸校区",
+  "江湾校区",
+  "枫林校区",
+  "张江校区",
 ];
 const Home = (): JSX.Element => {
-  const searchContent = $Common.use((state) => state.searchContent);
+  const searchContent = $Common.use((state) => state.searchContent).trim();
 
   const [activities, setActivities] = useState<ActivityEntity[]>([]);
   const homeTour = $UI.use((state) => state.homeTour);
   const navigatorTour = $UI.use((state) => state.navigatorTour);
+  const filtered = searchContent !== "";
 
   const filteredActivities = useMemo(() => {
     return activities.filter(
@@ -65,6 +68,24 @@ const Home = (): JSX.Element => {
 
   return (
     <>
+      <div
+        className="sticky top-0 flex justify-between text-gray-400 text-sm hide-scrollbar py-2 pb-4 gap-4 overflow-x-auto overscroll-y-hidden pl-[52rpx] pr-2 z-[1000] bg-[#FCFCFC]"
+        id="home-tag"
+      >
+        {TagContent.map((item, index) => (
+          <Tag
+            key={`tag-${item}-${index}`}
+            content={item}
+            onClick={() => {
+              if (tags.current.includes(item))
+                tags.current = tags.current.filter((tag) => tag !== item);
+              else {
+                tags.current.push(item);
+              }
+            }}
+          />
+        ))}
+      </div>
       <PullToRefresh
         onRefresh={async () => {
           await load();
@@ -78,9 +99,9 @@ const Home = (): JSX.Element => {
         }
       >
         <div className="bg-[#FCFCFC] min-h-[100vh]">
-          <div className="hide-scrollbar pb-3 flex gap-6 overflow-x-auto overscroll-y-hidden px-10 pt-6">
-            {(searchContent === "" ? activities : filteredActivities).map(
-              (activity, index) => (
+          {filtered ? (
+            <div className="hide-scrollbar pb-3 flex flex-col gap-6 px-10 pt-2">
+              {filteredActivities.map((activity, index) => (
                 <BigCard
                   key={`Big-Card-${index}`}
                   id={index === 0 ? "home-big-card" : undefined}
@@ -93,61 +114,63 @@ const Home = (): JSX.Element => {
                     navigateTo(`pages/module/detail/index`);
                   }}
                 />
-              ),
-            )}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="hide-scrollbar pb-3 flex gap-6 overflow-x-auto overscroll-y-hidden px-10 pt-2">
+              {activities.map((activity, index) => (
+                <BigCard
+                  key={`Big-Card-${index}`}
+                  id={index === 0 ? "home-big-card" : undefined}
+                  activity={activity}
+                  onClick={() => {
+                    $UI.update("from home", (draft) => {
+                      draft.currentActivity = activity;
+                      draft.detailOrigin = "home";
+                    });
+                    navigateTo(`pages/module/detail/index`);
+                  }}
+                />
+              ))}
+            </div>
+          )}
 
-          <div
-            className="flex justify-between text-gray-400 text-sm hide-scrollbar py-2 gap-4 overflow-x-auto overscroll-y-hidden px-10"
-            id="home-tag"
-          >
-            {TagContent.map((item, index) => (
-              <Tag
-                key={`tag-${item}-${index}`}
-                content={item}
-                onClick={() => {
-                  if (tags.current.includes(item))
-                    tags.current = tags.current.filter((tag) => tag !== item);
-                  else {
-                    tags.current.push(item);
-                  }
-                }}
-              />
-            ))}
-          </div>
-
-          <div className="hide-scrollbar py-3 flex flex-col gap-6 overflow-x-auto overscroll-y-hidden px-10">
-            {upcomingActivities.map((activity, index) => (
-              <MiddleCard
-                key={`Middle-Card-${index}`}
-                activity={activity}
-                id={index === 0 ? "home-middle-card" : undefined}
-                onClick={() => {
-                  $UI.update("from home", (draft) => {
-                    draft.currentActivity = activity;
-                    draft.detailOrigin = "home";
-                  });
-                  navigateTo(`pages/module/detail/index`);
-                }}
-              />
-            ))}
-          </div>
-          <div className="hide-scrollbar py-3 flex-col gap-6 overflow-x-auto overscroll-y-hidden px-10">
-            {ongoingActivities.map((activity, index) => (
-              <MiddleCard
-                key={`Middle-Card-${index}`}
-                activity={activity}
-                id={index === 0 ? "home-middle-card" : undefined}
-                onClick={() => {
-                  $UI.update("from home", (draft) => {
-                    draft.currentActivity = activity;
-                    draft.detailOrigin = "home";
-                  });
-                  navigateTo(`pages/module/detail/index`);
-                }}
-              />
-            ))}
-          </div>
+          {!filtered && (
+            <div className="hide-scrollbar py-3 flex flex-col gap-6 overflow-x-auto overscroll-y-hidden px-10">
+              {upcomingActivities.map((activity, index) => (
+                <MiddleCard
+                  key={`Middle-Card-${index}`}
+                  activity={activity}
+                  id={index === 0 ? "home-middle-card" : undefined}
+                  onClick={() => {
+                    $UI.update("from home", (draft) => {
+                      draft.currentActivity = activity;
+                      draft.detailOrigin = "home";
+                    });
+                    navigateTo(`pages/module/detail/index`);
+                  }}
+                />
+              ))}
+            </div>
+          )}
+          {!filtered && (
+            <div className="hide-scrollbar py-3 flex-col gap-6 overflow-x-auto overscroll-y-hidden px-10">
+              {ongoingActivities.map((activity, index) => (
+                <MiddleCard
+                  key={`Middle-Card-${index}`}
+                  activity={activity}
+                  id={index === 0 ? "home-middle-card" : undefined}
+                  onClick={() => {
+                    $UI.update("from home", (draft) => {
+                      draft.currentActivity = activity;
+                      draft.detailOrigin = "home";
+                    });
+                    navigateTo(`pages/module/detail/index`);
+                  }}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </PullToRefresh>
       <TabTour />

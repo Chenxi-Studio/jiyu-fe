@@ -19,7 +19,7 @@ export const Header: FC = () => {
     setStatusBarHeight(Taro.getSystemInfoSync().statusBarHeight ?? 0);
   }, []);
   return (
-    <div>
+    <div className="bg-[#FCFCFC]">
       <div
         style={{ marginTop: statusBarHeight }}
         className={twMerge(

@@ -122,8 +122,8 @@ const Auth = (): JSX.Element => {
 
       <InteractiveDiv
         onClickVibrate
-        onClickSound
-        onClickSoundSrc={AudioSrc.login}
+        // onClickSound
+        // onClickSoundSrc={AudioSrc.login}
         onClick={() => {
           clearStore();
           setButtonContent("登录中");
@@ -148,8 +148,8 @@ const Auth = (): JSX.Element => {
       </InteractiveDiv>
       <InteractiveDiv
         onClickVibrate
-        onClickSound
-        onClickSoundSrc={AudioSrc.login}
+        // onClickSound
+        // onClickSoundSrc={AudioSrc.login}
         onClick={() => {
           clearStore();
           setWxButtonContent("登录中");
