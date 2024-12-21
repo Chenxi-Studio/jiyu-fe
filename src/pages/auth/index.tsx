@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { $User } from "@/store/user";
 import { navigateTo, switchTab } from "@/utils/navigator";
 import { api } from "@/api";
@@ -32,6 +32,8 @@ const Auth = (): JSX.Element => {
   );
   const lionImage = pic2url(baseUrl + themeNumber.toString() + "-lion.png");
   const buttonColor = getThemeColor();
+
+  const debounce = useRef<boolean>(false);
 
   const handleTacAuth = async (): Promise<void> => {
     try {
@@ -70,6 +72,7 @@ const Auth = (): JSX.Element => {
       }
     } catch (error) {
       setWxButtonContent("登录失败请使用 UIS 登录");
+      debounce.current = false;
       console.log(error);
     }
   };
@@ -109,6 +112,8 @@ const Auth = (): JSX.Element => {
         // onClickSound
         // onClickSoundSrc={AudioSrc.login}
         onClick={() => {
+          if (debounce.current) return;
+          debounce.current = true;
           clearStore();
           setButtonContent("登录中");
           navigateTo("pages/login/index");
@@ -135,6 +140,8 @@ const Auth = (): JSX.Element => {
         // onClickSound
         // onClickSoundSrc={AudioSrc.login}
         onClick={() => {
+          if (debounce.current) return;
+          debounce.current = true;
           clearStore();
           setWxButtonContent("登录中");
           void handleWxAuth();
