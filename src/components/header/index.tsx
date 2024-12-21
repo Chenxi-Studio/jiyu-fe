@@ -36,7 +36,10 @@ export const Header: FC = () => {
             }}
           />
         )}
-        {current !== "主页" && current !== "个人" && <div>{current}</div>}
+        {current !== "主页" && current !== "个人" && current !== "活动" && (
+          <div>{current}</div>
+        )}
+        {current === "活动" && <div>我的活动</div>}
       </div>
 
       <div

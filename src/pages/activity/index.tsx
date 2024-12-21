@@ -1,8 +1,6 @@
 import React, { createRef, useEffect, useState } from "react";
-import { ArrowDown } from "@nutui/icons-react-taro";
 import {
   Button,
-  Collapse,
   Dialog,
   PullToRefresh,
   Swipe,
@@ -22,7 +20,7 @@ const ActivityPage = (): JSX.Element => {
   const [signList, setSignList] = useState<
     Array<{ activity: ActivityEntity; signID: number }>
   >([]);
-  const [waitList, setWaitList] = useState<ActivityEntity[]>([]);
+  // const [waitList, setWaitList] = useState<ActivityEntity[]>([]);
   const signListRefs = new Array(signList.length)
     .fill(null)
     .map(() => createRef<SwipeInstance>());
@@ -92,108 +90,82 @@ const ActivityPage = (): JSX.Element => {
             </>
           );
         }}
+        className="bg-[#FCFCFC] pb-[150rpx] min-h-[100vh]"
       >
         <Dialog id="Activity" />
 
-        <div className="pb-[150rpx]">
-          <Collapse defaultActiveName={["1", "2"]} expandIcon={<ArrowDown />}>
-            <Collapse.Item title="已报名" name="1">
-              <div>
-                {signList.map((item, index) => (
-                  <Swipe
-                    ref={signListRefs[index]}
-                    rightAction={
-                      <>
-                        <Button
-                          type="primary"
-                          shape="square"
-                          id={index === 0 ? "activity-cancel" : undefined}
-                          onClick={() => {
-                            Dialog.open(`Activity`, {
-                              title: `取消报名提示`,
-                              content: `确认取消报名活动 ${item.activity.title} 吗？`,
-                              onConfirm: async () => {
-                                try {
-                                  await api.sign.revocation(item.signID);
-                                  await loadData();
-                                } catch (error) {
-                                  // TODO: 错误问题
-                                }
-                                Dialog.close(`Activity`);
-                              },
-                              onCancel: () => {
-                                Dialog.close(`Activity`);
-                              },
-                            });
-                          }}
-                        >
-                          取消报名
-                        </Button>
-                      </>
-                    }
-                    key={`Activity-${index}`}
-                    onTouchStart={() => {
-                      for (const ref of signListRefs) {
-                        if (
-                          ref !== signListRefs[index] &&
-                          ref.current !== null &&
-                          typeof ref.current.close === "function"
-                        ) {
-                          ref.current.close();
-                        }
-                      }
-                    }}
-                    onActionClick={() => {
-                      if (
-                        signListRefs[index].current !== null &&
-                        signListRefs[index].current !== undefined &&
-                        typeof signListRefs[index].current.close === "function"
-                      ) {
-                        signListRefs[index].current.close();
-                      }
-                    }}
-                  >
-                    <div
-                      className="mt-2 px-[52rpx]"
-                      onClick={() => {
-                        handleOnclick(item.activity);
-                      }}
-                    >
-                      <SmallCard
-                        title={item.activity.title}
-                        coverImage={item.activity.coverImage}
-                        organizer={item.activity.organizer}
-                        endTime={item.activity.endTime}
-                        status={item.activity.status}
-                        id={index === 0 ? "activity-small-card" : undefined}
-                      ></SmallCard>
-                    </div>
-                  </Swipe>
-                ))}
-              </div>
-            </Collapse.Item>
-            <Collapse.Item title="候补中" name="2">
-              <div>
-                {waitList.map((item, index) => (
-                  <div
-                    key={`Wait-${index}`}
-                    className="mt-2 px-[52rpx]"
+        <div className="hide-scrollbar py-3 flex flex-col gap-6 overflow-x-auto overscroll-y-hidden px-[52rpx] drop-shadow-base">
+          {signList.map((item, index) => (
+            <Swipe
+              ref={signListRefs[index]}
+              rightAction={
+                <>
+                  <Button
+                    type="primary"
+                    shape="square"
+                    id={index === 0 ? "activity-cancel" : undefined}
                     onClick={() => {
-                      handleOnclick(item);
+                      Dialog.open(`Activity`, {
+                        title: `取消报名提示`,
+                        content: `确认取消报名活动 ${item.activity.title} 吗？`,
+                        onConfirm: async () => {
+                          try {
+                            await api.sign.revocation(item.signID);
+                            await loadData();
+                          } catch (error) {
+                            // TODO: 错误问题
+                          }
+                          Dialog.close(`Activity`);
+                        },
+                        onCancel: () => {
+                          Dialog.close(`Activity`);
+                        },
+                      });
                     }}
                   >
-                    <SmallCard
-                      title={item.title}
-                      coverImage={item.coverImage}
-                      organizer={item.organizer}
-                      endTime={item.endTime}
-                      status={item.status}
-                    ></SmallCard>
-                  </div>
-                ))}
+                    取消报名
+                  </Button>
+                </>
+              }
+              key={`Activity-${index}`}
+              onTouchStart={() => {
+                for (const ref of signListRefs) {
+                  if (
+                    ref !== signListRefs[index] &&
+                    ref.current !== null &&
+                    typeof ref.current.close === "function"
+                  ) {
+                    ref.current.close();
+                  }
+                }
+              }}
+              onActionClick={() => {
+                if (
+                  signListRefs[index].current !== null &&
+                  signListRefs[index].current !== undefined &&
+                  typeof signListRefs[index].current.close === "function"
+                ) {
+                  signListRefs[index].current.close();
+                }
+              }}
+              className="rounded-2xl overflow-hidden drop-shadow-base"
+            >
+              <div
+                onClick={() => {
+                  handleOnclick(item.activity);
+                }}
+              >
+                <SmallCard
+                  title={item.activity.title}
+                  coverImage={item.activity.coverImage}
+                  organizer={item.activity.organizer}
+                  endTime={item.activity.endTime}
+                  status={item.activity.status}
+                  id={index === 0 ? "activity-small-card" : undefined}
+                ></SmallCard>
               </div>
-            </Collapse.Item>
-          </Collapse>
+            </Swipe>
+          ))}
         </div>
       </PullToRefresh>
 

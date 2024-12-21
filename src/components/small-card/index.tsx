@@ -24,8 +24,11 @@ export const SmallCard: FC<SmallCardProps> = (props): JSX.Element => {
   } = props;
 
   return (
-    <div className="flex h-20 gap-5 items-center" id={id}>
-      <div className="flex justify-center items-center w-20 h-20 bg-white rounded-2xl flex-none shadow-sm">
+    <div
+      className="flex h-20 gap-5 items-center bg-white drop-shadow-base p-3 rounded-2xl"
+      id={id}
+    >
+      <div className="flex justify-center items-center w-20 h-20 rounded-2xl flex-none">
         {/* {coverImage} */}
         <Image
           className="small-card-image"
