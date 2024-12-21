@@ -39,6 +39,7 @@ const Detail = (): JSX.Element => {
   const onScroll = useRef<boolean>(false);
   const documentScrollHeight = useRef<number>(0);
   const [scrollToTour, setScrollToTour] = useState<boolean>(false);
+  const [statusBarHeight, setStatusBarHeight] = useState<number>(0);
 
   const load = async (withTour: boolean = false): Promise<void> => {
     if (currentActivity?.id !== undefined) {
@@ -129,6 +130,7 @@ const Detail = (): JSX.Element => {
       setAvailables(availableSubIndice(currentActivity, user));
     void load(true);
     getScrollViewHeight();
+    setStatusBarHeight(Taro.getSystemInfoSync().statusBarHeight ?? 0);
   }, []);
 
   const getScrollViewHeight = (): void => {
@@ -181,13 +183,21 @@ const Detail = (): JSX.Element => {
       onTouchMove={handleScroll}
     >
       <Dialog id="Detail" />
-      <div className="h-48 w-full fixed top-0 z-0" id="detail-pic">
+      <div
+        className="fixed bg-white w-full top-0 left-0 z-50"
+        style={{ height: `${px2rpx(statusBarHeight)}rpx` }}
+      ></div>
+      <div
+        className="h-48 w-full fixed z-0"
+        id="detail-pic"
+        style={{ top: `${px2rpx(statusBarHeight)}rpx` }}
+      >
         <Image src={pic2url(currentActivity?.coverImage)} mode="aspectFill" />
       </div>
       <div
         className="bg-[#FCFCFC] rounded-[64rpx] pt-10 px-8 relative z-10 pb-[150rpx]"
         style={{
-          top: `${offset}rpx`,
+          top: `${offset + px2rpx(statusBarHeight)}rpx`,
           minHeight: `${minHeight}rpx`,
           transition: "top 1s ease-in-out",
         }}
