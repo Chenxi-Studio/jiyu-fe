@@ -216,7 +216,9 @@ const Detail = (): JSX.Element => {
           <div className="text-base mb-4">
             联系人：{currentActivity?.contactMan}
           </div>
-          <div className="text-base">{currentActivity?.introduction}</div>
+          <div className="text-sm text-gray-500">
+            {currentActivity?.introduction}
+          </div>
         </div>
 
         <div>
