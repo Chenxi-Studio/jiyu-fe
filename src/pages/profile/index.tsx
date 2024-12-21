@@ -8,6 +8,7 @@ import { $UI } from "@/store/UI";
 import { navigateTo } from "@/utils/navigator";
 import { ProfileTour } from "@/components/tours/profile-tour";
 import Taro from "@tarojs/taro";
+import { Dialog } from "@nutui/nutui-react-taro";
 import { Avatar } from "./components/avatar";
 import "./style.scss";
 
@@ -33,6 +34,8 @@ const Profile = (): JSX.Element => {
 
   return (
     <div className="relative text-gray-600 pb-5">
+      <Dialog id="Profile" />
+
       <div
         className="absolute w-[100vw] top-0 h-[70vh] z-[-1] comp-blur"
         style={{
@@ -92,16 +95,30 @@ const Profile = (): JSX.Element => {
         <div
           className="flex justify-between items-center h-12"
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onClick={async () => {
-            const res = await api.login.wxLogout();
-            if (!res.isSuccess) {
-              $UI.update("wx logout error", (draft) => {
-                draft.notifyMsg = "微信解绑失败 请联系管理员";
-                draft.showNotify = true;
-              });
-            } else {
-              navigateTo("pages/auth/index");
-            }
+          onClick={() => {
+            Dialog.open(`Profile`, {
+              title: `解绑微信提示`,
+              content: `确认与此微信号解绑吗？`,
+              onConfirm: async () => {
+                try {
+                  const res = await api.login.wxLogout();
+                  if (!res.isSuccess) {
+                    $UI.update("wx logout error", (draft) => {
+                      draft.notifyMsg = "微信解绑失败 请联系管理员";
+                      draft.showNotify = true;
+                    });
+                  } else {
+                    navigateTo("pages/auth/index");
+                  }
+                } catch (error) {
+                  // TODO: 错误问题
+                }
+                Dialog.close(`Profile`);
+              },
+              onCancel: () => {
+                Dialog.close(`Profile`);
+              },
+            });
           }}
           id="profile-unbind"
         >
@@ -113,11 +130,25 @@ const Profile = (): JSX.Element => {
         <div
           className="flex justify-between items-center h-12"
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onClick={async () => {
-            Taro.setStorageSync("tours", {});
-            $UI.update("clear storage", (draft) => {
-              draft.notifyMsg = "清理缓存成功";
-              draft.showNotify = true;
+          onClick={() => {
+            Dialog.open(`Profile`, {
+              title: `清理缓存提示`,
+              content: `确认清理计遇的缓存吗？`,
+              onConfirm: async () => {
+                try {
+                  Taro.setStorageSync("tours", {});
+                  $UI.update("clear storage", (draft) => {
+                    draft.notifyMsg = "清理缓存成功";
+                    draft.showNotify = true;
+                  });
+                } catch (error) {
+                  // TODO: 错误问题
+                }
+                Dialog.close(`Profile`);
+              },
+              onCancel: () => {
+                Dialog.close(`Profile`);
+              },
             });
           }}
         >
@@ -129,7 +160,21 @@ const Profile = (): JSX.Element => {
         <div
           className="flex justify-between items-center h-12"
           onClick={() => {
-            navigateTo("pages/auth/index");
+            Dialog.open(`Profile`, {
+              title: `退出登录提示`,
+              content: `确认退出本次登录吗？`,
+              onConfirm: async () => {
+                try {
+                  navigateTo("pages/auth/index");
+                } catch (error) {
+                  // TODO: 错误问题
+                }
+                Dialog.close(`Profile`);
+              },
+              onCancel: () => {
+                Dialog.close(`Profile`);
+              },
+            });
           }}
         >
           <div>退出登录</div>
