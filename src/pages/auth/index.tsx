@@ -133,11 +133,14 @@ const Auth = (): JSX.Element => {
       >
         <div
           className={twMerge(
-            "flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-[#ffdd96] text-[#000] shadow-[0_8rpx]",
+            "flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 text-[#000] shadow-[0_8rpx]",
             buttonContent === "登录中"
               ? "shadow-[inset_2rpx_5rpx_8rpx_rgba(0,0,0,0.4)]"
               : "shadow-[0_8rpx]",
           )}
+          style={{
+            backgroundColor: buttonColor,
+          }}
         >
           {buttonContent === "登录中" && <Loading size={20} />}
           {buttonContent}
@@ -156,11 +159,14 @@ const Auth = (): JSX.Element => {
       >
         <div
           className={twMerge(
-            "flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-[#ffdd96] text-[#000]",
+            "flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 text-[#000]",
             wxButtonContent === "登录中"
               ? "shadow-[inset_2rpx_5rpx_8rpx_rgba(0,0,0,0.4)]"
               : "shadow-[0_8rpx]",
           )}
+          style={{
+            backgroundColor: buttonColor,
+          }}
         >
           {wxButtonContent === "登录中" && <Loading size={20} />}
           {wxButtonContent}
@@ -188,7 +194,7 @@ const Auth = (): JSX.Element => {
           Admin 测试登录
         </div>
       </div> */}
-      <div
+      {/* <div
         onClick={() => {
           clearStore();
           void devLogin("Ultradamin");
@@ -198,7 +204,7 @@ const Auth = (): JSX.Element => {
         <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-white">
           UltraAdmin 测试登录
         </div>
-      </div>
+      </div> */}
       <div className="fixed bottom-[5%] px-8 w-[calc(100%-128rpx)] flex items-center justify-center">
         <Logo />
       </div>
