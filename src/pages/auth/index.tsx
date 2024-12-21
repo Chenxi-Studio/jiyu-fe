@@ -12,24 +12,10 @@ import { twMerge } from "tailwind-merge";
 import { InteractiveDiv } from "@/components/interactive-div";
 import { AudioSrc } from "@/utils/audio";
 import { pic2url } from "@/utils/type";
+import { getThemeColor, getThemeNumber } from "@/utils/ui";
 
 const baseUrl =
   "https://jiyu-1306028870.cos.ap-shanghai.myqcloud.com/wxapp/ui/";
-
-const backgroundColors = [
-  "#feb1a2",
-  "#ffce81",
-  "#a6c189",
-  "#a5c3f6",
-  "#d8ceff",
-  "#ffc4c8",
-];
-
-function getDayAsNumber(): number {
-  const date = new Date();
-  const day = date.getDay();
-  return day === 0 ? 7 : day;
-}
 
 const Auth = (): JSX.Element => {
   const stateCallback = $User.use((state) => state.state);
@@ -39,15 +25,13 @@ const Auth = (): JSX.Element => {
   const clientId = $User.use((state) => state.clientId);
   const [buttonContent, setButtonContent] = useState<string>("UIS 登录");
   const [wxButtonContent, setWxButtonContent] = useState<string>("微信登录");
-  const weekday = getDayAsNumber();
-  const [themeNumber] = useState(
-    weekday === 7 ? Math.floor(Math.random() * 6) + 1 : weekday,
-  );
+
+  const [themeNumber] = useState(getThemeNumber());
   const backgroundImage = pic2url(
     baseUrl + themeNumber.toString() + "-background.jpg",
   );
   const lionImage = pic2url(baseUrl + themeNumber.toString() + "-lion.png");
-  const buttonColor = backgroundColors[themeNumber - 1];
+  const buttonColor = getThemeColor();
 
   const handleTacAuth = async (): Promise<void> => {
     try {

@@ -1,6 +1,7 @@
+import React, { type CSSProperties, useState, type FC } from "react";
+import { getThemeColor } from "@/utils/ui";
 import { Search } from "@nutui/icons-react-taro";
 import { Input } from "@tarojs/components";
-import React, { type CSSProperties, useState, type FC } from "react";
 import { twMerge } from "tailwind-merge";
 
 export interface SearchBarProps {
@@ -18,7 +19,7 @@ const baseStyle: CSSProperties = {
 };
 
 const focusStyle: CSSProperties = {
-  borderColor: "#f9a8d4",
+  borderColor: getThemeColor(),
   ...baseStyle,
 };
 

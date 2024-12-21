@@ -17,3 +17,26 @@ export const pullToRefreshRenderIcon: (
     </>
   );
 };
+
+export function getDayAsNumber(): number {
+  const date = new Date();
+  const day = date.getDay();
+  return day === 0 ? 7 : day;
+}
+
+const backgroundColors = [
+  "#feb1a2",
+  "#ffce81",
+  "#a6c189",
+  "#a5c3f6",
+  "#d8ceff",
+  "#ffc4c8",
+];
+
+export const getThemeNumber = (): number => {
+  const weekday = getDayAsNumber();
+  return weekday === 7 ? Math.floor(Math.random() * 6) + 1 : weekday;
+};
+export const getThemeColor = (): string => {
+  return backgroundColors[getThemeNumber() - 1];
+};
