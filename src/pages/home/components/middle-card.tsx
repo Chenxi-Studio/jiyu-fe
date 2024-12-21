@@ -37,7 +37,7 @@ export const MiddleCard: FC<MiddleCardProps> = (props) => {
           {activity.title}
         </div>
         <div className="text-gray-800 text-sm mb-1">{activity.organizer}</div>
-        <div className="flex text-gray-400 text-sm gap-1 items-center">
+        <div className="flex text-gray-400 text-xs gap-1 items-center">
           <div>截止：</div>
           <div>{formatDate(activity.startTime, false)}</div>
         </div>
