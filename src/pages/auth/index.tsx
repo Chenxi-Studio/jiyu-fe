@@ -114,7 +114,7 @@ const Auth = (): JSX.Element => {
   return (
     <div>
       <div
-        className="fixed top-0 left-0 w-[100vw] h-[100vh] -z-10"
+        className="fixed top-0 left-0 w-[100vw] h-[100vh] -z-10 bg-contain"
         style={{ backgroundImage: `url("${backgroundImage}")` }}
       />
       <div className="fixed top-0 left-0 w-[100vw] h-[100vh] -z-10 flex items-center justify-center">
@@ -202,7 +202,7 @@ const Auth = (): JSX.Element => {
           Admin 测试登录
         </div>
       </div> */}
-      <div
+      {/* <div
         onClick={() => {
           clearStore();
           void devLogin("Ultradamin");
@@ -212,7 +212,7 @@ const Auth = (): JSX.Element => {
         <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-white">
           UltraAdmin 测试登录
         </div>
-      </div>
+      </div> */}
       <div className="fixed bottom-[5%] px-8 w-[calc(100%-128rpx)] flex items-center justify-center">
         <Logo />
       </div>

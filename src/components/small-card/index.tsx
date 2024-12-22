@@ -25,7 +25,7 @@ export const SmallCard: FC<SmallCardProps> = (props): JSX.Element => {
 
   return (
     <div
-      className="flex h-20 gap-5 items-center bg-white drop-shadow-base p-3 rounded-2xl"
+      className="flex h-20 gap-3 items-center bg-white drop-shadow-base p-3 rounded-2xl max-w-full"
       id={id}
     >
       <div className="flex justify-center items-center w-20 h-20 rounded-2xl flex-none">
@@ -36,12 +36,14 @@ export const SmallCard: FC<SmallCardProps> = (props): JSX.Element => {
           mode="aspectFill"
         ></Image>
       </div>
-      <div className="flex flex-col justify-between flex-grow w-[90%] h-[90%]">
+      <div className="flex flex-col justify-between h-[90%] w-[calc(100%-160rpx-24rpx)]">
         <div className="flex justify-between text-sm text-gray-300">
           <div>{organizer}</div>
           <div className="text-gray-400">{ActStatusMapping.get(status)}</div>
         </div>
-        <div className="text-lg text-ellipsis whitespace-nowrap">{title}</div>
+        <div className="text-base text-ellipsis whitespace-nowrap truncate">
+          {title}
+        </div>
         {startTime !== null && (
           <div className="flex justify-between text-gray-400 text-sm">
             <div>

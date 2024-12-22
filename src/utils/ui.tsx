@@ -31,11 +31,12 @@ const backgroundColors = [
   "#a5c3f6",
   "#d8ceff",
   "#ffc4c8",
+  "#89CAD8",
 ];
 
 export const getThemeNumber = (): number => {
   const weekday = getDayAsNumber();
-  return weekday === 7 ? 1 : weekday;
+  return weekday;
 };
 export const getThemeColor = (): string => {
   return backgroundColors[getThemeNumber() - 1];
