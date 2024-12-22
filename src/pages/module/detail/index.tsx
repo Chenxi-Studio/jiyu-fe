@@ -20,11 +20,13 @@ import { RegisterTour } from "@/components/tours/register-tour";
 import { getTourStorage } from "@/utils/store";
 import IconFont from "@/components/iconfont/iconfont";
 import { GlobalNotify } from "@/components/global-notify";
+import { CameraComponent } from "@/components/camera";
 import { SubActivityCard } from "./components/sub-activity-card";
 
 const Detail = (): JSX.Element => {
   const currentActivity = $UI.use((state) => state.currentActivity);
   const origin = $UI.use((state) => state.detailOrigin);
+  const cameraShow = $UI.use((state) => state.cameraShow);
   const editable = origin === "publish";
   const confirm = origin === "home";
   const [offset, setOffset] = useState<number>(0);
@@ -184,6 +186,7 @@ const Detail = (): JSX.Element => {
       onTouchMove={handleScroll}
     >
       <GlobalNotify />
+      {cameraShow && <CameraComponent />}
       <Dialog id="Detail" />
       <div
         className="fixed bg-white w-full top-0 left-0 z-50"
@@ -255,6 +258,7 @@ const Detail = (): JSX.Element => {
                   }
                 }}
                 id={index === 0 ? "detail-subactivity-card" : undefined}
+                scan={selected.length > 0}
               />
             );
           })}
@@ -357,10 +361,11 @@ const Detail = (): JSX.Element => {
             }}
             id="detail-confirm"
           >
-            <IconFont name="icon-shangchuan" size={24} />
+            报名
           </div>
         )}
       </div>
+
       {scrollToTour && <RegisterTour />}
     </div>
   );

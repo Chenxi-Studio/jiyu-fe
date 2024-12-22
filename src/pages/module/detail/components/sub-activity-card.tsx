@@ -9,6 +9,10 @@ import { dateBoundary } from "@/utils/unit";
 import { Checked } from "@nutui/icons-react-taro";
 import { twMerge } from "tailwind-merge";
 import { type SubActivityEntity } from "@/types/entity/SubActivity.entity";
+import IconFont from "@/components/iconfont/iconfont";
+import "./style.scss";
+import { $UI } from "@/store/UI";
+import { $Camera } from "@/store/camera";
 
 export interface SubActivityCardProps {
   sub: SubActivityEntity;
@@ -19,6 +23,7 @@ export interface SubActivityCardProps {
   disabled?: boolean;
   origin?: "home" | "activity" | "detail" | "publish";
   id?: string;
+  scan?: boolean;
 }
 
 export const SubActivityCard: FC<SubActivityCardProps> = ({
@@ -30,6 +35,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
   disabled = false,
   origin,
   id,
+  scan = false,
 }) => {
   const [selected, setSelected] = useState(false);
   const time = useMemo(() => {
@@ -43,7 +49,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
   return (
     <div
       onClick={(event) => {
-        if (origin !== "home") return;
+        if (origin !== "home" || scan) return;
         if (disabled) return;
         if (!isSelected && onClick !== undefined) onClick(event);
         setSelected(!selected);
@@ -83,12 +89,31 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
               : "linear-gradient(270deg, #FF7743 0%,#FFAA45 100%)"
           }
         />
-        <Radio
-          disabled={disabled}
-          icon={<Checked size={20} />}
-          activeIcon={<Checked style={{ color: "#73c088" }} size={20} />}
-          checked={isSelected || selected}
-        />
+        {scan ? (
+          <div
+            onClick={() => {
+              $Camera.update("open camera", (draft) => {
+                draft.subId = sub.id;
+              });
+              $UI.update("open camera", (draft) => {
+                draft.cameraShow = true;
+              });
+            }}
+          >
+            <IconFont
+              name="icon-saomiao"
+              size={20}
+              customClassName={twMerge(isSelected ? "" : "scan-icon")}
+            />
+          </div>
+        ) : (
+          <Radio
+            disabled={disabled}
+            icon={<Checked size={20} />}
+            activeIcon={<Checked style={{ color: "#73c088" }} size={20} />}
+            checked={isSelected || selected}
+          />
+        )}
       </div>
     </div>
   );

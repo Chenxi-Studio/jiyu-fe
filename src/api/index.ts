@@ -16,6 +16,7 @@ import {
   type RegisterInfoResponse,
   type SignListResponse,
   type ActivityWithRemain,
+  type CheckInResponse,
 } from "@/types/api";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { type UserEntity } from "@/types/entity/User.entity";
@@ -375,6 +376,56 @@ const show = {
     instance.get("/show-act/finished"),
 };
 
+const checkIn = {
+  checkIn: (
+    imgUrl: string,
+    latitude: number,
+    longitude: number,
+    subID: number,
+  ): Promise<CheckInResponse> => {
+    const formData = new SimpleFormData();
+
+    formData.appendFile(
+      "checkinImage",
+      imgUrl,
+      imgUrl.replace(/^http:\/\/tmp\//, ""),
+    );
+    formData.append("latitude", latitude.toString());
+    formData.append("longtitude", longitude.toString());
+    formData.append("subID", subID.toString());
+
+    const sandData = formData.getData();
+
+    return new Promise((resolve, reject) => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      Taro.request({
+        url: baseURL + "/checkin",
+        method: "POST",
+        data: sandData.buffer,
+        header: {
+          "Content-Type": sandData.contentType,
+          Authorization: `Bearer ${$User.get().jwt}`,
+        },
+        success: (res) => {
+          const data = res.data;
+          if (data.statusCode < 200 || data.statusCode >= 400) {
+            $UI.update("upload fail", (draft) => {
+              draft.notifyMsg = data.message;
+              draft.showNotify = true;
+            });
+            reject(data);
+          }
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          resolve(data); // 使用resolve来传递成功的结果
+        },
+        fail: (err) => {
+          reject(err); // 使用reject来传递失败的错误
+        },
+      });
+    });
+  },
+};
+
 export const api = {
   login,
   admin,
@@ -385,4 +436,5 @@ export const api = {
   user,
   tag,
   show,
+  checkIn,
 };

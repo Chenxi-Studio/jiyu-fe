@@ -25,6 +25,8 @@ export interface UIModel {
   profileTour: boolean;
   publishTour: boolean;
   publishButtonTour: boolean; // 发布按钮的 tour
+  // Camera
+  cameraShow: boolean;
 }
 
 export interface Tours {
@@ -55,4 +57,5 @@ export const $UI = model<UIModel>("UI", {
   profileTour: storageTours?.profileTour ?? true,
   publishTour: false,
   publishButtonTour: storageTours?.publishButtonTour ?? true,
+  cameraShow: false,
 });

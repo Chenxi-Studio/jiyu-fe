@@ -64,3 +64,13 @@ export interface SubActivityWithRemain extends SubActivityEntity {
 export interface ActivityWithRemain extends ActivityEntity {
   subActivities: SubActivityWithRemain[];
 }
+
+export interface CheckInResponse {
+  id: number;
+  userID: number;
+  subID: number;
+  longtitude: number;
+  latitude: number;
+  image: string;
+  checkinDate: Date;
+}
