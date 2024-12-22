@@ -202,17 +202,22 @@ const Auth = (): JSX.Element => {
           Admin 测试登录
         </div>
       </div> */}
-      {/* <div
+      <div
+        className="fixed bottom-[32%] px-8 w-[calc(100%-128rpx)]"
         onClick={() => {
           clearStore();
           void devLogin("Ultradamin");
         }}
-        className="fixed bottom-[28%] px-8 w-[calc(100%-128rpx)]"
       >
-        <div className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 bg-white">
+        <div
+          className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 text-[#000] shadow-[0_8rpx]"
+          style={{
+            backgroundColor: buttonColor,
+          }}
+        >
           UltraAdmin 测试登录
         </div>
-      </div> */}
+      </div>
       <div className="fixed bottom-[5%] px-8 w-[calc(100%-128rpx)] flex items-center justify-center">
         <Logo />
       </div>
