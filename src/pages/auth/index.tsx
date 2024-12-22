@@ -6,7 +6,7 @@ import Taro from "@tarojs/taro";
 import { Loading } from "@nutui/icons-react-taro";
 import { setDevJWT } from "@/utils/dev";
 import { setJWT } from "@/utils/unit";
-import { clearStore } from "@/utils/store";
+import { clearStore, getLoginStorage } from "@/utils/store";
 import { Logo } from "@/components/logo";
 import { twMerge } from "tailwind-merge";
 import { InteractiveDiv } from "@/components/interactive-div";
@@ -63,6 +63,7 @@ const Auth = (): JSX.Element => {
         console.log("wxLoginRes", wxLoginRes);
         if (wxLoginRes.isSuccess) {
           await setJWT(wxLoginRes.jwt);
+          Taro.setStorageSync("jwt", wxLoginRes.jwt);
           switchTab("pages/router/index");
         } else {
           throw Error(`登录失败`);
@@ -76,6 +77,22 @@ const Auth = (): JSX.Element => {
       console.log(error);
     }
   };
+
+  const handleStorageLogin = async (jwt: string): Promise<void> => {
+    setButtonContent("登录中");
+    setWxButtonContent("登录中");
+    await setJWT(jwt);
+    setTimeout(() => {
+      switchTab("pages/router/index");
+    }, 1500);
+  };
+
+  useEffect(() => {
+    const jwt = getLoginStorage();
+    if (jwt !== undefined) {
+      void handleStorageLogin(jwt);
+    }
+  }, []);
 
   useEffect(() => {
     if (stateCallback !== undefined && stateCallback !== stateLocal) {

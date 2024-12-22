@@ -10,9 +10,9 @@ import { Checked } from "@nutui/icons-react-taro";
 import { twMerge } from "tailwind-merge";
 import { type SubActivityEntity } from "@/types/entity/SubActivity.entity";
 import IconFont from "@/components/iconfont/iconfont";
-import "./style.scss";
 import { $UI } from "@/store/UI";
 import { $Camera } from "@/store/camera";
+import "./style.scss";
 
 export interface SubActivityCardProps {
   sub: SubActivityEntity;

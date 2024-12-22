@@ -18,3 +18,11 @@ export const getTourStorage = (): Tours | undefined => {
   }
   return value;
 };
+
+export const getLoginStorage = (): string | undefined => {
+  const value = Taro.getStorageSync<string>("jwt");
+  if (value === "") {
+    return undefined;
+  }
+  return value;
+};
