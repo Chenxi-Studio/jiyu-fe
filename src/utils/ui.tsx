@@ -35,7 +35,7 @@ const backgroundColors = [
 
 export const getThemeNumber = (): number => {
   const weekday = getDayAsNumber();
-  return weekday === 7 ? Math.floor(Math.random() * 6) + 1 : weekday;
+  return weekday === 7 ? 1 : weekday;
 };
 export const getThemeColor = (): string => {
   return backgroundColors[getThemeNumber() - 1];

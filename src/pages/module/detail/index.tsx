@@ -190,7 +190,7 @@ const Detail = (): JSX.Element => {
         style={{ height: `${px2rpx(statusBarHeight)}rpx` }}
       ></div>
       <div
-        className="h-48 w-full fixed z-0"
+        className="h-60 w-full fixed z-0"
         id="detail-pic"
         style={{ top: `${px2rpx(statusBarHeight)}rpx` }}
       >
