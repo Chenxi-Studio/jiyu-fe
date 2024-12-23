@@ -13,6 +13,7 @@ import { InteractiveDiv } from "@/components/interactive-div";
 import { AudioSrc } from "@/utils/audio";
 import { pic2url } from "@/utils/type";
 import { getThemeColor, getThemeNumber } from "@/utils/ui";
+import "./style.scss";
 
 const baseUrl =
   "https://jiyu-1306028870.cos.ap-shanghai.myqcloud.com/wxapp/ui/";
@@ -80,7 +81,6 @@ const Auth = (): JSX.Element => {
   };
 
   const handleStorageLogin = async (jwt: string): Promise<void> => {
-    setButtonContent("登录中");
     setWxButtonContent("登录中");
     await setJWT(jwt);
     setTimeout(() => {
@@ -91,6 +91,7 @@ const Auth = (): JSX.Element => {
   useEffect(() => {
     const jwt = getLoginStorage();
     if (jwt !== undefined) {
+      debounce.current = true;
       setHidden(true);
       void handleStorageLogin(jwt);
     } else {
@@ -147,6 +148,7 @@ const Auth = (): JSX.Element => {
             buttonContent === "登录中"
               ? "shadow-[inset_2rpx_5rpx_8rpx_rgba(0,0,0,0.4)]"
               : "shadow-[0_8rpx]",
+            hidden && "auth-button-gray",
           )}
           style={{
             backgroundColor: buttonColor,
@@ -156,36 +158,36 @@ const Auth = (): JSX.Element => {
           {buttonContent}
         </div>
       </InteractiveDiv>
-      {!hidden && (
-        <InteractiveDiv
-          onClickVibrate
-          // onClickSound
-          // onClickSoundSrc={AudioSrc.login}
-          onClick={() => {
-            if (debounce.current) return;
-            debounce.current = true;
-            clearStore();
-            setWxButtonContent("登录中");
-            void handleWxAuth();
+
+      <InteractiveDiv
+        onClickVibrate
+        // onClickSound
+        // onClickSoundSrc={AudioSrc.login}
+        onClick={() => {
+          if (debounce.current) return;
+          debounce.current = true;
+          clearStore();
+          setWxButtonContent("登录中");
+          void handleWxAuth();
+        }}
+        className="fixed bottom-[22%] px-8 w-[calc(100%-128rpx)]"
+      >
+        <div
+          className={twMerge(
+            "flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 text-[#000]",
+            wxButtonContent === "登录中"
+              ? "shadow-[inset_2rpx_5rpx_8rpx_rgba(0,0,0,0.4)]"
+              : "shadow-[0_8rpx]",
+          )}
+          style={{
+            backgroundColor: buttonColor,
           }}
-          className="fixed bottom-[22%] px-8 w-[calc(100%-128rpx)]"
         >
-          <div
-            className={twMerge(
-              "flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 text-[#000]",
-              wxButtonContent === "登录中"
-                ? "shadow-[inset_2rpx_5rpx_8rpx_rgba(0,0,0,0.4)]"
-                : "shadow-[0_8rpx]",
-            )}
-            style={{
-              backgroundColor: buttonColor,
-            }}
-          >
-            {wxButtonContent === "登录中" && <Loading size={20} />}
-            {wxButtonContent}
-          </div>
-        </InteractiveDiv>
-      )}
+          {wxButtonContent === "登录中" && <Loading size={20} />}
+          {wxButtonContent}
+        </div>
+      </InteractiveDiv>
+
       {/* <div
         onClick={() => {
           clearStore();
@@ -209,7 +211,10 @@ const Auth = (): JSX.Element => {
         </div>
       </div> */}
       <div
-        className="fixed bottom-[32%] px-8 w-[calc(100%-128rpx)]"
+        className={twMerge(
+          "fixed bottom-[32%] px-8 w-[calc(100%-128rpx)]",
+          hidden && "auth-button-gray",
+        )}
         onClick={() => {
           clearStore();
           void devLogin("Ultradamin");
