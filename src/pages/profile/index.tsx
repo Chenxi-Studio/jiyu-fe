@@ -132,6 +132,7 @@ const Profile = (): JSX.Element => {
               content: `确认与此微信号解绑吗？`,
               onConfirm: async () => {
                 try {
+                  void Taro.vibrateLong();
                   const res = await api.login.wxLogout();
                   if (!res.isSuccess) {
                     $UI.update("wx logout error", (draft) => {
@@ -168,6 +169,7 @@ const Profile = (): JSX.Element => {
               content: `确认退出本次登录吗？`,
               onConfirm: async () => {
                 try {
+                  void Taro.vibrateLong();
                   Taro.setStorageSync("jwt", "");
                   navigateTo("pages/auth/index");
                 } catch (error) {

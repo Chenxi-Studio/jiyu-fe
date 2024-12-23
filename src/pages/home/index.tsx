@@ -9,6 +9,7 @@ import { HomeTour } from "@/components/tours/home-tour";
 import { type ActivityWithRemain } from "@/types/api";
 import { $Common } from "@/store/common";
 import { pullToRefreshRenderIcon } from "@/utils/ui";
+import Taro from "@tarojs/taro";
 import { BigCard } from "./components/big-card";
 import "./style.scss";
 import { MiddleCard } from "./components/middle-card";
@@ -77,6 +78,7 @@ const Home = (): JSX.Element => {
             key={`tag-${item}-${index}`}
             content={item}
             onClick={() => {
+              void Taro.vibrateShort();
               if (tags.current.includes(item))
                 tags.current = tags.current.filter((tag) => tag !== item);
               else {

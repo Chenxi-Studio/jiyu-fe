@@ -12,6 +12,7 @@ import { type SubActivityEntity } from "@/types/entity/SubActivity.entity";
 import IconFont from "@/components/iconfont/iconfont";
 import { $UI } from "@/store/UI";
 import { $Camera } from "@/store/camera";
+import Taro from "@tarojs/taro";
 import "./style.scss";
 
 export interface SubActivityCardProps {
@@ -92,6 +93,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
         {scan ? (
           <div
             onClick={() => {
+              void Taro.vibrateLong();
               $Camera.update("open camera", (draft) => {
                 draft.subId = sub.id;
               });

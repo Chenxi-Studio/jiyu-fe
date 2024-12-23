@@ -15,6 +15,7 @@ import { ActivityTour } from "@/components/tours/activity-tour";
 import { getTourStorage } from "@/utils/store";
 import { pullToRefreshRenderIcon } from "@/utils/ui";
 import { ActivityStatus } from "@/types/common";
+import Taro from "@tarojs/taro";
 import "./style.scss";
 
 const ActivityPage = (): JSX.Element => {
@@ -102,11 +103,13 @@ const ActivityPage = (): JSX.Element => {
                       shape="square"
                       id={index === 0 ? "activity-cancel" : undefined}
                       onClick={() => {
+                        void Taro.vibrateLong();
                         Dialog.open(`Activity`, {
                           title: `取消报名提示`,
                           content: `确认取消报名活动 ${item.activity.title} 吗？`,
                           onConfirm: async () => {
                             try {
+                              await Taro.vibrateLong();
                               await api.sign.revocation(item.signID);
                               await loadData();
                             } catch (error) {

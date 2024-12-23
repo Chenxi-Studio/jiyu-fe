@@ -340,6 +340,7 @@ const Detail = (): JSX.Element => {
             onClick={async () => {
               try {
                 if (currentActivity?.id !== undefined) {
+                  await Taro.vibrateLong();
                   const res = await api.sign.register(
                     currentActivity?.id,
                     subIDs.current,
