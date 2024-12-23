@@ -14,6 +14,7 @@ import { $UI } from "@/store/UI";
 import { ActivityTour } from "@/components/tours/activity-tour";
 import { getTourStorage } from "@/utils/store";
 import { pullToRefreshRenderIcon } from "@/utils/ui";
+import { ActivityStatus } from "@/types/common";
 import "./style.scss";
 
 const ActivityPage = (): JSX.Element => {
@@ -95,31 +96,33 @@ const ActivityPage = (): JSX.Element => {
               ref={signListRefs[index]}
               rightAction={
                 <>
-                  <Button
-                    type="primary"
-                    shape="square"
-                    id={index === 0 ? "activity-cancel" : undefined}
-                    onClick={() => {
-                      Dialog.open(`Activity`, {
-                        title: `取消报名提示`,
-                        content: `确认取消报名活动 ${item.activity.title} 吗？`,
-                        onConfirm: async () => {
-                          try {
-                            await api.sign.revocation(item.signID);
-                            await loadData();
-                          } catch (error) {
-                            // TODO: 错误问题
-                          }
-                          Dialog.close(`Activity`);
-                        },
-                        onCancel: () => {
-                          Dialog.close(`Activity`);
-                        },
-                      });
-                    }}
-                  >
-                    取消报名
-                  </Button>
+                  {item.activity.status !== ActivityStatus.Finished && (
+                    <Button
+                      type="primary"
+                      shape="square"
+                      id={index === 0 ? "activity-cancel" : undefined}
+                      onClick={() => {
+                        Dialog.open(`Activity`, {
+                          title: `取消报名提示`,
+                          content: `确认取消报名活动 ${item.activity.title} 吗？`,
+                          onConfirm: async () => {
+                            try {
+                              await api.sign.revocation(item.signID);
+                              await loadData();
+                            } catch (error) {
+                              // TODO: 错误问题
+                            }
+                            Dialog.close(`Activity`);
+                          },
+                          onCancel: () => {
+                            Dialog.close(`Activity`);
+                          },
+                        });
+                      }}
+                    >
+                      取消报名
+                    </Button>
+                  )}
                 </>
               }
               key={`Activity-${index}`}
@@ -157,6 +160,7 @@ const ActivityPage = (): JSX.Element => {
                   startTime={item.activity.startTime}
                   status={item.activity.status}
                   id={index === 0 ? "activity-small-card" : undefined}
+                  disabled={item.activity.status === ActivityStatus.Finished}
                 ></SmallCard>
               </div>
             </Swipe>
