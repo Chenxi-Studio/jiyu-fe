@@ -8,6 +8,7 @@ import { $UI } from "@/store/UI";
 import { navigateTo } from "@/utils/navigator";
 import { ProfileTour } from "@/components/tours/profile-tour";
 import Taro from "@tarojs/taro";
+import { clearLoginStorage } from "@/utils/store";
 import { Dialog } from "@nutui/nutui-react-taro";
 import { Avatar } from "./components/avatar";
 import "./style.scss";
@@ -165,6 +166,7 @@ const Profile = (): JSX.Element => {
               content: `确认退出本次登录吗？`,
               onConfirm: async () => {
                 try {
+                  Taro.setStorageSync("jwt", "");
                   navigateTo("pages/auth/index");
                 } catch (error) {
                   // TODO: 错误问题

@@ -26,3 +26,7 @@ export const getLoginStorage = (): string | undefined => {
   }
   return value;
 };
+
+export const clearLoginStorage = (): void => {
+  Taro.setStorageSync("jwt", undefined);
+};
