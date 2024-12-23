@@ -69,7 +69,7 @@ const Home = (): JSX.Element => {
   return (
     <>
       <div
-        className="sticky top-0 flex justify-between text-gray-400 text-sm hide-scrollbar py-2 pb-4 gap-4 overflow-x-auto overscroll-y-hidden pl-[52rpx] pr-2 z-[1000] bg-[#FCFCFC]"
+        className="sticky top-0 flex justify-between text-gray-400 text-sm hide-scrollbar py-2 pb-4 gap-4 overflow-x-auto overflow-y-hidden pl-[52rpx] pr-2 z-[1000] bg-[#FCFCFC]"
         id="home-tag"
       >
         {TagContent.map((item, index) => (

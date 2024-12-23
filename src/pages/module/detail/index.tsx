@@ -218,8 +218,11 @@ const Detail = (): JSX.Element => {
           <div className="text-base mb-2">
             举办方：{currentActivity?.organizer}
           </div>
-          <div className="text-base mb-4">
+          <div className="text-base mb-2">
             联系人：{currentActivity?.contactMan}
+          </div>
+          <div className="text-base mb-4">
+            活动类别：{currentActivity?.category}
           </div>
           <div className="text-sm text-gray-500">
             {currentActivity?.introduction}

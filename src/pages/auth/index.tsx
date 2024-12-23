@@ -25,6 +25,7 @@ const Auth = (): JSX.Element => {
   const clientId = $User.use((state) => state.clientId);
   const [buttonContent, setButtonContent] = useState<string>("UIS 登录");
   const [wxButtonContent, setWxButtonContent] = useState<string>("微信登录");
+  const [hidden, setHidden] = useState<boolean>(false);
 
   const [themeNumber] = useState(getThemeNumber());
   const backgroundImage = pic2url(
@@ -90,7 +91,10 @@ const Auth = (): JSX.Element => {
   useEffect(() => {
     const jwt = getLoginStorage();
     if (jwt !== undefined) {
+      setHidden(true);
       void handleStorageLogin(jwt);
+    } else {
+      setHidden(false);
     }
   }, []);
 
@@ -152,34 +156,36 @@ const Auth = (): JSX.Element => {
           {buttonContent}
         </div>
       </InteractiveDiv>
-      <InteractiveDiv
-        onClickVibrate
-        // onClickSound
-        // onClickSoundSrc={AudioSrc.login}
-        onClick={() => {
-          if (debounce.current) return;
-          debounce.current = true;
-          clearStore();
-          setWxButtonContent("登录中");
-          void handleWxAuth();
-        }}
-        className="fixed bottom-[22%] px-8 w-[calc(100%-128rpx)]"
-      >
-        <div
-          className={twMerge(
-            "flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 text-[#000]",
-            wxButtonContent === "登录中"
-              ? "shadow-[inset_2rpx_5rpx_8rpx_rgba(0,0,0,0.4)]"
-              : "shadow-[0_8rpx]",
-          )}
-          style={{
-            backgroundColor: buttonColor,
+      {!hidden && (
+        <InteractiveDiv
+          onClickVibrate
+          // onClickSound
+          // onClickSoundSrc={AudioSrc.login}
+          onClick={() => {
+            if (debounce.current) return;
+            debounce.current = true;
+            clearStore();
+            setWxButtonContent("登录中");
+            void handleWxAuth();
           }}
+          className="fixed bottom-[22%] px-8 w-[calc(100%-128rpx)]"
         >
-          {wxButtonContent === "登录中" && <Loading size={20} />}
-          {wxButtonContent}
-        </div>
-      </InteractiveDiv>
+          <div
+            className={twMerge(
+              "flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 text-[#000]",
+              wxButtonContent === "登录中"
+                ? "shadow-[inset_2rpx_5rpx_8rpx_rgba(0,0,0,0.4)]"
+                : "shadow-[0_8rpx]",
+            )}
+            style={{
+              backgroundColor: buttonColor,
+            }}
+          >
+            {wxButtonContent === "登录中" && <Loading size={20} />}
+            {wxButtonContent}
+          </div>
+        </InteractiveDiv>
+      )}
       {/* <div
         onClick={() => {
           clearStore();
