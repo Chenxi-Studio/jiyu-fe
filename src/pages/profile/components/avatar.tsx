@@ -18,7 +18,7 @@ export const Avatar: FC<AvatarProps> = (props) => {
   } = props;
   return (
     <Button
-      className="rounded-full flex items-center justify-center border-2 border-solid border-white"
+      className="rounded-full flex items-center justify-center border-4 border-solid border-white"
       style={{ width: size, height: size }}
       openType="chooseAvatar"
       onChooseAvatar={handleChooseAvatar}

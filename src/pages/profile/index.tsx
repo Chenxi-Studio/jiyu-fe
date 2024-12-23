@@ -8,7 +8,6 @@ import { $UI } from "@/store/UI";
 import { navigateTo } from "@/utils/navigator";
 import { ProfileTour } from "@/components/tours/profile-tour";
 import Taro from "@tarojs/taro";
-import { clearLoginStorage } from "@/utils/store";
 import { Dialog } from "@nutui/nutui-react-taro";
 import { Avatar } from "./components/avatar";
 import "./style.scss";
