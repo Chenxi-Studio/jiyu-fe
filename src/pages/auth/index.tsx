@@ -13,6 +13,8 @@ import { InteractiveDiv } from "@/components/interactive-div";
 import { AudioSrc } from "@/utils/audio";
 import { pic2url } from "@/utils/type";
 import { getThemeColor, getThemeNumber } from "@/utils/ui";
+import { GlobalNotify } from "@/components/global-notify";
+import { Page403 } from "@/components/403";
 
 const baseUrl =
   "https://jiyu-1306028870.cos.ap-shanghai.myqcloud.com/wxapp/ui/";
@@ -118,6 +120,7 @@ const Auth = (): JSX.Element => {
 
   return (
     <div>
+      <GlobalNotify />
       <div
         className="fixed top-0 left-0 w-[100vw] h-[100vh] -z-10 bg-contain"
         style={{ backgroundImage: `url("${backgroundImage}")` }}
