@@ -7,6 +7,7 @@ import { pic2url } from "@/utils/type";
 import { TimeInput } from "./time-input";
 import { OrganizerTagPopup } from "./organizer-tag-popup";
 import { LocationTagPopup } from "./location-tag-popup";
+import { CategoryTagPopup } from "./category-tag-popup";
 
 export const MainActivity = (): JSX.Element => {
   const {
@@ -29,6 +30,7 @@ export const MainActivity = (): JSX.Element => {
 
   const [showOrganizerTag, setShowOrganizerTag] = useState<boolean>(false);
   const [showLocationTag, setShowLocationTag] = useState<boolean>(false);
+  const [showCategoryTag, setShowCategoryTag] = useState<boolean>(false);
 
   return (
     <>
@@ -260,11 +262,15 @@ export const MainActivity = (): JSX.Element => {
             type="text"
             placeholder="请输入分类 ..."
             value={category}
-            onChange={(val) => {
-              $Activity.update("Update activity category", (draft) => {
-                draft.category = val.toString();
-              });
+            // onChange={(val) => {
+            //   $Activity.update("Update activity category", (draft) => {
+            //     draft.category = val.toString();
+            //   });
+            // }}
+            onClick={() => {
+              setShowCategoryTag(true);
             }}
+            readOnly
           />
         </div>
         <div className="flex bg-white px-3 border-solid border-0 border-b border-gray-100">
@@ -392,6 +398,30 @@ export const MainActivity = (): JSX.Element => {
           });
         }}
         defaultValue={location.split(" ")}
+      />
+      <CategoryTagPopup
+        visible={showCategoryTag}
+        onClose={() => {
+          setShowCategoryTag(false);
+        }}
+        onChange={(value, name) => {
+          $Activity.update("Update activity category", (draft) => {
+            if (value) {
+              draft.category = (
+                draft.category === "" ? [] : draft.category.split("、")
+              )
+                .concat([name])
+                .join("、");
+            } else {
+              draft.category = (
+                draft.category === "" ? [] : draft.category.split("、")
+              )
+                .filter((item) => item !== name)
+                .join("、");
+            }
+          });
+        }}
+        defaultValue={category.split(" ")}
       />
     </>
   );

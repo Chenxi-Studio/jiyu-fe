@@ -40,10 +40,10 @@ export const ActivityStatusArray = [
 
 export const ActStatusMapping = new Map<ActivityStatus, string>([
   [ActivityStatus.Draft, "草稿阶段"],
-  [ActivityStatus.Approval, "审批阶段"],
-  [ActivityStatus.Register, "报名阶段"],
-  [ActivityStatus.Ongoing, "进行阶段"],
-  [ActivityStatus.Finished, "结束阶段"],
+  [ActivityStatus.Approval, "审批中"],
+  [ActivityStatus.Register, "报名中"],
+  [ActivityStatus.Ongoing, "进行中"],
+  [ActivityStatus.Finished, "已结束"],
 ]);
 
 export enum ActivityPlace {

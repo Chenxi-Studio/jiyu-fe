@@ -4,6 +4,7 @@ import { Image } from "@tarojs/components";
 import { formatDate } from "@/utils/unit";
 import { twMerge } from "tailwind-merge";
 import { pic2url } from "@/utils/type";
+import { ActStatusMapping } from "@/types/common";
 
 export interface MiddleCardProps {
   key?: string | number;
@@ -32,14 +33,17 @@ export const MiddleCard: FC<MiddleCardProps> = (props) => {
           mode="aspectFill"
         />
       </div>
-      <div className="flex flex-col justify-between">
+      <div className="flex flex-col justify-between flex-1">
         <div className="flex text-base flex-1 text-gray-800">
           {activity.title}
         </div>
         <div className="text-gray-800 text-sm mb-1">{activity.organizer}</div>
-        <div className="flex text-gray-400 text-xs gap-1 items-center">
-          <div>截止时间：</div>
-          <div>{formatDate(activity.registrationEndTime, false)}</div>
+        <div className="flex text-gray-400 text-xs gap-1 items-center justify-between">
+          <div className="flex items-center justify-center">
+            <div>截止时间：</div>
+            <div>{formatDate(activity.registrationEndTime, false)}</div>
+          </div>
+          <div>{ActStatusMapping.get(activity.status)}</div>
         </div>
       </div>
     </div>
