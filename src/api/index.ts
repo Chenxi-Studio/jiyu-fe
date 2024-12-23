@@ -426,6 +426,10 @@ const checkIn = {
   },
 };
 
+const weird = {
+  jwtExpiredOrMod: () => instance.get("/jwt-expired-or-mod"),
+};
+
 export const api = {
   login,
   admin,
@@ -437,4 +441,5 @@ export const api = {
   tag,
   show,
   checkIn,
+  weird,
 };

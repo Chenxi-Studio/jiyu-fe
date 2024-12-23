@@ -1,7 +1,9 @@
 import axios from "axios";
-import { convertDates } from "@/utils/unit";
+import { convertDates, setJWT } from "@/utils/unit";
 import { $UI } from "@/store/UI";
 import { taroAdapter } from "./adapter";
+import { navigateTo } from "@/utils/navigator";
+import Taro from "@tarojs/taro";
 
 export const tacInstance = axios.create({
   baseURL: "https://tac.fudan.edu.cn",
@@ -36,6 +38,10 @@ instance.interceptors.response.use(
   (res) => {
     console.log("res", res, convertDates(res.data));
     if (res.status < 200 || res.status >= 400) {
+      if (res.status === 401) {
+        Taro.setStorageSync("jwt", "");
+        navigateTo("pages/auth/index");
+      }
       $UI.update("axios err", (draft) => {
         draft.notifyMsg = res.data.message;
         draft.showNotify = true;

@@ -160,6 +160,18 @@ const Profile = (): JSX.Element => {
         </div>
         <div
           className="flex justify-between items-center h-12"
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          onClick={() => {
+            void api.weird.jwtExpiredOrMod();
+          }}
+        >
+          <div>奇怪的测试接口</div>
+          <div className="flex items-center justify-center">
+            <ArrowSize6 size={12} color="#d1d5db" />
+          </div>
+        </div>
+        <div
+          className="flex justify-between items-center h-12"
           onClick={() => {
             Dialog.open(`Profile`, {
               title: `退出登录提示`,
