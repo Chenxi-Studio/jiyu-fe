@@ -120,7 +120,7 @@ const NewActivity = (): JSX.Element => {
   };
 
   return (
-    <div className="bg-[#F7F8FA] pb-[150rpx]">
+    <div className="bg-[#F7F8FA] pb-[150rpx] overflow-x-hidden">
       <GlobalNotify />
       <div className="py-2">
         <Title content="活动信息" />
@@ -131,7 +131,7 @@ const NewActivity = (): JSX.Element => {
         <Title content="子活动" />
       </div>
       <SubActivity />
-      <div className="flex justify-between items-center fixed bottom-0 h-[150rpx] bg-white w-[calc(100%-64rpx)] px-4 z-50">
+      <div className="flex justify-between items-center fixed bottom-0 h-[150rpx] bg-white w-full px-4 z-50 box-border overflow-x-hidden">
         <Button
           type="default"
           size="large"

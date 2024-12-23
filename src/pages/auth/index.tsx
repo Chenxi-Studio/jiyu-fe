@@ -13,7 +13,6 @@ import { InteractiveDiv } from "@/components/interactive-div";
 import { AudioSrc } from "@/utils/audio";
 import { pic2url } from "@/utils/type";
 import { getThemeColor, getThemeNumber } from "@/utils/ui";
-import "./style.scss";
 
 const baseUrl =
   "https://jiyu-1306028870.cos.ap-shanghai.myqcloud.com/wxapp/ui/";
@@ -46,6 +45,7 @@ const Auth = (): JSX.Element => {
         // const wxLoginRes = await api.login.wxLogin(loginRes.code);
         console.log("tacLoginRes", tacLoginRes);
         await setJWT(tacLoginRes.jwt);
+        Taro.setStorageSync("jwt", tacLoginRes.jwt);
         switchTab("pages/router/index");
       } else {
         throw Error(`登录失败 ${loginRes.errMsg}`);
@@ -148,10 +148,9 @@ const Auth = (): JSX.Element => {
             buttonContent === "登录中"
               ? "shadow-[inset_2rpx_5rpx_8rpx_rgba(0,0,0,0.4)]"
               : "shadow-[0_8rpx]",
-            hidden && "auth-button-gray",
           )}
           style={{
-            backgroundColor: buttonColor,
+            backgroundColor: hidden ? "#dc2626" : buttonColor,
           }}
         >
           {buttonContent === "登录中" && <Loading size={20} />}
@@ -211,10 +210,7 @@ const Auth = (): JSX.Element => {
         </div>
       </div> */}
       <div
-        className={twMerge(
-          "fixed bottom-[32%] px-8 w-[calc(100%-128rpx)]",
-          hidden && "auth-button-gray",
-        )}
+        className={twMerge("fixed bottom-[32%] px-8 w-[calc(100%-128rpx)]")}
         onClick={() => {
           clearStore();
           void devLogin("Ultradamin");

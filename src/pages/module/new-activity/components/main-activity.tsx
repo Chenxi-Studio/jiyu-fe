@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Taro from "@tarojs/taro";
 import { $Activity } from "@/store/activity";
 import { $UI } from "@/store/UI";
 import { Image, Input, TextArea } from "@nutui/nutui-react-taro";
 import { pic2url } from "@/utils/type";
 import { TimeInput } from "./time-input";
+import { TagPopup } from "./tag-popup";
+import { OrganizerTagPopup } from "./organizer-tag-popup";
 
 export const MainActivity = (): JSX.Element => {
   const {
@@ -24,6 +26,8 @@ export const MainActivity = (): JSX.Element => {
     minSubParticipants,
     maxSubParticipants,
   } = $Activity.use((state) => state);
+
+  const [showOrganizerTag, setShowOrganizerTag] = useState<boolean>(false);
 
   return (
     <>
@@ -234,11 +238,15 @@ export const MainActivity = (): JSX.Element => {
             type="text"
             placeholder="请输入组织者 ..."
             value={organizer}
-            onChange={(val) => {
-              $Activity.update("Update activity organizer", (draft) => {
-                draft.organizer = val.toString();
-              });
+            // onChange={(val) => {
+            //   $Activity.update("Update activity organizer", (draft) => {
+            //     draft.organizer = val.toString();
+            //   });
+            // }}
+            onClick={() => {
+              setShowOrganizerTag(true);
             }}
+            readOnly
           />
         </div>
         <div className="flex items-center bg-white px-3 border-solid border-0 border-b border-gray-100">
@@ -331,6 +339,31 @@ export const MainActivity = (): JSX.Element => {
           />
         </div>
       </div>
+
+      <OrganizerTagPopup
+        visible={showOrganizerTag}
+        onClose={() => {
+          setShowOrganizerTag(false);
+        }}
+        onChange={(value, name) => {
+          $Activity.update("Update activity organizer", (draft) => {
+            if (value) {
+              draft.organizer = (
+                draft.organizer === "" ? [] : draft.organizer.split("、")
+              )
+                .concat([name])
+                .join("、");
+            } else {
+              draft.organizer = (
+                draft.organizer === "" ? [] : draft.organizer.split("、")
+              )
+                .filter((item) => item !== name)
+                .join("、");
+            }
+          });
+        }}
+        defaultValue={organizer.split("、")}
+      />
     </>
   );
 };
