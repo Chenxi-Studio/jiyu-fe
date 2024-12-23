@@ -46,7 +46,7 @@ const Auth = (): JSX.Element => {
         console.log("tacLoginRes", tacLoginRes);
         await setJWT(tacLoginRes.jwt);
         Taro.setStorageSync("jwt", tacLoginRes.jwt);
-        switchTab("pages/router/index");
+        switchTab("pages/router/index", true);
       } else {
         throw Error(`登录失败 ${loginRes.errMsg}`);
       }
@@ -66,7 +66,7 @@ const Auth = (): JSX.Element => {
         if (wxLoginRes.isSuccess) {
           await setJWT(wxLoginRes.jwt);
           Taro.setStorageSync("jwt", wxLoginRes.jwt);
-          switchTab("pages/router/index");
+          switchTab("pages/router/index", true);
         } else {
           throw Error(`登录失败`);
         }
@@ -84,7 +84,7 @@ const Auth = (): JSX.Element => {
     setWxButtonContent("登录中");
     await setJWT(jwt);
     setTimeout(() => {
-      switchTab("pages/router/index");
+      switchTab("pages/router/index", true);
     }, 1500);
   };
 
@@ -113,7 +113,7 @@ const Auth = (): JSX.Element => {
     type: "stu" | "admin" | "Ultradamin",
   ): Promise<void> => {
     await setDevJWT(type);
-    switchTab("pages/router/index");
+    switchTab("pages/router/index", true);
   };
 
   return (

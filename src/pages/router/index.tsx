@@ -1,4 +1,4 @@
-import React, { type FC } from "react";
+import React, { useEffect, type FC } from "react";
 import ActivityPage from "@/pages/activity";
 import Approve from "@/pages/approve";
 import Home from "@/pages/home";
@@ -7,10 +7,21 @@ import Publish from "@/pages/publish";
 import { TabBar } from "@/components/tab-bar";
 import { GlobalNotify } from "@/components/global-notify";
 import { Header } from "@/components/header";
-import { useCurrentPage } from "@/utils/navigator";
+import { navigateTo, switchTab, useCurrentPage } from "@/utils/navigator";
+import { setJWT } from "@/utils/unit";
+import { getLoginStorage } from "@/utils/store";
 
 const Router: FC = () => {
   const currentPage = useCurrentPage();
+
+  useEffect(() => {
+    const jwt = getLoginStorage();
+    if (jwt !== undefined) {
+      void setJWT(jwt);
+    } else {
+      navigateTo("pages/auth/index");
+    }
+  }, []);
 
   return (
     <div className="overflow-hidden max-h-[100vh] flex flex-col">

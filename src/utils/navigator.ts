@@ -8,10 +8,14 @@ export const navigateTo = (url: string): void => {
   void Taro.navigateTo({ url: `/${url}` });
 };
 
-export const switchTab = (url: string): void => {
+export const switchTab = (url: string, relaunch: boolean = false): void => {
   console.log("switch url", url);
   if (url === "pages/router/index") {
-    void Taro.navigateTo({ url: `/${url}` });
+    if (relaunch) {
+      void Taro.reLaunch({ url: `/${url}` });
+    } else {
+      void Taro.navigateTo({ url: `/${url}` });
+    }
     return;
   }
   const roleLevel = $User.get().roleLevel;

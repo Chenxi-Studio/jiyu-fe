@@ -260,7 +260,7 @@ export const MainActivity = (): JSX.Element => {
           <div className="min-w-16">活动分类</div>
           <Input
             type="text"
-            placeholder="请输入分类 ..."
+            placeholder="请输入活动分类 ..."
             value={category}
             // onChange={(val) => {
             //   $Activity.update("Update activity category", (draft) => {
