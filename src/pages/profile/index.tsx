@@ -98,6 +98,36 @@ const Profile = (): JSX.Element => {
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onClick={() => {
             Dialog.open(`Profile`, {
+              title: `清理缓存提示`,
+              content: `确认清理计遇的缓存吗？`,
+              onConfirm: async () => {
+                try {
+                  Taro.setStorageSync("tours", {});
+                  $UI.update("clear storage", (draft) => {
+                    draft.notifyMsg = "清理缓存成功";
+                    draft.showNotify = true;
+                  });
+                } catch (error) {
+                  // TODO: 错误问题
+                }
+                Dialog.close(`Profile`);
+              },
+              onCancel: () => {
+                Dialog.close(`Profile`);
+              },
+            });
+          }}
+        >
+          <div>清理缓存</div>
+          <div className="flex items-center justify-center">
+            <ArrowSize6 size={12} color="#d1d5db" />
+          </div>
+        </div>
+        <div
+          className="flex justify-between items-center h-12"
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          onClick={() => {
+            Dialog.open(`Profile`, {
               title: `解绑微信提示`,
               content: `确认与此微信号解绑吗？`,
               onConfirm: async () => {
@@ -129,48 +159,7 @@ const Profile = (): JSX.Element => {
             <ArrowSize6 size={12} color="#d1d5db" />
           </div>
         </div>
-        <div
-          className="flex justify-between items-center h-12"
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onClick={() => {
-            Dialog.open(`Profile`, {
-              title: `清理缓存提示`,
-              content: `确认清理计遇的缓存吗？`,
-              onConfirm: async () => {
-                try {
-                  Taro.setStorageSync("tours", {});
-                  $UI.update("clear storage", (draft) => {
-                    draft.notifyMsg = "清理缓存成功";
-                    draft.showNotify = true;
-                  });
-                } catch (error) {
-                  // TODO: 错误问题
-                }
-                Dialog.close(`Profile`);
-              },
-              onCancel: () => {
-                Dialog.close(`Profile`);
-              },
-            });
-          }}
-        >
-          <div>清理缓存</div>
-          <div className="flex items-center justify-center">
-            <ArrowSize6 size={12} color="#d1d5db" />
-          </div>
-        </div>
-        <div
-          className="flex justify-between items-center h-12"
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onClick={() => {
-            void api.weird.jwtExpiredOrMod();
-          }}
-        >
-          <div>奇怪的测试接口</div>
-          <div className="flex items-center justify-center">
-            <ArrowSize6 size={12} color="#d1d5db" />
-          </div>
-        </div>
+
         <div
           className="flex justify-between items-center h-12"
           onClick={() => {
@@ -193,6 +182,18 @@ const Profile = (): JSX.Element => {
           }}
         >
           <div>退出登录</div>
+          <div className="flex items-center justify-center">
+            <ArrowSize6 size={12} color="#d1d5db" />
+          </div>
+        </div>
+        <div
+          className="flex justify-between items-center h-12"
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          onClick={() => {
+            void api.weird.jwtExpiredOrMod();
+          }}
+        >
+          <div>奇怪的测试接口</div>
           <div className="flex items-center justify-center">
             <ArrowSize6 size={12} color="#d1d5db" />
           </div>
