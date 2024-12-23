@@ -34,6 +34,7 @@ export const TagPopup: FC<TagPopupProps> = (props) => {
       position="bottom"
       onClose={onClose}
       destroyOnClose
+      lockScroll={false}
     >
       <div className="pb-4">
         <Divider contentPosition="left">班级</Divider>

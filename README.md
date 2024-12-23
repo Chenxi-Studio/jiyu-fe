@@ -25,3 +25,16 @@ dist/esm/tour.taro
 ```javascript
 React__default.createElement("div", { className: "nut-tour-masked", style: { display: showTour ? "block" : "none" }, onClick: handleClickMask, "catchMove": true }),
 ```
+
+dist/esm/popup.taro
+
+```javascript
+const renderNode = () => {
+    return React__default.createElement(React__default.Fragment, null, overlay ? React__default.createElement(
+      React__default.Fragment,
+      null,
+      React__default.createElement(Overlay, { style: overlayStyles, className: overlayClassName, visible: innerVisible, closeOnOverlayClick, lockScroll, duration, onClick: onHandleClickOverlay, "catchMove": true }),
+      renderPop()
+    ) : React__default.createElement(React__default.Fragment, null, renderPop()));
+  };
+```

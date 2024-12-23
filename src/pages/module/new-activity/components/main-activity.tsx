@@ -5,8 +5,8 @@ import { $UI } from "@/store/UI";
 import { Image, Input, TextArea } from "@nutui/nutui-react-taro";
 import { pic2url } from "@/utils/type";
 import { TimeInput } from "./time-input";
-import { TagPopup } from "./tag-popup";
 import { OrganizerTagPopup } from "./organizer-tag-popup";
+import { LocationTagPopup } from "./location-tag-popup";
 
 export const MainActivity = (): JSX.Element => {
   const {
@@ -28,6 +28,7 @@ export const MainActivity = (): JSX.Element => {
   } = $Activity.use((state) => state);
 
   const [showOrganizerTag, setShowOrganizerTag] = useState<boolean>(false);
+  const [showLocationTag, setShowLocationTag] = useState<boolean>(false);
 
   return (
     <>
@@ -225,11 +226,15 @@ export const MainActivity = (): JSX.Element => {
             type="text"
             placeholder="请输入地点 ..."
             value={location}
-            onChange={(val) => {
-              $Activity.update("Update activity location", (draft) => {
-                draft.location = val.toString();
-              });
+            // onChange={(val) => {
+            //   $Activity.update("Update activity location", (draft) => {
+            //     draft.location = val.toString();
+            //   });
+            // }}
+            onClick={() => {
+              setShowLocationTag(true);
             }}
+            readOnly
           />
         </div>
         <div className="flex items-center bg-white px-3 border-solid border-0 border-b border-gray-100">
@@ -363,6 +368,30 @@ export const MainActivity = (): JSX.Element => {
           });
         }}
         defaultValue={organizer.split("、")}
+      />
+      <LocationTagPopup
+        visible={showLocationTag}
+        onClose={() => {
+          setShowLocationTag(false);
+        }}
+        onChange={(value, name) => {
+          $Activity.update("Update activity location", (draft) => {
+            if (value) {
+              draft.location = (
+                draft.location === "" ? [] : draft.location.split(" ")
+              )
+                .concat([name])
+                .join(" ");
+            } else {
+              draft.location = (
+                draft.location === "" ? [] : draft.location.split(" ")
+              )
+                .filter((item) => item !== name)
+                .join(" ");
+            }
+          });
+        }}
+        defaultValue={location.split(" ")}
       />
     </>
   );

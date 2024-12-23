@@ -16,7 +16,7 @@ export const $Activity = model<ActivityModel>("ACTIVITY", {
   endTime: new Date(new Date().getTime() + 864000001 + 86400000),
   registrationStartTime: new Date(),
   registrationEndTime: new Date(new Date().getTime() + 864000000),
-  location: "测试地址",
+  location: "",
   organizer: "",
   category: "测试分类",
   introduction: "测试简介",

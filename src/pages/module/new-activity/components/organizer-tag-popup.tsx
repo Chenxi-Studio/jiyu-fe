@@ -20,10 +20,11 @@ export const OrganizerTagPopup: FC<OrganizerTagPopupProps> = (props) => {
     <Popup
       closeable
       visible={visible}
-      title="选择活动参与范围"
+      title="选择活动组织者单位"
       position="bottom"
       onClose={onClose}
       destroyOnClose
+      lockScroll={false}
     >
       <div className="pb-4">
         <Divider contentPosition="left">班级</Divider>
@@ -46,6 +47,7 @@ export const OrganizerTagPopup: FC<OrganizerTagPopupProps> = (props) => {
             />
           ))}
         </div>
+
         <Divider contentPosition="left">基础标签</Divider>
         <div className="flex flex-wrap gap-x-2 gap-y-2 px-2">
           {scope?.degree.map((option) => (
