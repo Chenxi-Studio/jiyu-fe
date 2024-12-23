@@ -109,6 +109,7 @@ const Profile = (): JSX.Element => {
                       draft.showNotify = true;
                     });
                   } else {
+                    Taro.setStorageSync("jwt", "");
                     navigateTo("pages/auth/index");
                   }
                 } catch (error) {
