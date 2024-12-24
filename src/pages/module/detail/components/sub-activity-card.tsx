@@ -93,6 +93,15 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
         {scan ? (
           <div
             onClick={() => {
+              if (!isSelected) return;
+              const now = new Date();
+              if (sub.checkInStartTime.getTime() > now.getTime()) {
+                $UI.update("early check in", (draft) => {
+                  draft.notifyMsg = "还未到签到时间";
+                  draft.showNotify = true;
+                });
+                return;
+              }
               void Taro.vibrateLong();
               $Camera.update("open camera", (draft) => {
                 draft.subId = sub.id;
@@ -105,7 +114,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
             <IconFont
               name="icon-saomiao"
               size={20}
-              customClassName={twMerge(isSelected ? "" : "scan-icon")}
+              customClassName={twMerge(isSelected ? "" : "scan-icon-gray")}
             />
           </div>
         ) : (
