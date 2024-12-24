@@ -72,8 +72,6 @@ const Home = (): JSX.Element => {
     void load();
   }, []);
 
-  console.log("tags", tags, filtered);
-
   return (
     <>
       <div
