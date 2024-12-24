@@ -33,25 +33,30 @@ const Home = (): JSX.Element => {
   const [activities, setActivities] = useState<ActivityEntity[]>([]);
   const homeTour = $UI.use((state) => state.homeTour);
   const navigatorTour = $UI.use((state) => state.navigatorTour);
-  const filtered = searchContent !== "";
+  const [tags, setTags] = useState<string[]>([]);
+  const filtered = useMemo(
+    () => searchContent !== "" || tags.length > 0,
+    [searchContent, tags],
+  );
 
   const filteredActivities = useMemo(() => {
     return activities.filter(
       (item) =>
-        item.title.includes(searchContent) ||
-        (item.introduction !== null &&
-          item.introduction.includes(searchContent)) ||
-        (item.organizer !== null && item.organizer.includes(searchContent)),
+        (item.title.includes(searchContent) ||
+          (item.introduction !== null &&
+            item.introduction.includes(searchContent)) ||
+          (item.organizer !== null &&
+            item.organizer.includes(searchContent))) &&
+        tags.some((value) => item.category.split(" ").includes(value)),
     );
-  }, [activities, searchContent]);
+  }, [activities, searchContent, tags]);
+
   const [ongoingActivities, setOngoingActivities] = useState<
     ActivityWithRemain[]
   >([]);
   const [upcomingActivities, setUpcomingActivities] = useState<
     ActivityWithRemain[]
   >([]);
-
-  const tags = useRef<string[]>([]);
 
   const load = async (): Promise<void> => {
     const res = await api.sign.list();
@@ -67,6 +72,8 @@ const Home = (): JSX.Element => {
     void load();
   }, []);
 
+  console.log("tags", tags, filtered);
+
   return (
     <>
       <div
@@ -79,10 +86,10 @@ const Home = (): JSX.Element => {
             content={item}
             onClick={() => {
               void Taro.vibrateShort();
-              if (tags.current.includes(item))
-                tags.current = tags.current.filter((tag) => tag !== item);
+              if (tags.includes(item))
+                setTags(tags.filter((tag) => tag !== item));
               else {
-                tags.current.push(item);
+                setTags((prevTags) => [...prevTags, item]);
               }
             }}
           />
