@@ -15,6 +15,7 @@ import { api } from "@/api";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { $UI } from "@/store/UI";
 import "./style.scss";
+import Taro from "@tarojs/taro";
 
 const Approve = (): JSX.Element => {
   const refresh = $UI.use((state) => state.approveRefresh);
@@ -85,12 +86,14 @@ const Approve = (): JSX.Element => {
                           type="success"
                           shape="square"
                           onClick={() => {
+                            void Taro.vibrateLong();
                             Dialog.open(`Approve`, {
                               title: `批准提示`,
                               content: `确认批准通过活动 ${item.title} 吗？`,
                               onConfirm: async () => {
                                 try {
                                   if (item.id !== undefined) {
+                                    void Taro.vibrateLong();
                                     await api.approve.approve(item.id);
                                     await fetchList();
                                   }
@@ -111,6 +114,7 @@ const Approve = (): JSX.Element => {
                           type="primary"
                           shape="square"
                           onClick={() => {
+                            void Taro.vibrateLong();
                             Dialog.open(`Approve`, {
                               title: `驳回提示`,
                               content: (
@@ -129,6 +133,7 @@ const Approve = (): JSX.Element => {
                                 if (reason.current === "") return;
                                 try {
                                   if (item.id !== undefined) {
+                                    void Taro.vibrateLong();
                                     await api.approve.disapprove(
                                       item.id,
                                       reason.current,
