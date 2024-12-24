@@ -23,7 +23,7 @@ export const SmallCard: FC<SmallCardProps> = (props): JSX.Element => {
     startTime = new Date(),
     status = ActivityStatus.Draft,
     id,
-    disabled = true,
+    disabled = false,
   } = props;
 
   return (

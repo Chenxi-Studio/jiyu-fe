@@ -3,6 +3,7 @@ import instance from "@/api/axios";
 import { $Tag } from "@/store/tag";
 import { $User } from "@/store/user";
 import { RoleLevel } from "@/types/entity/const";
+import Taro from "@tarojs/taro";
 
 export const setDevJWT = async (
   type: "stu" | "admin" | "Ultradamin",
@@ -11,6 +12,7 @@ export const setDevJWT = async (
   console.log("jwt", jwt);
   if (jwt.isSuccess) {
     instance.defaults.headers.common.Authorization = `Bearer ${jwt.jwt}`;
+    Taro.setStorageSync("jwt", jwt.jwt);
     $User.update("dev jwt", (draft) => {
       draft.jwt = jwt.jwt;
     });
