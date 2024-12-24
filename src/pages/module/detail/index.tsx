@@ -233,7 +233,12 @@ const Detail = (): JSX.Element => {
           {currentActivity?.subActivities.map((item, index) => {
             return (
               <SubActivityCard
-                disabled={!availables.includes(index)}
+                disabled={
+                  selected.length > 0 &&
+                  (!availables.includes(index) ||
+                    item.id === undefined ||
+                    !selected.includes(item.id))
+                }
                 sub={item}
                 remaining={
                   remainings.find((i) => i.subID === item.id)?.remaining ??
@@ -252,12 +257,13 @@ const Detail = (): JSX.Element => {
                     subIDs.current = subIDs.current.filter(
                       (id) => id !== item.id,
                     );
-                  }
-                  if (
+                    console.log(subIDs.current);
+                  } else if (
                     item.id !== undefined &&
                     !subIDs.current.includes(item.id)
                   ) {
                     subIDs.current.push(item.id);
+                    console.log(subIDs.current);
                   }
                 }}
                 id={index === 0 ? "detail-subactivity-card" : undefined}

@@ -32,7 +32,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
   key,
   remaining,
   onClick,
-  isSelected = false,
+  isSelected = false, // 是否报名
   disabled = false,
   origin,
   id,
