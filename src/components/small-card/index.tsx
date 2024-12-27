@@ -13,6 +13,7 @@ export interface SmallCardProps {
   status?: ActivityStatus;
   id?: string;
   disabled?: boolean;
+  statusText?: string;
 }
 
 export const SmallCard: FC<SmallCardProps> = (props): JSX.Element => {
@@ -24,6 +25,7 @@ export const SmallCard: FC<SmallCardProps> = (props): JSX.Element => {
     status = ActivityStatus.Draft,
     id,
     disabled = false,
+    statusText,
   } = props;
 
   return (
@@ -51,7 +53,7 @@ export const SmallCard: FC<SmallCardProps> = (props): JSX.Element => {
           <div
             className={twMerge(disabled ? "text-gray-300" : "text-gray-400")}
           >
-            {ActStatusMapping.get(status)}
+            {statusText ?? ActStatusMapping.get(status)}
           </div>
         </div>
         <div

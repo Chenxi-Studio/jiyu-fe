@@ -48,7 +48,7 @@ const Detail = (): JSX.Element => {
     if (currentActivity?.id !== undefined) {
       const registerInfo = await api.sign.registerInfo(currentActivity?.id);
       setRemainings(registerInfo.remainings);
-      if (registerInfo.type === "sign") {
+      if (registerInfo.type === "sign" || registerInfo.type === "wait") {
         setSelected(registerInfo.subs);
         if (
           $UI.get().detailOrigin === "home" &&
@@ -349,11 +349,39 @@ const Detail = (): JSX.Element => {
                     subIDs.current,
                   );
 
+                  console.log(
+                    "res.registerStatus === ActivityRegisterStatus.Success",
+                    res.registerStatus,
+                    ActivityRegisterStatus.Success,
+                  );
+
                   if (res.registerStatus === ActivityRegisterStatus.Success) {
                     $UI.update("register success refresh", (draft) => {
                       draft.activityRefresh = true;
                       draft.showNotify = true;
                       draft.notifyMsg = "报名成功";
+                    });
+                    navigateBack();
+                  }
+                  if (
+                    res.registerStatus ===
+                    ActivityRegisterStatus.WaitListSuccess
+                  ) {
+                    $UI.update("register success refresh", (draft) => {
+                      draft.activityRefresh = true;
+                      draft.showNotify = true;
+                      draft.notifyMsg = "候补报名成功";
+                    });
+                    navigateBack();
+                  }
+                  if (
+                    res.registerStatus ===
+                    ActivityRegisterStatus.WaitListTailSuccess
+                  ) {
+                    $UI.update("register success refresh", (draft) => {
+                      draft.activityRefresh = true;
+                      draft.showNotify = true;
+                      draft.notifyMsg = "爽约惩罚进入队尾候补";
                     });
                     navigateBack();
                   }

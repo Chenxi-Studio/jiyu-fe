@@ -17,6 +17,7 @@ import {
   type SignListResponse,
   type ActivityWithRemain,
   type CheckInResponse,
+  type WaitListResponse,
 } from "@/types/api";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { type UserEntity } from "@/types/entity/User.entity";
@@ -180,6 +181,8 @@ const activity = {
   ) => {
     if (a.id !== undefined) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      console.log("update", coverImage, groupImage);
+
       const formData = activity2formDate(a, coverImage, groupImage);
       const sandData = formData.getData();
 
@@ -279,11 +282,18 @@ const sign = {
   },
   mySignList: (): Promise<SignListResponse[]> =>
     instance.get(`/sign-act/my-sign`),
-  // waitList: (): Promise<ActivityEntity[]> => instance.get(`/sign-act/my-wait`),
+  waitList: (): Promise<WaitListResponse[]> =>
+    instance.get(`/sign-act/my-wait`),
   revocation: (signID: number) =>
     instance.delete(`/sign-act/sign-revokation`, {
       data: {
         signID,
+      },
+    }),
+  waitRevocation: (waitID: number) =>
+    instance.delete(`/sign-act/wait-revokation`, {
+      data: {
+        waitID,
       },
     }),
   register: (
@@ -299,6 +309,8 @@ const sign = {
     }),
   registerInfo: (actID: number): Promise<RegisterInfoResponse> =>
     instance.get(`/sign-act/act-subs/${actID}`),
+  relationshipList: (actIds: number[]) =>
+    instance.get(`/relationship-list`, { data: { actIDArr: actIds } }),
 };
 
 const user = {

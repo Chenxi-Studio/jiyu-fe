@@ -80,6 +80,6 @@ export enum ActivityRelationship {
 export enum ActivityRegisterStatus {
   Success = 0, // 报名成功
   WaitListSuccess = 1, // 候补成功
-  WaitListTailSucces = 2, // 队尾候补成功
+  WaitListTailSuccess = 2, // 队尾候补成功
   Fail = 3, // 报名失败
 }

@@ -13,8 +13,10 @@ import IconFont from "@/components/iconfont/iconfont";
 import { $UI } from "@/store/UI";
 import { $Camera } from "@/store/camera";
 import Taro from "@tarojs/taro";
+import { getThemeNumber } from "@/utils/ui";
 import "./style.scss";
 
+const themeNumber = getThemeNumber();
 export interface SubActivityCardProps {
   sub: SubActivityEntity;
   key: string;
@@ -58,7 +60,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
       key={key}
       className={twMerge(
         isSelected
-          ? "shadow-[0px_3px_18px_rgba(1,216,26,0.25)]"
+          ? `sub-activity-card-${themeNumber}`
           : "shadow-[0px_3px_24px_rgba(25,32,45,0.05)]",
         "rounded-3xl my-4 p-4 bg-white",
         disabled && "shadow-[0px_3px_24px_rgba(25,32,45,0.05)] text-gray-300",

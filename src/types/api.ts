@@ -57,6 +57,10 @@ export interface SignListResponse {
   useID: number;
 }
 
+export interface WaitListResponse extends SignListResponse {
+  isTail: boolean;
+}
+
 export interface SubActivityWithRemain extends SubActivityEntity {
   remains: number;
 }

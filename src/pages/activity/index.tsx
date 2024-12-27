@@ -23,7 +23,9 @@ const ActivityPage = (): JSX.Element => {
   const [signList, setSignList] = useState<
     Array<{ activity: ActivityEntity; signID: number }>
   >([]);
-  // const [waitList, setWaitList] = useState<ActivityEntity[]>([]);
+  const [waitList, setWaitList] = useState<
+    Array<{ activity: ActivityEntity; waitID: number; isTail: boolean }>
+  >([]);
   const signListRefs = new Array(signList.length)
     .fill(null)
     .map(() => createRef<SwipeInstance>());
@@ -40,10 +42,16 @@ const ActivityPage = (): JSX.Element => {
     if (withTour && mySignListResponse.length !== 0) {
       setTourTrigger(true);
     }
-    // const waitListResponse = await api.sign.waitList();
-    // console.log("waitlist", waitListResponse);
+    const waitListResponse = await api.sign.waitList();
+    console.log(waitListResponse);
 
-    // setWaitList(waitListResponse);
+    setWaitList(
+      waitListResponse.map((item) => ({
+        activity: { subActivities: item.subActivities, ...item.activity },
+        waitID: item.id,
+        isTail: item.isTail,
+      })),
+    );
   };
 
   useEffect(() => {
@@ -164,6 +172,83 @@ const ActivityPage = (): JSX.Element => {
                   status={item.activity.status}
                   id={index === 0 ? "activity-small-card" : undefined}
                   disabled={item.activity.status === ActivityStatus.Finished}
+                ></SmallCard>
+              </div>
+            </Swipe>
+          ))}
+          {waitList.map((item, index) => (
+            <Swipe
+              ref={signListRefs[index]}
+              rightAction={
+                <>
+                  {item.activity.status !== ActivityStatus.Finished && (
+                    <Button
+                      type="primary"
+                      shape="square"
+                      id={index === 0 ? "activity-cancel" : undefined}
+                      onClick={() => {
+                        void Taro.vibrateLong();
+                        Dialog.open(`Activity`, {
+                          title: `取消候补提示`,
+                          content: `确认取消候补活动 ${item.activity.title} 吗？`,
+                          onConfirm: async () => {
+                            try {
+                              await Taro.vibrateLong();
+                              await api.sign.waitRevocation(item.waitID);
+                              await loadData();
+                            } catch (error) {
+                              // TODO: 错误问题
+                            }
+                            Dialog.close(`Activity`);
+                          },
+                          onCancel: () => {
+                            Dialog.close(`Activity`);
+                          },
+                        });
+                      }}
+                    >
+                      取消候补
+                    </Button>
+                  )}
+                </>
+              }
+              key={`Activity-${index}`}
+              onTouchStart={() => {
+                for (const ref of signListRefs) {
+                  if (
+                    ref !== signListRefs[index] &&
+                    ref.current !== null &&
+                    typeof ref.current.close === "function"
+                  ) {
+                    ref.current.close();
+                  }
+                }
+              }}
+              onActionClick={() => {
+                if (
+                  signListRefs[index].current !== null &&
+                  signListRefs[index].current !== undefined &&
+                  typeof signListRefs[index].current.close === "function"
+                ) {
+                  signListRefs[index].current.close();
+                }
+              }}
+              className="rounded-2xl overflow-hidden drop-shadow-base"
+            >
+              <div
+                onClick={() => {
+                  handleOnclick(item.activity);
+                }}
+              >
+                <SmallCard
+                  title={item.activity.title}
+                  coverImage={item.activity.coverImage}
+                  organizer={item.activity.organizer}
+                  startTime={item.activity.startTime}
+                  status={item.activity.status}
+                  id={index === 0 ? "activity-small-card" : undefined}
+                  disabled={item.activity.status === ActivityStatus.Finished}
+                  statusText={item.isTail ? "队尾候补中" : "候补中"}
                 ></SmallCard>
               </div>
             </Swipe>

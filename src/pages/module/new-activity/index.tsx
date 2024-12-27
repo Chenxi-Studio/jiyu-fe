@@ -53,7 +53,7 @@ const NewActivity = (): JSX.Element => {
         navigateBack();
       } catch (error) {
         setLoading(false);
-        setSubmitText("出错了");
+        setSubmitText("重新提交");
         $UI.update("new activity err", (draft) => {
           draft.notifyMsg = error.message;
           draft.showNotify = true;
@@ -66,13 +66,15 @@ const NewActivity = (): JSX.Element => {
       try {
         await api.activity.update(
           $Activity.get(),
-          $Activity.get().coverImage !== undefined
-            ? // $Activity.get().coverImage?.match(/^http:\/\/tmp/) !== null
-              $Activity.get().coverImage
+          $Activity.get().coverImage !== undefined &&
+            $Activity.get().coverImage?.match(/^http:\/\/tmp/) === null &&
+            $Activity.get().coverImage?.match(/^jiyu/) === null
+            ? $Activity.get().coverImage
             : undefined,
-          $Activity.get().groupImage !== undefined
-            ? // $Activity.get().groupImage?.match(/^http:\/\/tmp/) !== null
-              $Activity.get().groupImage
+          $Activity.get().groupImage !== undefined &&
+            $Activity.get().coverImage?.match(/^http:\/\/tmp/) === null &&
+            $Activity.get().coverImage?.match(/^jiyu/) === null
+            ? $Activity.get().groupImage
             : undefined,
         );
 
