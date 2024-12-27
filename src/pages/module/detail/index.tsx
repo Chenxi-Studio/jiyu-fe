@@ -180,10 +180,10 @@ const Detail = (): JSX.Element => {
   return (
     <div
       id="scrollView"
-      className="h-[100vh] bg-[#FCFCFC]"
+      className="h-[100vh] bg-[#FCFCFC] overflow-y-scroll"
       // style={registerTour ? { overflow: "hidden" } : { overflow: "visible" }}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleScroll}
+      // onTouchStart={handleTouchStart}
+      // onTouchMove={handleScroll}
     >
       <GlobalNotify />
       {cameraShow && <CameraComponent />}
