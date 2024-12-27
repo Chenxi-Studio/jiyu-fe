@@ -14,8 +14,9 @@ import { navigateTo } from "@/utils/navigator";
 import { api } from "@/api";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { $UI } from "@/store/UI";
-import "./style.scss";
 import Taro from "@tarojs/taro";
+import { ActivityStatus } from "@/types/common";
+import "./style.scss";
 
 const Approve = (): JSX.Element => {
   const refresh = $UI.use((state) => state.approveRefresh);
@@ -71,6 +72,7 @@ const Approve = (): JSX.Element => {
             </>
           );
         }}
+        className="overflow-y-auto"
       >
         <Dialog id="Approve" />
         <div className="pb-[150rpx]">
@@ -210,6 +212,7 @@ const Approve = (): JSX.Element => {
                     organizer={item.organizer}
                     startTime={item.startTime}
                     status={item.status}
+                    disabled={item.status === ActivityStatus.Finished}
                   ></SmallCard>
                 </div>
               ))}

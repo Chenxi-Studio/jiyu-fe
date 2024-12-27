@@ -87,7 +87,7 @@ const ActivityPage = (): JSX.Element => {
         }}
         renderIcon={pullToRefreshRenderIcon}
         completeDelay={750}
-        className="bg-[#FCFCFC] pb-[150rpx] min-h-[100vh]"
+        className="bg-[#FCFCFC] pb-[150rpx] min-h-[100vh] overflow-y-auto"
       >
         <Dialog id="Activity" />
 

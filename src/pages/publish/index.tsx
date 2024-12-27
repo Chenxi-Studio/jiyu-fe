@@ -106,6 +106,7 @@ const Publish = (): JSX.Element => {
             </>
           );
         }}
+        className="overflow-y-auto"
       >
         <Dialog id="Publish" />
         <Dialog
@@ -294,6 +295,7 @@ const Publish = (): JSX.Element => {
                       organizer={item.organizer}
                       startTime={item.startTime}
                       status={item.status}
+                      disabled={item.status === ActivityStatus.Finished}
                     ></SmallCard>
                   </div>
                 ))}

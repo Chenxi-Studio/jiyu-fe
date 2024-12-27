@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { api } from "@/api";
 import { $UI } from "@/store/UI";
@@ -47,7 +47,7 @@ const Home = (): JSX.Element => {
             item.introduction.includes(searchContent)) ||
           (item.organizer !== null &&
             item.organizer.includes(searchContent))) &&
-        tags.some((value) => item.category.split(" ").includes(value)),
+        tags.every((value) => item.category.split(" ").includes(value)),
     );
   }, [activities, searchContent, tags]);
 
