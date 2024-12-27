@@ -95,9 +95,15 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
             onClick={() => {
               if (!isSelected) return;
               const now = new Date();
-              if (sub.checkInStartTime.getTime() > now.getTime()) {
+              if (
+                sub.checkInStartTime.getTime() > now.getTime() ||
+                sub.checkInEndTime.getTime() < now.getTime()
+              ) {
                 $UI.update("early check in", (draft) => {
-                  draft.notifyMsg = "还未到签到时间";
+                  draft.notifyMsg =
+                    sub.checkInStartTime.getTime() > now.getTime()
+                      ? "还未到签到时间"
+                      : "签到时间已结束";
                   draft.showNotify = true;
                 });
                 return;
@@ -114,7 +120,13 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
             <IconFont
               name="icon-saomiao"
               size={20}
-              customClassName={twMerge(isSelected ? "" : "scan-icon-gray")}
+              customClassName={twMerge(
+                isSelected &&
+                  sub.checkInStartTime.getTime() <= new Date().getTime() &&
+                  sub.checkInEndTime.getTime() >= new Date().getTime()
+                  ? ""
+                  : "scan-icon-gray",
+              )}
             />
           </div>
         ) : (
