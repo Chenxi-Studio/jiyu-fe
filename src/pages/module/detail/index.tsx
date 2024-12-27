@@ -37,9 +37,9 @@ const Detail = (): JSX.Element => {
   >([]);
   const [selected, setSelected] = useState<number[]>([]);
   const [availables, setAvailables] = useState<number[]>([]);
-  const registerTour = $UI.use((state) => state.registerTour);
-  const lastY = useRef<number>(0);
-  const onScroll = useRef<boolean>(false);
+  // const registerTour = $UI.use((state) => state.registerTour);
+  // const lastY = useRef<number>(0);
+  // const onScroll = useRef<boolean>(false);
   const documentScrollHeight = useRef<number>(0);
   const [scrollToTour, setScrollToTour] = useState<boolean>(false);
   const [statusBarHeight, setStatusBarHeight] = useState<number>(0);
@@ -149,33 +149,33 @@ const Detail = (): JSX.Element => {
       .exec();
   };
 
-  const handleScroll: TouchEventHandler = (event) => {
-    if (registerTour) return;
-    const currentY = event.changedTouches[0].clientY;
-    if (!onScroll.current) {
-      if (lastY.current < currentY) {
-        onScroll.current = true;
-        void Taro.pageScrollTo({
-          scrollTop: 0,
-        }).then(() => {
-          onScroll.current = false;
-        });
-      } else {
-        onScroll.current = true;
-        void Taro.pageScrollTo({
-          scrollTop: window.innerHeight,
-        }).then(() => {
-          onScroll.current = false;
-        });
-      }
-      lastY.current = currentY;
-    }
-  };
-  const handleTouchStart: TouchEventHandler = (event) => {
-    if (registerTour) return;
-    const currentY = event.changedTouches[0].clientY;
-    lastY.current = currentY;
-  };
+  // const handleScroll: TouchEventHandler = (event) => {
+  //   if (registerTour) return;
+  //   const currentY = event.changedTouches[0].clientY;
+  //   if (!onScroll.current) {
+  //     if (lastY.current < currentY) {
+  //       onScroll.current = true;
+  //       void Taro.pageScrollTo({
+  //         scrollTop: 0,
+  //       }).then(() => {
+  //         onScroll.current = false;
+  //       });
+  //     } else {
+  //       onScroll.current = true;
+  //       void Taro.pageScrollTo({
+  //         scrollTop: window.innerHeight,
+  //       }).then(() => {
+  //         onScroll.current = false;
+  //       });
+  //     }
+  //     lastY.current = currentY;
+  //   }
+  // };
+  // const handleTouchStart: TouchEventHandler = (event) => {
+  //   if (registerTour) return;
+  //   const currentY = event.changedTouches[0].clientY;
+  //   lastY.current = currentY;
+  // };
 
   return (
     <div
@@ -301,36 +301,33 @@ const Detail = (): JSX.Element => {
         {editable && (
           <div
             onClick={() => {
+              console.log("edit", currentActivity, currentActivity?.status);
+
               if (currentActivity === undefined) {
                 return;
               }
               if (currentActivity.status !== ActivityStatus.Draft) {
                 return;
               }
-              const crt = $Activity.get();
-              if (
-                crt.subActivities.length > 0 ||
-                !baseActivityRequestIsEmpty(crt)
-              ) {
-                Dialog.open(`Detail`, {
-                  title: `编辑提示`,
-                  content: `编辑活动会使之前保存的草稿消失哦`,
-                  onConfirm: () => {
-                    $Activity.update("edit activity", (draft) => {
-                      draft = {
-                        ...draft,
-                        ...currentActivity,
-                      };
-                      return draft;
-                    });
-                    navigateTo("pages/module/new-activity/index");
-                    Dialog.close(`Detail`);
-                  },
-                  onCancel: () => {
-                    Dialog.close(`Detail`);
-                  },
-                });
-              }
+
+              Dialog.open(`Detail`, {
+                title: `编辑提示`,
+                content: `编辑活动会使之前保存的草稿消失哦`,
+                onConfirm: () => {
+                  $Activity.update("edit activity", (draft) => {
+                    draft = {
+                      ...draft,
+                      ...currentActivity,
+                    };
+                    return draft;
+                  });
+                  navigateTo("pages/module/new-activity/index");
+                  Dialog.close(`Detail`);
+                },
+                onCancel: () => {
+                  Dialog.close(`Detail`);
+                },
+              });
             }}
           >
             {currentActivity?.status === ActivityStatus.Draft ? (
