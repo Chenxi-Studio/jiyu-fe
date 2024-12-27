@@ -5,9 +5,9 @@ import {
 } from "@/types/activity";
 import { Button, Input, Popup } from "@nutui/nutui-react-taro";
 import { $Activity } from "@/store/activity";
+import { getManageScopeSize } from "@/types/admin";
 import { TimeInput } from "./time-input";
 import { TagPopup } from "./tag-popup";
-import { getManageScopeSize } from "@/types/admin";
 
 const defaultCreateSubActivityRequest = {
   title: "",

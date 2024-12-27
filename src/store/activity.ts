@@ -9,6 +9,7 @@ export interface ActivityModel extends Activity {
 }
 
 export const $Activity = model<ActivityModel>("ACTIVITY", {
+  id: undefined,
   title: "测试新增活动",
   coverImage: undefined,
   groupImage: undefined,

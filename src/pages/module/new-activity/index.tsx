@@ -66,13 +66,13 @@ const NewActivity = (): JSX.Element => {
       try {
         await api.activity.update(
           $Activity.get(),
-          $Activity.get().coverImage !== undefined &&
-            $Activity.get().coverImage?.match(/^http:\/\/tmp/) !== null
-            ? $Activity.get().coverImage
+          $Activity.get().coverImage !== undefined
+            ? // $Activity.get().coverImage?.match(/^http:\/\/tmp/) !== null
+              $Activity.get().coverImage
             : undefined,
-          $Activity.get().groupImage !== undefined &&
-            $Activity.get().groupImage?.match(/^http:\/\/tmp/) !== null
-            ? $Activity.get().groupImage
+          $Activity.get().groupImage !== undefined
+            ? // $Activity.get().groupImage?.match(/^http:\/\/tmp/) !== null
+              $Activity.get().groupImage
             : undefined,
         );
 
