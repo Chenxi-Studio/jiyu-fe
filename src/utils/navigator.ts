@@ -5,7 +5,11 @@ import { TabList } from "@/types/tab";
 import Taro from "@tarojs/taro";
 
 export const navigateTo = (url: string): void => {
-  void Taro.navigateTo({ url: `/${url}` });
+  if (url === "pages/auth/index") {
+    void Taro.reLaunch({ url: `/${url}` });
+  } else {
+    void Taro.navigateTo({ url: `/${url}` });
+  }
 };
 
 export const switchTab = (url: string, relaunch: boolean = false): void => {
