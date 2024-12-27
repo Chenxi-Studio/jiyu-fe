@@ -5,6 +5,7 @@ import { formatDate } from "@/utils/unit";
 import { twMerge } from "tailwind-merge";
 import { pic2url } from "@/utils/type";
 import { ActStatusMapping } from "@/types/common";
+import { getThemeNumber } from "@/utils/ui";
 
 export interface MiddleCardProps {
   key?: string | number;
@@ -12,14 +13,18 @@ export interface MiddleCardProps {
   className?: string;
   id?: string;
   onClick?: () => void;
+  selected?: boolean;
 }
 
+const themeNumber = getThemeNumber();
+
 export const MiddleCard: FC<MiddleCardProps> = (props) => {
-  const { key, activity, className, id, onClick } = props;
+  const { key, activity, className, id, onClick, selected = false } = props;
   return (
     <div
       className={twMerge(
-        "flex p-3 drop-shadow-base bg-white rounded-2xl max-h-[220rpx] min-w-[380rpx]",
+        "flex p-3 bg-white rounded-2xl max-h-[220rpx] min-w-[380rpx]",
+        selected ? `drop-shadow-${themeNumber}` : "drop-shadow-base",
         className,
       )}
       key={key}

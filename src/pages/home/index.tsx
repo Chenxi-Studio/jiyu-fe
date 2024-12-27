@@ -34,6 +34,7 @@ const Home = (): JSX.Element => {
   const homeTour = $UI.use((state) => state.homeTour);
   const navigatorTour = $UI.use((state) => state.navigatorTour);
   const [tags, setTags] = useState<string[]>([]);
+  const [signList, setSignList] = useState<Array<number | undefined>>([]);
   const filtered = useMemo(
     () => searchContent !== "" || tags.length > 0,
     [searchContent, tags],
@@ -65,7 +66,11 @@ const Home = (): JSX.Element => {
     setOngoingActivities(ongoingRes);
     const upcomingRes = await api.show.upcoming();
     setUpcomingActivities(upcomingRes);
+    const mySignListResponse = await api.sign.mySignList();
+    setSignList(mySignListResponse.map((item) => item.activity.id));
   };
+
+  console.log(signList, ongoingActivities, upcomingActivities);
 
   useEffect(() => {
     console.log("start.");
@@ -157,6 +162,11 @@ const Home = (): JSX.Element => {
                     });
                     navigateTo(`pages/module/detail/index`);
                   }}
+                  selected={
+                    activity.id === undefined
+                      ? false
+                      : signList.includes(activity.id)
+                  }
                 />
               ))}
             </div>
@@ -175,6 +185,11 @@ const Home = (): JSX.Element => {
                     });
                     navigateTo(`pages/module/detail/index`);
                   }}
+                  selected={
+                    activity.id === undefined
+                      ? false
+                      : signList.includes(activity.id)
+                  }
                 />
               ))}
             </div>

@@ -62,5 +62,5 @@ export const $UI = model<UIModel>("UI", {
   publishButtonTour: storageTours?.publishButtonTour ?? true,
   cameraShow: false,
   show403: false,
-  msg403: undefined,
+  msg403: "notCS",
 });

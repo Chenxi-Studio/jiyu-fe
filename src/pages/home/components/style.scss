@@ -13,3 +13,32 @@ $vendor-prefixes: -webkit-, -moz-, -ms-, -o-;
 .drop-shadow-base {
     @include filter-drop-shadow(0rpx, 6rpx, 24rpx, rgba(25,32,45,0.05));
 }
+
+.drop-shadow-1 {
+    @include filter-drop-shadow(0rpx, 3rpx, 18rpx, #feb1a2);
+}
+
+.drop-shadow-2 {
+    @include filter-drop-shadow(0rpx, 3rpx, 18rpx, #ffce81);
+}
+
+.drop-shadow-3 {
+    @include filter-drop-shadow(0rpx, 3rpx, 18rpx, #a6c189);
+}
+
+.drop-shadow-4 {
+    @include filter-drop-shadow(0rpx, 3rpx, 18rpx, #a5c3f6);
+}
+
+.drop-shadow-5 {
+    @include filter-drop-shadow(0rpx, 3rpx, 18rpx, #d8ceff);
+}
+
+.drop-shadow-6 {
+    @include filter-drop-shadow(0rpx, 3rpx, 18rpx, #ffc4c8);
+}
+
+.drop-shadow-7 {
+    @include filter-drop-shadow(0rpx, 3rpx, 18rpx, #89CAD8);
+}
+
