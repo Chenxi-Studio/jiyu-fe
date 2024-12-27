@@ -355,6 +355,8 @@ const Detail = (): JSX.Element => {
                   if (res.registerStatus === ActivityRegisterStatus.Success) {
                     $UI.update("register success refresh", (draft) => {
                       draft.activityRefresh = true;
+                      draft.showNotify = true;
+                      draft.notifyMsg = "报名成功";
                     });
                     navigateBack();
                   }
