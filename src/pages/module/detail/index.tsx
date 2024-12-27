@@ -222,7 +222,7 @@ const Detail = (): JSX.Element => {
             联系人：{currentActivity?.contactMan}
           </div>
           <div className="text-base mb-4">
-            活动类别：{currentActivity?.category}
+            活动类别：{currentActivity?.category.split(" ").join("、")}
           </div>
           <div className="text-sm text-gray-500">
             {currentActivity?.introduction}

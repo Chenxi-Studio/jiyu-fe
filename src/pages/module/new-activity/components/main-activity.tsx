@@ -408,16 +408,16 @@ export const MainActivity = (): JSX.Element => {
           $Activity.update("Update activity category", (draft) => {
             if (value) {
               draft.category = (
-                draft.category === "" ? [] : draft.category.split("、")
+                draft.category === "" ? [] : draft.category.split(" ")
               )
                 .concat([name])
-                .join("、");
+                .join(" ");
             } else {
               draft.category = (
-                draft.category === "" ? [] : draft.category.split("、")
+                draft.category === "" ? [] : draft.category.split(" ")
               )
                 .filter((item) => item !== name)
-                .join("、");
+                .join(" ");
             }
           });
         }}
