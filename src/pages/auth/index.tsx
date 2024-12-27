@@ -27,7 +27,6 @@ const Auth = (): JSX.Element => {
   const clientId = $User.use((state) => state.clientId);
   const [buttonContent, setButtonContent] = useState<string>("UIS 登录");
   const [wxButtonContent, setWxButtonContent] = useState<string>("微信登录");
-  const [hidden, setHidden] = useState<boolean>(false);
 
   const [themeNumber] = useState(getThemeNumber());
   const backgroundImage = pic2url(
@@ -84,6 +83,7 @@ const Auth = (): JSX.Element => {
 
   const handleStorageLogin = async (jwt: string): Promise<void> => {
     setWxButtonContent("登录中");
+    setButtonContent("已登录UIS");
     await setJWT(jwt);
     setTimeout(() => {
       switchTab("pages/router/index", true);
@@ -94,10 +94,7 @@ const Auth = (): JSX.Element => {
     const jwt = getLoginStorage();
     if (jwt !== undefined) {
       debounce.current = true;
-      setHidden(true);
       void handleStorageLogin(jwt);
-    } else {
-      setHidden(false);
     }
   }, []);
 
@@ -153,7 +150,7 @@ const Auth = (): JSX.Element => {
               : "shadow-[0_8rpx]",
           )}
           style={{
-            backgroundColor: hidden ? "#dc2626" : buttonColor,
+            backgroundColor: buttonColor,
           }}
         >
           {buttonContent === "登录中" && <Loading size={20} />}
