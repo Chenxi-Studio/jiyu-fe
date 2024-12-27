@@ -1,9 +1,9 @@
 import axios from "axios";
 import { convertDates, setJWT } from "@/utils/unit";
 import { $UI } from "@/store/UI";
-import { taroAdapter } from "./adapter";
 import { navigateTo } from "@/utils/navigator";
 import Taro from "@tarojs/taro";
+import { taroAdapter } from "./adapter";
 
 export const tacInstance = axios.create({
   baseURL: "https://tac.fudan.edu.cn",
@@ -41,6 +41,24 @@ instance.interceptors.response.use(
       if (res.status === 401) {
         Taro.setStorageSync("jwt", "");
         navigateTo("pages/auth/index");
+      }
+      if (
+        res.status === 400 &&
+        Boolean(res.data.message.includes("不是计算机学院"))
+      ) {
+        $UI.update("400 not cs", (draft) => {
+          draft.show403 = true;
+          draft.msg403 = "notCS";
+        });
+      }
+      if (
+        res.status === 400 &&
+        Boolean(res.data.message.includes("已在其他微信登陆"))
+      ) {
+        $UI.update("400 multi wechat login", (draft) => {
+          draft.show403 = true;
+          draft.msg403 = "multiWechatLogin";
+        });
       }
       $UI.update("axios err", (draft) => {
         draft.notifyMsg = res.data.message;

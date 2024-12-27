@@ -27,6 +27,9 @@ export interface UIModel {
   publishButtonTour: boolean; // 发布按钮的 tour
   // Camera
   cameraShow: boolean;
+  // 403
+  show403: boolean;
+  msg403: "multiWechatLogin" | "notCS";
 }
 
 export interface Tours {
@@ -58,4 +61,6 @@ export const $UI = model<UIModel>("UI", {
   publishTour: false,
   publishButtonTour: storageTours?.publishButtonTour ?? true,
   cameraShow: false,
+  show403: false,
+  msg403: undefined,
 });
