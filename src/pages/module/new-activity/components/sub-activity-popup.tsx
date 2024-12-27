@@ -7,6 +7,7 @@ import { Button, Input, Popup } from "@nutui/nutui-react-taro";
 import { $Activity } from "@/store/activity";
 import { TimeInput } from "./time-input";
 import { TagPopup } from "./tag-popup";
+import { getManageScopeSize } from "@/types/admin";
 
 const defaultCreateSubActivityRequest = {
   title: "",
@@ -138,7 +139,11 @@ export const SubActivityPopUp: FC<SubActivityPopUpProps> = (
             <Input
               readOnly
               type="text"
-              value="点击选择参与范围标签"
+              value={
+                getManageScopeSize(form.studentScope) === 0
+                  ? "点击选择参与范围标签"
+                  : `已选择 ${getManageScopeSize(form.studentScope)} 项`
+              }
               onClick={() => {
                 setShowTag(true);
               }}
