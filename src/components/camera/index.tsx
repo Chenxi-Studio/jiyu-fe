@@ -69,14 +69,12 @@ export const CameraComponent: FC = () => {
             }
             const subId = $Camera.get().subId;
             if (image !== "" && subId !== undefined)
-              void api.checkIn.checkIn(image, 0, 0, subId).then((res) => {
-                if (typeof res.checkinDate === "object") {
-                  $UI.update("camera success", (draft) => {
-                    draft.cameraShow = false;
-                    draft.notifyMsg = "成功提交签到";
-                    draft.showNotify = true;
-                  });
-                }
+              void api.checkIn.checkIn(image, 0, 0, subId).then(() => {
+                $UI.update("camera success", (draft) => {
+                  draft.cameraShow = false;
+                  draft.notifyMsg = "成功提交签到";
+                  draft.showNotify = true;
+                });
               });
           }}
         >
