@@ -36,7 +36,7 @@ export const BigCard: FC<BigCardProps> = (props) => {
             <div>{activity.category.split("、")[0] ?? "暂无分类"}</div>
           </div>
           <div className="flex items-center justify-between text-gray-400">
-            <div>截止时间：{formatDate(activity.registrationEndTime)}</div>
+            <div>报名截止: {formatDate(activity.registrationEndTime)}</div>
             <div>{ActStatusMapping.get(activity.status)}</div>
           </div>
         </div>

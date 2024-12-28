@@ -119,58 +119,6 @@ export const MainActivity = (): JSX.Element => {
           </div>
         </div>
         <TimeInput
-          title="开始时间"
-          value={startTime}
-          onConfirmMinute={(options, values) => {
-            $Activity.update("update new startTime", (draft) => {
-              draft.startTime = new Date(
-                draft.startTime.getFullYear(),
-                draft.startTime.getMonth(),
-                draft.startTime.getDate(),
-                Number(values[0]),
-                Number(values[1]),
-              );
-            });
-          }}
-          onConfirmDate={(param) => {
-            $Activity.update("update new startTime", (draft) => {
-              draft.startTime = new Date(
-                Number(param[0]),
-                Number(param[1]) - 1,
-                Number(param[2]),
-                draft.startTime.getHours(),
-                draft.startTime.getMinutes(),
-              );
-            });
-          }}
-        />
-        <TimeInput
-          title="结束时间"
-          value={endTime}
-          onConfirmMinute={(options, values) => {
-            $Activity.update("update new endTime", (draft) => {
-              draft.endTime = new Date(
-                draft.endTime.getFullYear(),
-                draft.endTime.getMonth(),
-                draft.endTime.getDate(),
-                Number(values[0]),
-                Number(values[1]),
-              );
-            });
-          }}
-          onConfirmDate={(param) => {
-            $Activity.update("update new endTime", (draft) => {
-              draft.endTime = new Date(
-                Number(param[0]),
-                Number(param[1]) - 1,
-                Number(param[2]),
-                draft.endTime.getHours(),
-                draft.endTime.getMinutes(),
-              );
-            });
-          }}
-        />
-        <TimeInput
           title="报名开始"
           value={registrationStartTime}
           onConfirmMinute={(options, values) => {
@@ -222,6 +170,59 @@ export const MainActivity = (): JSX.Element => {
             });
           }}
         />
+        <TimeInput
+          title="活动开始"
+          value={startTime}
+          onConfirmMinute={(options, values) => {
+            $Activity.update("update new startTime", (draft) => {
+              draft.startTime = new Date(
+                draft.startTime.getFullYear(),
+                draft.startTime.getMonth(),
+                draft.startTime.getDate(),
+                Number(values[0]),
+                Number(values[1]),
+              );
+            });
+          }}
+          onConfirmDate={(param) => {
+            $Activity.update("update new startTime", (draft) => {
+              draft.startTime = new Date(
+                Number(param[0]),
+                Number(param[1]) - 1,
+                Number(param[2]),
+                draft.startTime.getHours(),
+                draft.startTime.getMinutes(),
+              );
+            });
+          }}
+        />
+        <TimeInput
+          title="活动结束"
+          value={endTime}
+          onConfirmMinute={(options, values) => {
+            $Activity.update("update new endTime", (draft) => {
+              draft.endTime = new Date(
+                draft.endTime.getFullYear(),
+                draft.endTime.getMonth(),
+                draft.endTime.getDate(),
+                Number(values[0]),
+                Number(values[1]),
+              );
+            });
+          }}
+          onConfirmDate={(param) => {
+            $Activity.update("update new endTime", (draft) => {
+              draft.endTime = new Date(
+                Number(param[0]),
+                Number(param[1]) - 1,
+                Number(param[2]),
+                draft.endTime.getHours(),
+                draft.endTime.getMinutes(),
+              );
+            });
+          }}
+        />
+
         <div className="flex items-center bg-white px-3 border-solid border-0 border-b border-gray-100">
           <div className="min-w-16">活动地点</div>
           <Input
