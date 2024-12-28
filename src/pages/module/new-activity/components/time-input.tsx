@@ -33,22 +33,24 @@ export const TimeInput: FC<TimeInputProps> = (props): JSX.Element => {
   return (
     <div
       className={twMerge(
-        "flex items-center bg-white px-3 border-solid border-0 border-b border-gray-100",
+        "flex items-center justify-between bg-white px-3 border-solid border-0 border-b border-gray-100",
         className,
       )}
     >
-      <div className="min-w-16">{title}</div>
-      <div className="time-input-left">
-        <Input
-          readOnly
-          type="text"
-          style={{ paddingRight: 0 }}
-          placeholder="请选择日期"
-          value={formatDate(value, false)}
-          onClick={() => {
-            setShowCalendar(true);
-          }}
-        />
+      <div className="flex items-center justify-center">
+        <div className="min-w-16">{title}</div>
+        <div className="time-input-left">
+          <Input
+            readOnly
+            type="text"
+            style={{ paddingRight: 0 }}
+            placeholder="请选择日期"
+            value={formatDate(value, false)}
+            onClick={() => {
+              setShowCalendar(true);
+            }}
+          />
+        </div>
       </div>
       <div className="time-input-right">
         <Input
