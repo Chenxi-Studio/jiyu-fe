@@ -95,11 +95,11 @@ const ActivityPage = (): JSX.Element => {
         }}
         renderIcon={pullToRefreshRenderIcon}
         completeDelay={750}
-        className="bg-[#FCFCFC] pb-[150rpx] min-h-[100vh] overflow-y-auto"
+        className="bg-[#FCFCFC] pb-[150rpx] h-[100vh] overflow-y-auto"
       >
         <Dialog id="Activity" />
 
-        <div className="hide-scrollbar py-3 flex flex-col gap-6 overflow-x-auto overscroll-y-hidden px-[52rpx] drop-shadow-base">
+        <div className="hide-scrollbar py-3 flex flex-col gap-6 overflow-y-auto overscroll-x-hidden px-[52rpx] drop-shadow-base">
           {signList.map((item, index) => (
             <Swipe
               ref={signListRefs[index]}

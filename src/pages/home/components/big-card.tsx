@@ -4,6 +4,7 @@ import { formatDate } from "@/utils/unit";
 import { Image } from "@tarojs/components";
 import { pic2url } from "@/utils/type";
 import { ActStatusMapping } from "@/types/common";
+import { truncateString } from "@/utils/ui";
 import "./style.scss";
 
 export interface BigCardProps {
@@ -28,7 +29,9 @@ export const BigCard: FC<BigCardProps> = (props) => {
         src={pic2url(activity.coverImage)}
         mode="aspectFill"
       />
-      <div className="mt-2 min-h-[15%] text-base">{activity.title}</div>
+      <div className="mt-2 min-h-[15%] text-base">
+        {truncateString(activity.title, 25)}
+      </div>
       <div className="flex mt-2 text-xs justify-between w-full">
         <div className="w-full">
           <div className="flex items-center justify-between text-sm mb-1 w-full">

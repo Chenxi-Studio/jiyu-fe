@@ -41,3 +41,39 @@ export const getThemeNumber = (): number => {
 export const getThemeColor = (): string => {
   return backgroundColors[getThemeNumber() - 1];
 };
+
+export function truncateString(str: string, maxLength: number): string {
+  let totalLength = 0;
+  let truncatedStr = "";
+
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charAt(i);
+
+    if (isEnglishOrDigitOrHalfWidth(char)) {
+      totalLength += 0.5;
+    } else {
+      totalLength += 1;
+    }
+
+    if (totalLength > maxLength) {
+      return truncatedStr + "...";
+    }
+
+    truncatedStr += char;
+  }
+
+  return truncatedStr;
+}
+
+export function isEnglishOrDigitOrHalfWidth(char: string): boolean {
+  const code = char.charCodeAt(0);
+  return (
+    (code >= 48 && code <= 57) || // 0-9
+    (code >= 65 && code <= 90) || // A-Z
+    (code >= 97 && code <= 122) || // a-z
+    (code >= 33 && code <= 47) || // 常见半角符号
+    (code >= 58 && code <= 64) || // 常见半角符号
+    (code >= 91 && code <= 96) || // 常见半角符号
+    (code >= 123 && code <= 126) // 常见半角符号
+  );
+}

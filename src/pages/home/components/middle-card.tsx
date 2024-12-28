@@ -5,7 +5,7 @@ import { formatDate } from "@/utils/unit";
 import { twMerge } from "tailwind-merge";
 import { pic2url } from "@/utils/type";
 import { ActStatusMapping } from "@/types/common";
-import { getThemeNumber } from "@/utils/ui";
+import { getThemeNumber, truncateString } from "@/utils/ui";
 
 export interface MiddleCardProps {
   key?: string | number;
@@ -40,7 +40,7 @@ export const MiddleCard: FC<MiddleCardProps> = (props) => {
       </div>
       <div className="flex flex-col justify-between flex-1">
         <div className="flex text-base flex-1 text-gray-800">
-          {activity.title}
+          {truncateString(activity.title, 25)}
         </div>
         <div className="text-gray-800 text-sm mb-1">{activity.organizer}</div>
         <div className="flex text-gray-400 text-xs gap-1 items-center justify-between">

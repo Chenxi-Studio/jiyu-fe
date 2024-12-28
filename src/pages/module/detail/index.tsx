@@ -211,7 +211,7 @@ const Detail = (): JSX.Element => {
           {currentActivity?.title}
         </div>
         <div className="rounded-2xl p-3 border-gray-200 border-2 text-base text-center border-solid text-gray-400 mb-4">
-          起止时间 · {formatDate(currentActivity?.startTime, false)} -{" "}
+          活动时间 · {formatDate(currentActivity?.startTime, false)} -{" "}
           {formatDate(currentActivity?.endTime, false)}
         </div>
         <div className="p-4 mb-4 rounded-3xl shadow-[0px_3px_24px_rgba(25,32,45,0.05)] bg-white">
