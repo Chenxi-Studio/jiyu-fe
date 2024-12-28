@@ -38,15 +38,6 @@ const NewActivity = (): JSX.Element => {
           $Activity.get().coverImage,
           $Activity.get().groupImage,
         );
-      } catch (error) {
-        setLoading(false);
-        setSubmitText("重新提交");
-        $UI.update("new activity err", (draft) => {
-          draft.notifyMsg = error.message;
-          draft.showNotify = true;
-        });
-      }
-      try {
         setSubmitText("上传子活动");
         if (response?.id !== undefined) {
           await api.subActivity.add($Activity.get().subActivities, response.id);
