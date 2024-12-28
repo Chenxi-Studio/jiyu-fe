@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@nutui/nutui-react-taro";
 import { Title } from "@/pages/module/new-activity/components/title";
 import { navigateBack } from "@/utils/navigator";
@@ -12,6 +12,7 @@ import { MainActivity } from "./components/main-activity";
 import { SubActivity } from "./components/sub-activity";
 
 import "./style.scss";
+import Taro from "@tarojs/taro";
 
 export interface SelectDate {
   start: string | undefined;
@@ -21,6 +22,8 @@ export interface SelectDate {
 const NewActivity = (): JSX.Element => {
   const [loading, setLoading] = useState(false);
   const [submitText, setSubmitText] = useState<string>("提交");
+  const [statusBarHeight, setStatusBarHeight] = useState<number>(0);
+
   const id = $Activity.use((state) => state.id);
   const editable = id !== undefined;
 
@@ -122,8 +125,15 @@ const NewActivity = (): JSX.Element => {
     }
   };
 
+  useEffect(() => {
+    setStatusBarHeight(Taro.getSystemInfoSync().statusBarHeight ?? 0);
+  }, []);
+
   return (
-    <div className="bg-[#F7F8FA] pb-[150rpx] overflow-x-hidden">
+    <div
+      className="bg-[#F7F8FA] pb-[150rpx] overflow-x-hidden"
+      style={{ paddingTop: statusBarHeight }}
+    >
       <GlobalNotify />
       <div className="py-2">
         <Title content="活动信息" />
