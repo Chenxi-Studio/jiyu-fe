@@ -46,7 +46,9 @@ export const MiddleCard: FC<MiddleCardProps> = (props) => {
         <div className="flex text-gray-400 text-xs gap-1 items-center justify-between">
           <div className="flex items-center justify-center">
             <div>报名截止: </div>
-            <div>{formatDate(activity.registrationEndTime, false)}</div>
+            <div>
+              {formatDate(activity.registrationEndTime, true, true, true)}
+            </div>
           </div>
           <div>{ActStatusMapping.get(activity.status)}</div>
         </div>

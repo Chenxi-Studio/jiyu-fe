@@ -75,7 +75,7 @@ export const SmallCard: FC<SmallCardProps> = (props): JSX.Element => {
               活动开始时间：
               {`${startTime.getMonth() + 1}月${startTime.getDate()}日`}
             </div>
-            <div>{`${startTime.getHours().toString().padStart(2, "0")} : ${startTime.getMinutes().toString().padStart(2, "0")}`}</div>
+            <div>{`${startTime.getHours().toString().padStart(2, "0")}:${startTime.getMinutes().toString().padStart(2, "0")}`}</div>
           </div>
         )}
         {startTime === null || (startTime === undefined && <>未配置结束时间</>)}

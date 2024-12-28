@@ -17,6 +17,7 @@ export const formatDate = (
   startTime: Date | undefined | null,
   withMinute = true,
   withYear = true,
+  onlyMonth = false,
 ): string => {
   if (startTime === null) return "未配置时间";
   if (startTime === undefined) return "未配置时间";
@@ -25,7 +26,7 @@ export const formatDate = (
     const year = startTime.getFullYear();
     const month = ("0" + (startTime.getMonth() + 1)).slice(-2); // 月份从0开始，所以需要+1
     const day = ("0" + startTime.getDate()).slice(-2);
-    formattedDate += `${year}/${month}/${day}`;
+    formattedDate += `${onlyMonth ? "" : year.toString() + "/"}${month}/${day}`;
   }
 
   if (withMinute) {

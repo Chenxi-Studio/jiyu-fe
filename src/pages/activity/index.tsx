@@ -313,7 +313,7 @@ const ActivityPage = (): JSX.Element => {
                   status={item.activity.status}
                   id={index === 0 ? "activity-small-card" : undefined}
                   disabled={item.activity.status === ActivityStatus.Finished}
-                  statusText={item.isTail ? "队尾候补中" : "候补中"}
+                  statusText={item.isTail ? "爽约候补中" : "候补中"}
                 ></SmallCard>
               </div>
             </Swipe>
