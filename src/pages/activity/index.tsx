@@ -20,7 +20,13 @@ import "./style.scss";
 
 const ActivityPage = (): JSX.Element => {
   const refresh = $UI.use((state) => state.activityRefresh);
+  const [signStartList, setSignStartList] = useState<
+    Array<{ activity: ActivityEntity; signID: number }>
+  >([]);
   const [signList, setSignList] = useState<
+    Array<{ activity: ActivityEntity; signID: number }>
+  >([]);
+  const [signEndList, setSignEndList] = useState<
     Array<{ activity: ActivityEntity; signID: number }>
   >([]);
   const [waitList, setWaitList] = useState<
@@ -29,28 +35,65 @@ const ActivityPage = (): JSX.Element => {
   const signListRefs = new Array(signList.length)
     .fill(null)
     .map(() => createRef<SwipeInstance>());
+  const waitListRefs = new Array(waitList.length)
+    .fill(null)
+    .map(() => createRef<SwipeInstance>());
   const [tourTrigger, setTourTrigger] = useState<boolean>(false);
 
   const loadData = async (withTour: boolean = false): Promise<void> => {
     const mySignListResponse = await api.sign.mySignList();
+    setSignStartList(
+      mySignListResponse
+        .filter((i) => i.activity.status === ActivityStatus.Ongoing)
+        .sort(
+          (a, b) =>
+            b.activity.startTime.getTime() - a.activity.startTime.getTime(),
+        )
+        .map((item) => ({
+          activity: { subActivities: item.subActivities, ...item.activity },
+          signID: item.id,
+        })),
+    );
     setSignList(
-      mySignListResponse.map((item) => ({
-        activity: { subActivities: item.subActivities, ...item.activity },
-        signID: item.id,
-      })),
+      mySignListResponse
+        .filter((i) => i.activity.status === ActivityStatus.Register)
+        .sort(
+          (a, b) =>
+            a.activity.startTime.getTime() - b.activity.startTime.getTime(),
+        )
+        .map((item) => ({
+          activity: { subActivities: item.subActivities, ...item.activity },
+          signID: item.id,
+        })),
+    );
+    setSignEndList(
+      mySignListResponse
+        .filter((i) => i.activity.status === ActivityStatus.Finished)
+        .sort(
+          (a, b) =>
+            b.activity.startTime.getTime() - a.activity.startTime.getTime(),
+        )
+        .map((item) => ({
+          activity: { subActivities: item.subActivities, ...item.activity },
+          signID: item.id,
+        })),
     );
     if (withTour && mySignListResponse.length !== 0) {
       setTourTrigger(true);
     }
     const waitListResponse = await api.sign.waitList();
-    console.log(waitListResponse);
 
     setWaitList(
-      waitListResponse.map((item) => ({
-        activity: { subActivities: item.subActivities, ...item.activity },
-        waitID: item.id,
-        isTail: item.isTail,
-      })),
+      waitListResponse
+        .sort(
+          (a, b) =>
+            a.activity.startTime.getTime() - b.activity.startTime.getTime(),
+        )
+        .map((item) => ({
+          activity: { subActivities: item.subActivities, ...item.activity },
+          waitID: item.id,
+          isTail: item.isTail,
+        })),
     );
   };
 
@@ -100,6 +143,28 @@ const ActivityPage = (): JSX.Element => {
         <Dialog id="Activity" />
 
         <div className="hide-scrollbar py-3 flex flex-col gap-6 overflow-y-auto overscroll-x-hidden px-[52rpx] drop-shadow-base">
+          {signStartList.map((item, index) => (
+            <div
+              key={`Activity-${item.signID}`}
+              className="rounded-2xl overflow-hidden drop-shadow-base"
+            >
+              <div
+                onClick={() => {
+                  handleOnclick(item.activity);
+                }}
+              >
+                <SmallCard
+                  title={item.activity.title}
+                  coverImage={item.activity.coverImage}
+                  organizer={item.activity.organizer}
+                  startTime={item.activity.startTime}
+                  status={item.activity.status}
+                  id={index === 0 ? "activity-small-card" : undefined}
+                  disabled={item.activity.status === ActivityStatus.Finished}
+                ></SmallCard>
+              </div>
+            </div>
+          ))}
           {signList.map((item, index) => (
             <Swipe
               ref={signListRefs[index]}
@@ -136,7 +201,7 @@ const ActivityPage = (): JSX.Element => {
                   )}
                 </>
               }
-              key={`Activity-${index}`}
+              key={`Activity-${item.signID}`}
               onTouchStart={() => {
                 for (const ref of signListRefs) {
                   if (
@@ -178,7 +243,7 @@ const ActivityPage = (): JSX.Element => {
           ))}
           {waitList.map((item, index) => (
             <Swipe
-              ref={signListRefs[index]}
+              ref={waitListRefs[index]}
               rightAction={
                 <>
                   {item.activity.status !== ActivityStatus.Finished && (
@@ -212,11 +277,11 @@ const ActivityPage = (): JSX.Element => {
                   )}
                 </>
               }
-              key={`Activity-${index}`}
+              key={`Activity-${item.waitID}`}
               onTouchStart={() => {
-                for (const ref of signListRefs) {
+                for (const ref of waitListRefs) {
                   if (
-                    ref !== signListRefs[index] &&
+                    ref !== waitListRefs[index] &&
                     ref.current !== null &&
                     typeof ref.current.close === "function"
                   ) {
@@ -226,11 +291,11 @@ const ActivityPage = (): JSX.Element => {
               }}
               onActionClick={() => {
                 if (
-                  signListRefs[index].current !== null &&
-                  signListRefs[index].current !== undefined &&
-                  typeof signListRefs[index].current.close === "function"
+                  waitListRefs[index].current !== null &&
+                  waitListRefs[index].current !== undefined &&
+                  typeof waitListRefs[index].current.close === "function"
                 ) {
-                  signListRefs[index].current.close();
+                  waitListRefs[index].current.close();
                 }
               }}
               className="rounded-2xl overflow-hidden drop-shadow-base"
@@ -252,6 +317,28 @@ const ActivityPage = (): JSX.Element => {
                 ></SmallCard>
               </div>
             </Swipe>
+          ))}
+          {signEndList.map((item, index) => (
+            <div
+              key={`Activity-${item.signID}`}
+              className="rounded-2xl overflow-hidden drop-shadow-base"
+            >
+              <div
+                onClick={() => {
+                  handleOnclick(item.activity);
+                }}
+              >
+                <SmallCard
+                  title={item.activity.title}
+                  coverImage={item.activity.coverImage}
+                  organizer={item.activity.organizer}
+                  startTime={item.activity.startTime}
+                  status={item.activity.status}
+                  id={index === 0 ? "activity-small-card" : undefined}
+                  disabled={item.activity.status === ActivityStatus.Finished}
+                ></SmallCard>
+              </div>
+            </div>
           ))}
         </div>
       </PullToRefresh>
