@@ -11,6 +11,7 @@ import { MainActivity } from "./components/main-activity";
 import { SubActivity } from "./components/sub-activity";
 
 import "./style.scss";
+import { type ActivityEntity } from "@/types/entity/Activity.entity";
 
 export interface SelectDate {
   start: string | undefined;
@@ -25,21 +26,29 @@ const NewActivity = (): JSX.Element => {
 
   const handleSubmit = async (): Promise<void> => {
     const aid = $Activity.get().id;
-
+    let response: ActivityEntity | undefined;
     if (aid === undefined) {
       try {
         // 新增活动
         const newValue: BaseActivityRequest = $Activity.get();
         setLoading(true);
         setSubmitText("上传活动图片");
-        const response = await api.activity.createActivity(
+        response = await api.activity.createActivity(
           newValue,
           $Activity.get().coverImage,
           $Activity.get().groupImage,
         );
-
+      } catch (error) {
+        setLoading(false);
+        setSubmitText("重新提交");
+        $UI.update("new activity err", (draft) => {
+          draft.notifyMsg = error.message;
+          draft.showNotify = true;
+        });
+      }
+      try {
         setSubmitText("上传子活动");
-        if (response.id !== undefined) {
+        if (response?.id !== undefined) {
           await api.subActivity.add($Activity.get().subActivities, response.id);
         } else {
           throw new Error("创建活动异常");
@@ -52,6 +61,7 @@ const NewActivity = (): JSX.Element => {
         });
         navigateBack();
       } catch (error) {
+        if (response?.id !== undefined) await api.activity.delete(response.id);
         setLoading(false);
         setSubmitText("重新提交");
         $UI.update("new activity err", (draft) => {
