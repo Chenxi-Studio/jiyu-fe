@@ -48,61 +48,6 @@ export const OrganizerTagPopup: FC<OrganizerTagPopupProps> = (props) => {
           ))}
         </div>
 
-        <Divider contentPosition="left">基础标签</Divider>
-        <div className="flex flex-wrap gap-x-2 gap-y-2 px-2">
-          {scope?.degree.map((option) => (
-            <Checkbox
-              key={option}
-              value={option}
-              defaultChecked={defaultValue?.includes(degreeNames(option))}
-              label={degreeNames(option)}
-              onChange={(value) => {
-                if (onChange !== undefined) {
-                  onChange(value, degreeNames(option));
-                }
-              }}
-              activeIcon={
-                <Checklist className="nut-checkbox-button-icon-checked" />
-              }
-              shape="button"
-            />
-          ))}
-          {scope?.gender.map((option) => (
-            <Checkbox
-              key={option}
-              value={option}
-              defaultChecked={defaultValue?.includes(genderNames(option))}
-              label={genderNames(option)}
-              onChange={(value) => {
-                if (onChange !== undefined) {
-                  onChange(value, genderNames(option));
-                }
-              }}
-              activeIcon={
-                <Checklist className="nut-checkbox-button-icon-checked" />
-              }
-              shape="button"
-            />
-          ))}
-          {scope?.grade.map((option) => (
-            <Checkbox
-              key={option}
-              value={option}
-              defaultChecked={defaultValue?.includes(option)}
-              label={option}
-              onChange={(value) => {
-                if (onChange !== undefined) {
-                  onChange(value, option);
-                }
-              }}
-              activeIcon={
-                <Checklist className="nut-checkbox-button-icon-checked" />
-              }
-              shape="button"
-            />
-          ))}
-        </div>
-
         <div className="flex flex-wrap gap-x-2 gap-y-2 px-2">
           <Divider contentPosition="left">特殊标签</Divider>
           {scope?.tags.map((id) => {

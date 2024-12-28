@@ -68,15 +68,17 @@ const NewActivity = (): JSX.Element => {
       setLoading(true);
       setSubmitText("修改上传中");
       try {
+        console.log($Activity.get().coverImage);
+
         await api.activity.update(
           $Activity.get(),
           $Activity.get().coverImage !== undefined &&
-            $Activity.get().coverImage?.match(/^http:\/\/tmp/) === null &&
+            // $Activity.get().coverImage?.match(/^http:\/\/tmp/) === null &&
             $Activity.get().coverImage?.match(/^jiyu/) === null
             ? $Activity.get().coverImage
             : undefined,
           $Activity.get().groupImage !== undefined &&
-            $Activity.get().coverImage?.match(/^http:\/\/tmp/) === null &&
+            // $Activity.get().coverImage?.match(/^http:\/\/tmp/) === null &&
             $Activity.get().coverImage?.match(/^jiyu/) === null
             ? $Activity.get().groupImage
             : undefined,
