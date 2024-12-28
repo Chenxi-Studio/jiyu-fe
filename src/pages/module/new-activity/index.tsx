@@ -7,11 +7,11 @@ import { type BaseActivityRequest } from "@/types/activity";
 import { api } from "@/api";
 import { $UI } from "@/store/UI";
 import { GlobalNotify } from "@/components/global-notify";
+import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { MainActivity } from "./components/main-activity";
 import { SubActivity } from "./components/sub-activity";
 
 import "./style.scss";
-import { type ActivityEntity } from "@/types/entity/Activity.entity";
 
 export interface SelectDate {
   start: string | undefined;

@@ -23,6 +23,11 @@ import { GlobalNotify } from "@/components/global-notify";
 import { CameraComponent } from "@/components/camera";
 import { SubActivityCard } from "./components/sub-activity-card";
 
+const tmplIds = [
+  "cCCFuUo9GZIscGadpIsWWTRXfqNSFO9MAuXWNSmaLk0",
+  "G1SeStIv-__1n9Qt6obTt39uoPHXkn0PToIR5eGkSAM",
+  "sm0OM43YG6jJRvIQQ1Gs9jOhroG4Q1cDwjdlESzhzCs",
+];
 const Detail = (): JSX.Element => {
   const currentActivity = $UI.use((state) => state.currentActivity);
   const origin = $UI.use((state) => state.detailOrigin);
@@ -342,6 +347,62 @@ const Detail = (): JSX.Element => {
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onClick={async () => {
               try {
+                let callRequestSubscribeMessage = false;
+                await Taro.getSetting({
+                  withSubscriptions: true, //  这里设置为true,下面才会返回mainSwitch
+                  success: function (successRes) {
+                    console.log(
+                      "getSetting",
+                      successRes,
+                      successRes.subscriptionsSetting.itemSettings,
+                    );
+
+                    if (successRes.subscriptionsSetting.mainSwitch) {
+                      if (
+                        successRes.subscriptionsSetting.itemSettings !==
+                        undefined
+                      ) {
+                        // 用户同意总是保持是否推送消息的选择, 这里表示以后不会再拉起推送消息的授权
+                        // for (const tmplId of tmplIds) {
+                        //   const moIdState =
+                        //     successRes.subscriptionsSetting.itemSettings[
+                        //       tmplId
+                        //     ];
+                        //   if (moIdState === "accept") {
+                        //     console.log("接受了消息推送", tmplId);
+                        //   } else if (moIdState === "reject") {
+                        //     console.log("拒绝消息推送", tmplId);
+                        //   } else if (moIdState === "ban") {
+                        //     console.log("已被后台封禁", tmplId);
+                        //   }
+                        // }
+                      } else {
+                        // 当用户没有点击 ’总是保持以上选择，不再询问‘  按钮。那每次执到这都会拉起授权弹窗
+                        callRequestSubscribeMessage = true;
+                      }
+                    } else {
+                      console.log("订阅消息未开启");
+                    }
+                  },
+                  fail: function (error) {
+                    console.log(error);
+                  },
+                });
+
+                if (callRequestSubscribeMessage) {
+                  await Taro.requestSubscribeMessage({
+                    tmplIds,
+                    success(successSubscribeRes) {
+                      console.log("订阅消息 成功 ");
+                      console.log(successSubscribeRes);
+                    },
+                    fail(er) {
+                      console.log("订阅消息 失败 ");
+                      console.log(er);
+                    },
+                    entityIds: [],
+                  });
+                }
                 if (currentActivity?.id !== undefined) {
                   await Taro.vibrateLong();
                   const res = await api.sign.register(
@@ -355,6 +416,7 @@ const Detail = (): JSX.Element => {
                     ActivityRegisterStatus.Success,
                   );
 
+                  // 这里是获取下发权限地方，根据官方文档，可以根据  wx.getSetting() 的 withSubscriptions   这个参数获取用户是否打开订阅消息总开关。后面我们需要获取用户是否同意总是同意消息推送。所以这里要给它设置为true 。
                   if (res.registerStatus === ActivityRegisterStatus.Success) {
                     $UI.update("register success refresh", (draft) => {
                       draft.activityRefresh = true;
