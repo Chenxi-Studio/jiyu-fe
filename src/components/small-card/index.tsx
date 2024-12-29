@@ -73,7 +73,7 @@ export const SmallCard: FC<SmallCardProps> = (props): JSX.Element => {
           >
             <div>
               活动开始时间：
-              {`${startTime.getMonth() + 1}月${startTime.getDate()}日`}
+              {`${startTime.getMonth() + 1}/${startTime.getDate()}`}
             </div>
             <div>{`${startTime.getHours().toString().padStart(2, "0")}:${startTime.getMinutes().toString().padStart(2, "0")}`}</div>
           </div>

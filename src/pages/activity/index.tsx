@@ -170,35 +170,37 @@ const ActivityPage = (): JSX.Element => {
               ref={signListRefs[index]}
               rightAction={
                 <>
-                  {item.activity.status !== ActivityStatus.Finished && (
-                    <Button
-                      type="primary"
-                      shape="square"
-                      id={index === 0 ? "activity-cancel" : undefined}
-                      onClick={() => {
-                        void Taro.vibrateLong();
-                        Dialog.open(`Activity`, {
-                          title: `取消报名提示`,
-                          content: `确认取消报名活动 ${item.activity.title} 吗？`,
-                          onConfirm: async () => {
-                            try {
-                              await Taro.vibrateLong();
-                              await api.sign.revocation(item.signID);
-                              await loadData();
-                            } catch (error) {
-                              // TODO: 错误问题
-                            }
-                            Dialog.close(`Activity`);
-                          },
-                          onCancel: () => {
-                            Dialog.close(`Activity`);
-                          },
-                        });
-                      }}
-                    >
-                      取消报名
-                    </Button>
-                  )}
+                  {item.activity.status === ActivityStatus.Register &&
+                    item.activity.registrationEndTime.getTime() >=
+                      new Date().getTime() && (
+                      <Button
+                        type="primary"
+                        shape="square"
+                        id={index === 0 ? "activity-cancel" : undefined}
+                        onClick={() => {
+                          void Taro.vibrateLong();
+                          Dialog.open(`Activity`, {
+                            title: `取消报名提示`,
+                            content: `确认取消报名活动 ${item.activity.title} 吗？`,
+                            onConfirm: async () => {
+                              try {
+                                await Taro.vibrateLong();
+                                await api.sign.revocation(item.signID);
+                                await loadData();
+                              } catch (error) {
+                                // TODO: 错误问题
+                              }
+                              Dialog.close(`Activity`);
+                            },
+                            onCancel: () => {
+                              Dialog.close(`Activity`);
+                            },
+                          });
+                        }}
+                      >
+                        取消报名
+                      </Button>
+                    )}
                 </>
               }
               key={`Activity-${item.signID}`}
@@ -237,6 +239,7 @@ const ActivityPage = (): JSX.Element => {
                   status={item.activity.status}
                   id={index === 0 ? "activity-small-card" : undefined}
                   disabled={item.activity.status === ActivityStatus.Finished}
+                  statusText="已报名"
                 ></SmallCard>
               </div>
             </Swipe>
@@ -313,7 +316,7 @@ const ActivityPage = (): JSX.Element => {
                   status={item.activity.status}
                   id={index === 0 ? "activity-small-card" : undefined}
                   disabled={item.activity.status === ActivityStatus.Finished}
-                  statusText={item.isTail ? "爽约候补中" : "候补中"}
+                  statusText={item.isTail ? "爽约候补" : "已候补"}
                 ></SmallCard>
               </div>
             </Swipe>
