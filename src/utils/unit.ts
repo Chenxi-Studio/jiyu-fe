@@ -146,3 +146,21 @@ export const setJWT = async (jwt: string): Promise<void> => {
     console.log(tags, grades, majors, classes);
   }
 };
+
+export function roundUpToNextFiveMinutes(date: Date): Date {
+  const newDate = new Date(date.getTime());
+
+  const minutes = newDate.getMinutes();
+  const remainder = minutes % 5;
+  let addMinutes = 0;
+
+  if (remainder !== 0) {
+    addMinutes = 5 - remainder;
+  }
+
+  newDate.setMinutes(minutes + addMinutes);
+  newDate.setSeconds(0);
+  newDate.setMilliseconds(0);
+
+  return newDate;
+}

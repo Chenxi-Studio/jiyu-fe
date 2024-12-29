@@ -1,5 +1,6 @@
 import { model } from "@/model";
 import { type Activity, type SubActivity } from "@/types/activity";
+import { roundUpToNextFiveMinutes } from "@/utils/unit";
 
 export interface ActivityModel extends Activity {
   subActivities: SubActivity[];
@@ -13,10 +14,10 @@ export const $Activity = model<ActivityModel>("ACTIVITY", {
   title: "",
   coverImage: undefined,
   groupImage: undefined,
-  startTime: new Date(new Date().getTime()),
-  endTime: new Date(new Date().getTime()),
-  registrationStartTime: new Date(),
-  registrationEndTime: new Date(new Date().getTime()),
+  startTime: roundUpToNextFiveMinutes(new Date()),
+  endTime: roundUpToNextFiveMinutes(new Date()),
+  registrationStartTime: roundUpToNextFiveMinutes(new Date()),
+  registrationEndTime: roundUpToNextFiveMinutes(new Date()),
   location: "",
   organizer: "",
   category: "",

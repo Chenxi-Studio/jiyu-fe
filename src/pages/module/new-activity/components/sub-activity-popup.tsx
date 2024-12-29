@@ -6,6 +6,7 @@ import {
 import { Button, Input, Popup } from "@nutui/nutui-react-taro";
 import { $Activity } from "@/store/activity";
 import { getManageScopeSize } from "@/types/admin";
+import { roundUpToNextFiveMinutes } from "@/utils/unit";
 import { TimeInput } from "./time-input";
 import { TagPopup } from "./tag-popup";
 
@@ -20,10 +21,10 @@ const defaultCreateSubActivityRequest = {
     tags: [],
   },
   capacity: 0,
-  checkInStartTime: new Date(),
-  checkInEndTime: new Date(),
-  startTime: new Date(),
-  endTime: new Date(),
+  checkInStartTime: roundUpToNextFiveMinutes(new Date()),
+  checkInEndTime: roundUpToNextFiveMinutes(new Date()),
+  startTime: roundUpToNextFiveMinutes(new Date()),
+  endTime: roundUpToNextFiveMinutes(new Date()),
   location: "",
 };
 
