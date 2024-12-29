@@ -11,7 +11,10 @@ export const tacInstance = axios.create({
   adapter: taroAdapter,
 });
 
-export const baseURL = "https://fdchenxi.com/jiyu/api";
+export const baseURL =
+  process.env.NODE_ENV === "development"
+    ? "https://fdchenxi.com/jiyu/api/v2"
+    : "https://fdchenxi.com/jiyu/api/v1";
 
 const instance = axios.create({
   baseURL,
