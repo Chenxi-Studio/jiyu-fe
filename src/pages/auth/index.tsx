@@ -212,7 +212,7 @@ const Auth = (): JSX.Element => {
           Admin 测试登录
         </div>
       </div> */}
-      <div
+      {/* <div
         className={twMerge("fixed bottom-[32%] px-8 w-[calc(100%-128rpx)]")}
         onClick={() => {
           clearStore();
@@ -227,7 +227,7 @@ const Auth = (): JSX.Element => {
         >
           UltraAdmin 测试登录
         </div>
-      </div>
+      </div> */}
       <div className="fixed bottom-[5%] px-8 w-[calc(100%-128rpx)] flex items-center justify-center">
         <Logo />
       </div>
