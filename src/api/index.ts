@@ -380,6 +380,8 @@ const tag = {
 };
 
 const show = {
+  hotSpot: (): Promise<ActivityWithRemain[]> =>
+    instance.get("/show-act/hotspot"),
   upcoming: (): Promise<ActivityWithRemain[]> =>
     instance.get("/show-act/upcoming"),
   ongoing: (): Promise<ActivityWithRemain[]> =>

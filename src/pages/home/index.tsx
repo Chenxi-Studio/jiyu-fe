@@ -60,10 +60,15 @@ const Home = (): JSX.Element => {
     useState<ActivityWithRemain[]>([]);
   const [upcomingNotAvailableActivities, setUpcomingNotAvailableActivities] =
     useState<ActivityWithRemain[]>([]);
+  const [hotSpotActivities, setHotSpotActivities] = useState<
+    ActivityWithRemain[]
+  >([]);
 
   const load = async (): Promise<void> => {
     const res = await api.sign.list();
     setActivities(res.data);
+    const hotSpotRes = await api.show.hotSpot();
+    setHotSpotActivities(hotSpotRes);
     const ongoingRes = await api.show.ongoing();
     setOngoingActivities(ongoingRes);
     const upcomingRes = await api.show.upcoming();
@@ -146,7 +151,10 @@ const Home = (): JSX.Element => {
             </div>
           ) : (
             <div className="hide-scrollbar pb-3 flex gap-6 overflow-x-auto overscroll-y-hidden px-[52rpx] pt-2">
-              {activities.map((activity, index) => (
+              {(hotSpotActivities.length > 0
+                ? hotSpotActivities
+                : activities
+              ).map((activity, index) => (
                 <BigCard
                   key={`Big-Card-${index}`}
                   id={index === 0 ? "home-big-card" : undefined}
