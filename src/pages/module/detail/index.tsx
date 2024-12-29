@@ -346,20 +346,19 @@ const Detail = (): JSX.Element => {
           <div
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onClick={async () => {
+              await Taro.requestSubscribeMessage({
+                tmplIds,
+                success(successSubscribeRes) {
+                  console.log("订阅消息 成功 ");
+                  console.log(successSubscribeRes);
+                },
+                fail(er) {
+                  console.log("订阅消息 失败 ");
+                  console.log(er);
+                },
+                entityIds: [],
+              });
               try {
-                await Taro.requestSubscribeMessage({
-                  tmplIds,
-                  success(successSubscribeRes) {
-                    console.log("订阅消息 成功 ");
-                    console.log(successSubscribeRes);
-                  },
-                  fail(er) {
-                    console.log("订阅消息 失败 ");
-                    console.log(er);
-                  },
-                  entityIds: [],
-                });
-
                 if (currentActivity?.id !== undefined) {
                   await Taro.vibrateLong();
                   const res = await api.sign.register(
