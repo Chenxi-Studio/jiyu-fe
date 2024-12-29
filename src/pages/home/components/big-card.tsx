@@ -3,7 +3,7 @@ import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { formatDate } from "@/utils/unit";
 import { Image } from "@tarojs/components";
 import { pic2url } from "@/utils/type";
-import { ActStatusMapping } from "@/types/common";
+import { ActivityStatus, ActStatusMapping } from "@/types/common";
 import { truncateString } from "@/utils/ui";
 import "./style.scss";
 
@@ -43,7 +43,12 @@ export const BigCard: FC<BigCardProps> = (props) => {
               报名截止:{" "}
               {formatDate(activity.registrationEndTime, true, true, true)}
             </div>
-            <div>{ActStatusMapping.get(activity.status)}</div>
+            <div>
+              {activity.status === ActivityStatus.Register &&
+              activity.registrationEndTime.getTime() < new Date().getTime()
+                ? "报名截止"
+                : ActStatusMapping.get(activity.status)}
+            </div>
           </div>
         </div>
       </div>

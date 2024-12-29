@@ -55,9 +55,11 @@ const Home = (): JSX.Element => {
   const [ongoingActivities, setOngoingActivities] = useState<
     ActivityWithRemain[]
   >([]);
-  const [upcomingActivities, setUpcomingActivities] = useState<
-    ActivityWithRemain[]
-  >([]);
+
+  const [upcomingAvailableActivities, setUpcomingAvailableActivities] =
+    useState<ActivityWithRemain[]>([]);
+  const [upcomingNotAvailableActivities, setUpcomingNotAvailableActivities] =
+    useState<ActivityWithRemain[]>([]);
 
   const load = async (): Promise<void> => {
     const res = await api.sign.list();
@@ -65,17 +67,25 @@ const Home = (): JSX.Element => {
     const ongoingRes = await api.show.ongoing();
     setOngoingActivities(ongoingRes);
     const upcomingRes = await api.show.upcoming();
-    setUpcomingActivities(
-      upcomingRes.sort(
-        (a, b) =>
-          a.registrationEndTime.getTime() - b.registrationEndTime.getTime(),
-      ),
+    setUpcomingAvailableActivities(
+      upcomingRes
+        .filter((i) => i.registrationEndTime.getTime() >= new Date().getTime())
+        .sort(
+          (a, b) =>
+            a.registrationEndTime.getTime() - b.registrationEndTime.getTime(),
+        ),
+    );
+    setUpcomingNotAvailableActivities(
+      upcomingRes
+        .filter((i) => i.registrationEndTime.getTime() < new Date().getTime())
+        .sort(
+          (a, b) =>
+            a.registrationEndTime.getTime() - b.registrationEndTime.getTime(),
+        ),
     );
     const mySignListResponse = await api.sign.mySignList();
     setSignList(mySignListResponse.map((item) => item.activity.id));
   };
-
-  console.log(signList, ongoingActivities, upcomingActivities);
 
   useEffect(() => {
     console.log("start.");
@@ -155,7 +165,7 @@ const Home = (): JSX.Element => {
 
           {!filtered && (
             <div className="hide-scrollbar py-3 flex flex-col gap-6 overflow-x-auto overscroll-y-hidden px-[52rpx]">
-              {upcomingActivities.map((activity, index) => (
+              {upcomingAvailableActivities.map((activity, index) => (
                 <MiddleCard
                   key={`Middle-Card-${index}`}
                   activity={activity}
@@ -174,11 +184,25 @@ const Home = (): JSX.Element => {
                   }
                 />
               ))}
-            </div>
-          )}
-
-          {!filtered && (
-            <div className="hide-scrollbar py-3 flex-col gap-6 overflow-x-auto overscroll-y-hidden px-[52rpx]">
+              {upcomingNotAvailableActivities.map((activity, index) => (
+                <MiddleCard
+                  key={`Middle-Card-${index}`}
+                  activity={activity}
+                  id={index === 0 ? "home-middle-card" : undefined}
+                  onClick={() => {
+                    $UI.update("from home", (draft) => {
+                      draft.currentActivity = activity;
+                      draft.detailOrigin = "home";
+                    });
+                    navigateTo(`pages/module/detail/index`);
+                  }}
+                  selected={
+                    activity.id === undefined
+                      ? false
+                      : signList.includes(activity.id)
+                  }
+                />
+              ))}
               {ongoingActivities.map((activity, index) => (
                 <MiddleCard
                   key={`Middle-Card-${index}`}

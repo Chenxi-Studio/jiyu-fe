@@ -4,7 +4,7 @@ import { Image } from "@tarojs/components";
 import { formatDate } from "@/utils/unit";
 import { twMerge } from "tailwind-merge";
 import { pic2url } from "@/utils/type";
-import { ActStatusMapping } from "@/types/common";
+import { ActivityStatus, ActStatusMapping } from "@/types/common";
 import { getThemeNumber, truncateString } from "@/utils/ui";
 
 export interface MiddleCardProps {
@@ -50,7 +50,12 @@ export const MiddleCard: FC<MiddleCardProps> = (props) => {
               {formatDate(activity.registrationEndTime, true, true, true)}
             </div>
           </div>
-          <div>{ActStatusMapping.get(activity.status)}</div>
+          <div>
+            {activity.status === ActivityStatus.Register &&
+            activity.registrationEndTime.getTime() < new Date().getTime()
+              ? "报名截止"
+              : ActStatusMapping.get(activity.status)}
+          </div>
         </div>
       </div>
     </div>
