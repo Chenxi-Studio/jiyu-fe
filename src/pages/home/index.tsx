@@ -154,8 +154,8 @@ const Home = (): JSX.Element => {
           )}
 
           {!filtered && (
-            <div className="hide-scrollbar py-3 flex-col gap-6 overflow-x-auto overscroll-y-hidden px-[52rpx]">
-              {ongoingActivities.map((activity, index) => (
+            <div className="hide-scrollbar py-3 flex flex-col gap-6 overflow-x-auto overscroll-y-hidden px-[52rpx]">
+              {upcomingActivities.map((activity, index) => (
                 <MiddleCard
                   key={`Middle-Card-${index}`}
                   activity={activity}
@@ -178,8 +178,8 @@ const Home = (): JSX.Element => {
           )}
 
           {!filtered && (
-            <div className="hide-scrollbar py-3 flex flex-col gap-6 overflow-x-auto overscroll-y-hidden px-[52rpx]">
-              {upcomingActivities.map((activity, index) => (
+            <div className="hide-scrollbar py-3 flex-col gap-6 overflow-x-auto overscroll-y-hidden px-[52rpx]">
+              {ongoingActivities.map((activity, index) => (
                 <MiddleCard
                   key={`Middle-Card-${index}`}
                   activity={activity}

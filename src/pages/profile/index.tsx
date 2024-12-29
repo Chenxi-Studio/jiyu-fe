@@ -72,7 +72,7 @@ const Profile = (): JSX.Element => {
           </div>
         </div>
         <div className="flex justify-between items-center h-14">
-          <div>名字</div>
+          <div>姓名</div>
           <div className="flex items-center justify-center gap-4 text-gray-500">
             <div>{name}</div>
           </div>
@@ -187,7 +187,7 @@ const Profile = (): JSX.Element => {
             <ArrowSize6 size={12} color="#d1d5db" />
           </div>
         </div>
-        <div
+        {/* <div
           className="flex justify-between items-center h-12"
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onClick={() => {
@@ -198,7 +198,7 @@ const Profile = (): JSX.Element => {
           <div className="flex items-center justify-center">
             <ArrowSize6 size={12} color="#d1d5db" />
           </div>
-        </div>
+        </div> */}
       </div>
 
       <ProfileTour />

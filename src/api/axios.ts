@@ -44,7 +44,7 @@ instance.interceptors.response.use(
       }
       if (
         res.status === 400 &&
-        Boolean(res.data.message.includes("计算机学院师生"))
+        Boolean(res.data.message.includes("暂时仅对"))
       ) {
         $UI.update("400 not cs", (draft) => {
           draft.show403 = true;
