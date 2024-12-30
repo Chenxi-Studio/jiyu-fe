@@ -27,6 +27,7 @@ export interface SubActivityCardProps {
   origin?: "home" | "activity" | "detail" | "publish";
   id?: string;
   scan?: boolean;
+  forbidSelect?: boolean;
 }
 
 export const SubActivityCard: FC<SubActivityCardProps> = ({
@@ -39,6 +40,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
   origin,
   id,
   scan = false,
+  forbidSelect = false,
 }) => {
   const [selected, setSelected] = useState(false);
   const time = useMemo(() => {
@@ -54,6 +56,7 @@ export const SubActivityCard: FC<SubActivityCardProps> = ({
       onClick={(event) => {
         if (origin !== "home" || scan) return;
         if (disabled) return;
+        if (forbidSelect) return;
         if (!isSelected && onClick !== undefined) onClick(event);
         setSelected(!selected);
       }}

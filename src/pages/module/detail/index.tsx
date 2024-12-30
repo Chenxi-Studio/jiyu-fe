@@ -49,6 +49,11 @@ const Detail = (): JSX.Element => {
   const [scrollToTour, setScrollToTour] = useState<boolean>(false);
   const [statusBarHeight, setStatusBarHeight] = useState<number>(0);
   const [now] = useState<Date>(new Date());
+  const signAvailable =
+    confirm &&
+    selected.length === 0 &&
+    currentActivity !== undefined &&
+    currentActivity.registrationEndTime.getTime() >= now.getTime();
 
   const load = async (withTour: boolean = false): Promise<void> => {
     if (currentActivity?.id !== undefined) {
@@ -274,6 +279,7 @@ const Detail = (): JSX.Element => {
                 }}
                 id={index === 0 ? "detail-subactivity-card" : undefined}
                 scan={selected.length > 0}
+                forbidSelect={!signAvailable}
               />
             );
           })}
@@ -343,93 +349,90 @@ const Detail = (): JSX.Element => {
             )}
           </div>
         )}
-        {confirm &&
-          selected.length === 0 &&
-          currentActivity !== undefined &&
-          currentActivity.registrationEndTime.getTime() >= now.getTime() && (
-            <div
-              // eslint-disable-next-line @typescript-eslint/no-misused-promises
-              onClick={async () => {
-                try {
-                  await Taro.requestSubscribeMessage({
-                    tmplIds,
-                    success(successSubscribeRes) {
-                      // console.log("订阅消息 成功 ");
-                      // console.log(successSubscribeRes);
-                    },
-                    fail(er) {
-                      // console.log("订阅消息 失败 ");
-                      // console.log(er);
-                    },
-                    entityIds: [],
-                  });
-                } catch (e) {
-                  // console.log(e);
-                }
-                try {
-                  if (currentActivity?.id !== undefined) {
-                    await Taro.vibrateLong();
-                    const res = await api.sign.register(
-                      currentActivity?.id,
-                      subIDs.current,
-                    );
+        {signAvailable && (
+          <div
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            onClick={async () => {
+              try {
+                await Taro.requestSubscribeMessage({
+                  tmplIds,
+                  success(successSubscribeRes) {
+                    // console.log("订阅消息 成功 ");
+                    // console.log(successSubscribeRes);
+                  },
+                  fail(er) {
+                    // console.log("订阅消息 失败 ");
+                    // console.log(er);
+                  },
+                  entityIds: [],
+                });
+              } catch (e) {
+                // console.log(e);
+              }
+              try {
+                if (currentActivity?.id !== undefined) {
+                  await Taro.vibrateLong();
+                  const res = await api.sign.register(
+                    currentActivity?.id,
+                    subIDs.current,
+                  );
 
-                    // console.log(
-                    //   "res.registerStatus === ActivityRegisterStatus.Success",
-                    //   res.registerStatus,
-                    //   ActivityRegisterStatus.Success,
-                    // );
+                  // console.log(
+                  //   "res.registerStatus === ActivityRegisterStatus.Success",
+                  //   res.registerStatus,
+                  //   ActivityRegisterStatus.Success,
+                  // );
 
-                    // 这里是获取下发权限地方，根据官方文档，可以根据  wx.getSetting() 的 withSubscriptions   这个参数获取用户是否打开订阅消息总开关。后面我们需要获取用户是否同意总是同意消息推送。所以这里要给它设置为true 。
-                    if (res.registerStatus === ActivityRegisterStatus.Success) {
-                      $UI.update("register success refresh", (draft) => {
-                        draft.activityRefresh = true;
-                        draft.showNotify = true;
-                        draft.notifyMsg = "报名成功";
-                      });
-                      navigateBack();
-                    }
-                    if (
-                      res.registerStatus ===
-                      ActivityRegisterStatus.WaitListSuccess
-                    ) {
-                      $UI.update("register success refresh", (draft) => {
-                        draft.activityRefresh = true;
-                        draft.showNotify = true;
-                        draft.notifyMsg = "候补报名成功";
-                      });
-                      navigateBack();
-                    }
-                    if (
-                      res.registerStatus ===
-                      ActivityRegisterStatus.WaitListTailSuccess
-                    ) {
-                      $UI.update("register success refresh", (draft) => {
-                        draft.activityRefresh = true;
-                        draft.showNotify = true;
-                        draft.notifyMsg = "爽约惩罚进入队尾候补";
-                      });
-                      navigateBack();
-                    }
-                    if (res.registerStatus === ActivityRegisterStatus.Fail) {
-                      $UI.update("register error notify", (draft) => {
-                        draft.showNotify = true;
-                        draft.notifyMsg = "报名失败: 不满足报名条件";
-                      });
-                    }
+                  // 这里是获取下发权限地方，根据官方文档，可以根据  wx.getSetting() 的 withSubscriptions   这个参数获取用户是否打开订阅消息总开关。后面我们需要获取用户是否同意总是同意消息推送。所以这里要给它设置为true 。
+                  if (res.registerStatus === ActivityRegisterStatus.Success) {
+                    $UI.update("register success refresh", (draft) => {
+                      draft.activityRefresh = true;
+                      draft.showNotify = true;
+                      draft.notifyMsg = "报名成功";
+                    });
+                    navigateBack();
                   }
-                } catch (error) {
-                  // console.log(error);
+                  if (
+                    res.registerStatus ===
+                    ActivityRegisterStatus.WaitListSuccess
+                  ) {
+                    $UI.update("register success refresh", (draft) => {
+                      draft.activityRefresh = true;
+                      draft.showNotify = true;
+                      draft.notifyMsg = "候补报名成功";
+                    });
+                    navigateBack();
+                  }
+                  if (
+                    res.registerStatus ===
+                    ActivityRegisterStatus.WaitListTailSuccess
+                  ) {
+                    $UI.update("register success refresh", (draft) => {
+                      draft.activityRefresh = true;
+                      draft.showNotify = true;
+                      draft.notifyMsg = "爽约惩罚进入队尾候补";
+                    });
+                    navigateBack();
+                  }
+                  if (res.registerStatus === ActivityRegisterStatus.Fail) {
+                    $UI.update("register error notify", (draft) => {
+                      draft.showNotify = true;
+                      draft.notifyMsg = "报名失败: 不满足报名条件";
+                    });
+                  }
                 }
-              }}
-              id="detail-confirm"
-            >
-              报名
-            </div>
-          )}
+              } catch (error) {
+                // console.log(error);
+              }
+            }}
+            id="detail-confirm"
+          >
+            报名
+          </div>
+        )}
       </div>
 
-      {scrollToTour && <RegisterTour />}
+      {/* {scrollToTour && <RegisterTour />} */}
     </div>
   );
 };

@@ -203,7 +203,7 @@ const Profile = (): JSX.Element => {
         </div> */}
       </div>
 
-      <ProfileTour />
+      {/* <ProfileTour /> */}
     </div>
   );
 };

@@ -234,8 +234,8 @@ const Home = (): JSX.Element => {
           )}
         </div>
       </PullToRefresh>
-      <TabTour />
-      <HomeTour />
+      {/* <TabTour /> */}
+      {/* <HomeTour /> */}
     </>
   );
 };
