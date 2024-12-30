@@ -39,7 +39,7 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(
   (res) => {
-    console.log("res", res, convertDates(res.data));
+    // // console.log("res", res, convertDates(res.data));
     if (res.status < 200 || res.status >= 400) {
       if (res.status === 401) {
         Taro.setStorageSync("jwt", "");
@@ -67,7 +67,7 @@ instance.interceptors.response.use(
         draft.notifyMsg = res.data.message;
         draft.showNotify = true;
       });
-      console.log(res.data.message, $UI.get());
+      // // console.log(res.data.message, $UI.get());
 
       return Promise.reject(res.data);
     }

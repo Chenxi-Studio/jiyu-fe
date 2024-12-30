@@ -131,7 +131,7 @@ export const setJWT = async (jwt: string): Promise<void> => {
     };
     return draft;
   });
-  console.log("self", self, $User.get());
+  // console.log("self", self, $User.get());
   if (self.roleLevel !== undefined && self.roleLevel >= RoleLevel.Admin) {
     const classes = await api.tag.basicGet("class");
     const majors = await api.tag.basicGet("major");
@@ -143,7 +143,7 @@ export const setJWT = async (jwt: string): Promise<void> => {
       draft.majors = majors.map((item) => item.name);
       draft.tags = tags;
     });
-    console.log(tags, grades, majors, classes);
+    // console.log(tags, grades, majors, classes);
   }
 };
 

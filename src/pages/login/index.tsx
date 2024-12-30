@@ -11,7 +11,7 @@ const Login = (): JSX.Element => {
       <WebView
         src={`https://tac.fudan.edu.cn/oauth2/authorize.act?client_id=${clientId}&response_type=code&state=${uisState}&redirect_uri=${callbackUrl}`}
         onMessage={(e) => {
-          console.log(e.detail.data);
+          // // console.log(e.detail.data);
           if (e.detail.data[0] !== undefined) {
             $User.update("login callback", (draft) => {
               draft.state = e.detail.data[0].state;

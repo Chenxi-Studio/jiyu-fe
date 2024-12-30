@@ -181,7 +181,7 @@ const activity = {
   ) => {
     if (a.id !== undefined) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      console.log("update", coverImage, groupImage);
+      // // console.log("update", coverImage, groupImage);
 
       const formData = activity2formDate(a, coverImage, groupImage);
       const sandData = formData.getData();

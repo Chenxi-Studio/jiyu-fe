@@ -13,7 +13,7 @@ export const navigateTo = (url: string): void => {
 };
 
 export const switchTab = (url: string, relaunch: boolean = false): void => {
-  console.log("switch url", url);
+  // console.log("switch url", url);
   if (url === "pages/router/index") {
     if (relaunch) {
       void Taro.reLaunch({ url: `/${url}` });

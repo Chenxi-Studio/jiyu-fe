@@ -68,7 +68,7 @@ const NewActivity = (): JSX.Element => {
       setLoading(true);
       setSubmitText("修改上传中");
       try {
-        console.log($Activity.get().coverImage);
+        // console.log($Activity.get().coverImage);
 
         await api.activity.update(
           $Activity.get(),

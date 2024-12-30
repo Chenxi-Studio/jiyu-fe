@@ -42,11 +42,11 @@ const Auth = (): JSX.Element => {
   const handleTacAuth = async (): Promise<void> => {
     try {
       const loginRes = await Taro.login(); // wx login
-      console.log(loginRes);
+      // // console.log(loginRes);
       if (loginRes.errMsg.endsWith("ok")) {
         const tacLoginRes = await api.login.tac(code, loginRes.code);
         // const wxLoginRes = await api.login.wxLogin(loginRes.code);
-        console.log("tacLoginRes", tacLoginRes);
+        // // console.log("tacLoginRes", tacLoginRes);
         await setJWT(tacLoginRes.jwt);
         Taro.setStorageSync("jwt", tacLoginRes.jwt);
         switchTab("pages/router/index", true);
@@ -55,17 +55,17 @@ const Auth = (): JSX.Element => {
       }
     } catch (error) {
       setButtonContent("登录失败请联系管理员");
-      console.log(error);
+      // // console.log(error);
     }
   };
 
   const handleWxAuth = async (): Promise<void> => {
     try {
       const loginRes = await Taro.login(); // wx login
-      console.log(loginRes);
+      // // console.log(loginRes);
       if (loginRes.errMsg.endsWith("ok")) {
         const wxLoginRes = await api.login.wxLogin(loginRes.code);
-        console.log("wxLoginRes", wxLoginRes);
+        // // console.log("wxLoginRes", wxLoginRes);
         if (wxLoginRes.isSuccess) {
           await setJWT(wxLoginRes.jwt);
           Taro.setStorageSync("jwt", wxLoginRes.jwt);
@@ -79,7 +79,7 @@ const Auth = (): JSX.Element => {
     } catch (error) {
       setWxButtonContent("登录失败请使用 UIS 登录");
       debounce.current = false;
-      console.log(error);
+      // // console.log(error);
     }
   };
 

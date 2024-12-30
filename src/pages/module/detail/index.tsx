@@ -263,13 +263,13 @@ const Detail = (): JSX.Element => {
                     subIDs.current = subIDs.current.filter(
                       (id) => id !== item.id,
                     );
-                    console.log(subIDs.current);
+                    // // console.log(subIDs.current);
                   } else if (
                     item.id !== undefined &&
                     !subIDs.current.includes(item.id)
                   ) {
                     subIDs.current.push(item.id);
-                    console.log(subIDs.current);
+                    // // console.log(subIDs.current);
                   }
                 }}
                 id={index === 0 ? "detail-subactivity-card" : undefined}
@@ -307,7 +307,7 @@ const Detail = (): JSX.Element => {
         {editable && (
           <div
             onClick={() => {
-              console.log("edit", currentActivity, currentActivity?.status);
+              // // console.log("edit", currentActivity, currentActivity?.status);
 
               if (currentActivity === undefined) {
                 return;
@@ -354,17 +354,17 @@ const Detail = (): JSX.Element => {
                   await Taro.requestSubscribeMessage({
                     tmplIds,
                     success(successSubscribeRes) {
-                      console.log("订阅消息 成功 ");
-                      console.log(successSubscribeRes);
+                      // console.log("订阅消息 成功 ");
+                      // console.log(successSubscribeRes);
                     },
                     fail(er) {
-                      console.log("订阅消息 失败 ");
-                      console.log(er);
+                      // console.log("订阅消息 失败 ");
+                      // console.log(er);
                     },
                     entityIds: [],
                   });
                 } catch (e) {
-                  console.log(e);
+                  // console.log(e);
                 }
                 try {
                   if (currentActivity?.id !== undefined) {
@@ -374,11 +374,11 @@ const Detail = (): JSX.Element => {
                       subIDs.current,
                     );
 
-                    console.log(
-                      "res.registerStatus === ActivityRegisterStatus.Success",
-                      res.registerStatus,
-                      ActivityRegisterStatus.Success,
-                    );
+                    // console.log(
+                    //   "res.registerStatus === ActivityRegisterStatus.Success",
+                    //   res.registerStatus,
+                    //   ActivityRegisterStatus.Success,
+                    // );
 
                     // 这里是获取下发权限地方，根据官方文档，可以根据  wx.getSetting() 的 withSubscriptions   这个参数获取用户是否打开订阅消息总开关。后面我们需要获取用户是否同意总是同意消息推送。所以这里要给它设置为true 。
                     if (res.registerStatus === ActivityRegisterStatus.Success) {
@@ -419,7 +419,7 @@ const Detail = (): JSX.Element => {
                     }
                   }
                 } catch (error) {
-                  console.log(error);
+                  // console.log(error);
                 }
               }}
               id="detail-confirm"

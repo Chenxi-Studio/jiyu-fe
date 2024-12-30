@@ -93,7 +93,7 @@ const Home = (): JSX.Element => {
   };
 
   useEffect(() => {
-    console.log("start.");
+    // // console.log("start.");
     void load();
   }, []);
 

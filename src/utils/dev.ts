@@ -9,7 +9,7 @@ export const setDevJWT = async (
   type: "stu" | "admin" | "Ultradamin",
 ): Promise<void> => {
   const jwt = await api.login.devJWT(type);
-  console.log("jwt", jwt);
+  // console.log("jwt", jwt);
   if (jwt.isSuccess) {
     instance.defaults.headers.common.Authorization = `Bearer ${jwt.jwt}`;
     Taro.setStorageSync("jwt", jwt.jwt);
@@ -24,7 +24,7 @@ export const setDevJWT = async (
       };
       return draft;
     });
-    console.log("self", self, $User.get());
+    // console.log("self", self, $User.get());
     if (self.roleLevel !== undefined && self.roleLevel >= RoleLevel.Admin) {
       const classes = await api.tag.basicGet("class");
       const majors = await api.tag.basicGet("major");
@@ -36,7 +36,7 @@ export const setDevJWT = async (
         draft.majors = majors.map((item) => item.name);
         draft.tags = tags;
       });
-      console.log(tags, grades, majors, classes);
+      // console.log(tags, grades, majors, classes);
     }
   }
 };
