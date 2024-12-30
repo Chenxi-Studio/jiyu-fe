@@ -235,9 +235,16 @@ const Detail = (): JSX.Element => {
           <div className="text-base mb-4">
             活动类别：{currentActivity?.category.split(" ").join("、")}
           </div>
-          <div className="text-sm text-gray-500">
-            {currentActivity?.introduction}
-          </div>
+          {currentActivity?.introduction.split("\n").map((text, index) => {
+            return (
+              <div
+                className="text-sm text-gray-500"
+                key={`detail-introduction-${index}`}
+              >
+                {text}
+              </div>
+            );
+          })}
         </div>
 
         <div>
