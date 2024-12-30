@@ -89,7 +89,7 @@ const Publish = (): JSX.Element => {
       draft.currentActivity = item;
       draft.detailOrigin = "publish";
     });
-    navigateTo(`pages/module/detail/index`);
+    navigateTo(`pages/module/detail/index?id=${item.id}`);
   };
 
   return (

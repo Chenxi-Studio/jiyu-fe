@@ -217,6 +217,8 @@ const activity = {
       return Promise.reject(new Error("Activity update: 参数不存在 id"));
     }
   },
+  get: (id: number): Promise<ActivityEntity | undefined> =>
+    instance.get(`/activity/id/${id}`),
 };
 
 const subActivity = {

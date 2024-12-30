@@ -127,7 +127,7 @@ const ActivityPage = (): JSX.Element => {
       draft.currentActivity = item;
       draft.detailOrigin = "activity";
     });
-    navigateTo(`pages/module/detail/index`);
+    navigateTo(`pages/module/detail/index?id=${item.id}`);
   };
 
   return (

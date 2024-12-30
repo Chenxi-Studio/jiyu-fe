@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { act, useEffect, useMemo, useState } from "react";
 import { type ActivityEntity } from "@/types/entity/Activity.entity";
 import { api } from "@/api";
 import { $UI } from "@/store/UI";
@@ -108,6 +108,7 @@ const Home = (): JSX.Element => {
             key={`tag-${item}-${index}`}
             content={item}
             onClick={() => {
+              navigateTo(`pages/module/detail/index?id=106`);
               void Taro.vibrateShort();
               if (tags.includes(item))
                 setTags(tags.filter((tag) => tag !== item));
@@ -144,7 +145,7 @@ const Home = (): JSX.Element => {
                       draft.currentActivity = activity;
                       draft.detailOrigin = "home";
                     });
-                    navigateTo(`pages/module/detail/index`);
+                    navigateTo(`pages/module/detail/index?id=${activity.id}`);
                   }}
                 />
               ))}
@@ -164,7 +165,7 @@ const Home = (): JSX.Element => {
                       draft.currentActivity = activity;
                       draft.detailOrigin = "home";
                     });
-                    navigateTo(`pages/module/detail/index`);
+                    navigateTo(`pages/module/detail/index?id=${activity.id}`);
                   }}
                 />
               ))}
@@ -183,7 +184,7 @@ const Home = (): JSX.Element => {
                       draft.currentActivity = activity;
                       draft.detailOrigin = "home";
                     });
-                    navigateTo(`pages/module/detail/index`);
+                    navigateTo(`pages/module/detail/index?id=${activity.id}`);
                   }}
                   selected={
                     activity.id === undefined
@@ -202,7 +203,7 @@ const Home = (): JSX.Element => {
                       draft.currentActivity = activity;
                       draft.detailOrigin = "home";
                     });
-                    navigateTo(`pages/module/detail/index`);
+                    navigateTo(`pages/module/detail/index?id=${activity.id}`);
                   }}
                   selected={
                     activity.id === undefined
@@ -221,7 +222,7 @@ const Home = (): JSX.Element => {
                       draft.currentActivity = activity;
                       draft.detailOrigin = "home";
                     });
-                    navigateTo(`pages/module/detail/index`);
+                    navigateTo(`pages/module/detail/index?id=${activity.id}`);
                   }}
                   selected={
                     activity.id === undefined
