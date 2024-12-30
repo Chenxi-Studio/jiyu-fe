@@ -131,7 +131,6 @@ const Auth = (): JSX.Element => {
           style={{ backgroundImage: `url("${lionImage}")` }}
         ></div>
       </div>
-
       <InteractiveDiv
         onClickVibrate
         // onClickSound
@@ -160,7 +159,6 @@ const Auth = (): JSX.Element => {
           {buttonContent}
         </div>
       </InteractiveDiv>
-
       <InteractiveDiv
         onClickVibrate
         // onClickSound
@@ -189,7 +187,6 @@ const Auth = (): JSX.Element => {
           {wxButtonContent}
         </div>
       </InteractiveDiv>
-
       {/* <div
         onClick={() => {
           clearStore();
@@ -228,6 +225,23 @@ const Auth = (): JSX.Element => {
           UltraAdmin 测试登录
         </div>
       </div> */}
+      <div
+        className={twMerge("fixed bottom-[32%] px-8 w-[calc(100%-128rpx)]")}
+        onClick={() => {
+          clearStore();
+          navigateTo("pages/module/detail/index?id=106");
+        }}
+      >
+        <div
+          className="flex items-center justify-center px-2 py-3 border-[6rpx] border-solid rounded-full font-bold gap-3 text-[#000] shadow-[0_8rpx]"
+          style={{
+            backgroundColor: buttonColor,
+          }}
+        >
+          无登录 Detail
+        </div>
+      </div>{" "}
+      */
       <div className="fixed bottom-[5%] px-8 w-[calc(100%-128rpx)] flex items-center justify-center">
         <Logo />
       </div>

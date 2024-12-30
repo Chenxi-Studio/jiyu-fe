@@ -217,8 +217,6 @@ const activity = {
       return Promise.reject(new Error("Activity update: 参数不存在 id"));
     }
   },
-  get: (id: number): Promise<ActivityEntity | undefined> =>
-    instance.get(`/activity/id/${id}`),
 };
 
 const subActivity = {
@@ -390,6 +388,8 @@ const show = {
     instance.get("/show-act/ongoing"),
   finished: (): Promise<ActivityWithRemain[]> =>
     instance.get("/show-act/finished"),
+  get: (id: number): Promise<ActivityEntity | undefined> =>
+    instance.get(`/show-act/any?actID=${id}`),
 };
 
 const checkIn = {

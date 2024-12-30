@@ -8,7 +8,7 @@ import Taro from "@tarojs/taro";
 import { Dialog, Image } from "@nutui/nutui-react-taro";
 import { $UI } from "@/store/UI";
 import { navigateBack, navigateTo } from "@/utils/navigator";
-import { formatDate, px2rpx, windowHeight } from "@/utils/unit";
+import { formatDate, px2rpx, setJWT, windowHeight } from "@/utils/unit";
 import { $Activity } from "@/store/activity";
 import { baseActivityRequestIsEmpty } from "@/types/activity";
 import { ActivityRegisterStatus, ActivityStatus } from "@/types/common";
@@ -17,7 +17,7 @@ import { api } from "@/api";
 import { $User } from "@/store/user";
 import { availableSubIndice } from "@/utils/activity";
 import { RegisterTour } from "@/components/tours/register-tour";
-import { getTourStorage } from "@/utils/store";
+import { getLoginStorage, getTourStorage } from "@/utils/store";
 import IconFont from "@/components/iconfont/iconfont";
 import { GlobalNotify } from "@/components/global-notify";
 import { CameraComponent } from "@/components/camera";
@@ -53,9 +53,11 @@ const Detail = (): JSX.Element => {
     confirm &&
     selected.length === 0 &&
     currentActivity !== undefined &&
+    currentActivity.registrationStartTime.getTime() <= now.getTime() &&
     currentActivity.registrationEndTime.getTime() >= now.getTime();
 
   const load = async (withTour: boolean = false): Promise<void> => {
+    if (getLoginStorage() === undefined) return;
     if (currentActivity?.id !== undefined) {
       const registerInfo = await api.sign.registerInfo(currentActivity?.id);
       setRemainings(registerInfo.remainings);
@@ -120,31 +122,56 @@ const Detail = (): JSX.Element => {
     }
   };
 
-  useEffect(() => {
-    // taro 的 view ref 对象未实现 offset 属性 只能使用 createSelectorQuery 方法·
-    // https://taro-docs.jd.com/docs/ref#在子组件中获取
-    Taro.createSelectorQuery()
-      .select("#detail-pic")
-      .boundingClientRect()
-      .exec((res) => {
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-unsafe-argument
-        if (res[0]?.height) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          const bodyOffset = px2rpx(res[0].height) - 64; // 最好使用 rpx 而非 px
+  const handleParams = async (): Promise<void> => {
+    const params = Taro.getCurrentInstance().router?.params;
 
-          setOffset(bodyOffset);
-          setMinHeight(px2rpx(windowHeight) - 150);
-        }
-      });
-    if (currentActivity === undefined) {
-      navigateBack();
+    if (
+      params !== undefined &&
+      (currentActivity?.id === undefined ||
+        currentActivity.id.toString() !== params.id)
+    ) {
+      try {
+        const activity = await api.show.get(Number(params.id));
+        $UI.update("activity from param", (draft) => {
+          draft.currentActivity = activity;
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
-    const user = $User.get();
-    if (currentActivity !== undefined && user !== undefined)
-      setAvailables(availableSubIndice(currentActivity, user));
-    void load(true);
-    getScrollViewHeight();
-    setStatusBarHeight(Taro.getSystemInfoSync().statusBarHeight ?? 0);
+  };
+
+  useEffect(() => {
+    const jwt = getLoginStorage();
+    if (jwt !== undefined) {
+      void setJWT(jwt);
+    }
+    void handleParams().then(() => {
+      // taro 的 view ref 对象未实现 offset 属性 只能使用 createSelectorQuery 方法·
+      // https://taro-docs.jd.com/docs/ref#在子组件中获取
+      Taro.createSelectorQuery()
+        .select("#detail-pic")
+        .boundingClientRect()
+        .exec((res) => {
+          // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-unsafe-argument
+          if (res[0]?.height) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            const bodyOffset = px2rpx(res[0].height) - 64; // 最好使用 rpx 而非 px
+
+            setOffset(bodyOffset);
+            setMinHeight(px2rpx(windowHeight) - 150);
+          }
+        });
+      if ($UI.get().currentActivity === undefined) {
+        navigateBack();
+      }
+      const user = $User.get();
+      if (currentActivity !== undefined && user !== undefined)
+        setAvailables(availableSubIndice(currentActivity, user));
+      void load(true);
+      getScrollViewHeight();
+      setStatusBarHeight(Taro.getSystemInfoSync().statusBarHeight ?? 0);
+    });
   }, []);
 
   const getScrollViewHeight = (): void => {
