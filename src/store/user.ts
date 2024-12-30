@@ -15,8 +15,8 @@ export interface UserModel extends UserEntity {
 }
 
 export const $User = model<UserModel>("USER", {
-  id: 8, // 10
-  sid: "admin122", // superadmin
+  id: 0, // 10
+  sid: "", // superadmin
   state_key: generateRandomString(16),
   code: "",
   scope: "",

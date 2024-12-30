@@ -139,6 +139,7 @@ const Profile = (): JSX.Element => {
                       draft.showNotify = true;
                     });
                   } else {
+                    $User.init();
                     Taro.setStorageSync("jwt", "");
                     navigateTo("pages/auth/index");
                   }
@@ -169,6 +170,7 @@ const Profile = (): JSX.Element => {
               onConfirm: async () => {
                 try {
                   void Taro.vibrateLong();
+                  $User.init();
                   Taro.setStorageSync("jwt", "");
                   navigateTo("pages/auth/index");
                 } catch (error) {
