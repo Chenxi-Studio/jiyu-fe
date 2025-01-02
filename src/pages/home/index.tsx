@@ -108,7 +108,6 @@ const Home = (): JSX.Element => {
             key={`tag-${item}-${index}`}
             content={item}
             onClick={() => {
-              navigateTo(`pages/module/detail/index?id=106`);
               void Taro.vibrateShort();
               if (tags.includes(item))
                 setTags(tags.filter((tag) => tag !== item));
